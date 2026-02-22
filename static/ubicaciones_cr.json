@@ -1,0 +1,1032 @@
+[
+  {
+    "codigo": "1",
+    "provincia": "San José",
+    "cantones": [
+      {
+        "codigo": "101",
+        "canton": "San José",
+        "distritos": [
+          { "codigo": "10101", "distrito": "Carmen", "area_km2": 1.49 },
+          { "codigo": "10102", "distrito": "Merced", "area_km2": 2.2 },
+          { "codigo": "10103", "distrito": "Hospital", "area_km2": 3.32 },
+          { "codigo": "10104", "distrito": "Catedral", "area_km2": 2.37 },
+          { "codigo": "10105", "distrito": "Zapote", "area_km2": 2.86 },
+          { "codigo": "10106", "distrito": "San Francisco de Dos Ríos", "area_km2": 2.64 },
+          { "codigo": "10107", "distrito": "Uruca", "area_km2": 8.39 },
+          { "codigo": "10108", "distrito": "Mata Redonda", "area_km2": 3.66 },
+          { "codigo": "10109", "distrito": "Pavas", "area_km2": 9.35 },
+          { "codigo": "10110", "distrito": "Hatillo", "area_km2": 4.37 },
+          { "codigo": "10111", "distrito": "San Sebastián", "area_km2": 3.97 }
+        ]
+      },
+      {
+        "codigo": "102",
+        "canton": "Escazú",
+        "distritos": [
+          { "codigo": "10201", "distrito": "Escazú", "area_km2": 4.53 },
+          { "codigo": "10202", "distrito": "San Antonio", "area_km2": 16.96 },
+          { "codigo": "10203", "distrito": "San Rafael", "area_km2": 13.04 }
+        ]
+      },
+      {
+        "codigo": "103",
+        "canton": "Desamparados",
+        "distritos": [
+          { "codigo": "10301", "distrito": "Desamparados", "area_km2": 3.32 },
+          { "codigo": "10302", "distrito": "San Miguel", "area_km2": 21.34 },
+          { "codigo": "10303", "distrito": "San Juan de Dios", "area_km2": 2.85 },
+          { "codigo": "10304", "distrito": "San Rafael Arriba", "area_km2": 3.23 },
+          { "codigo": "10305", "distrito": "San Antonio", "area_km2": 2.07 },
+          { "codigo": "10306", "distrito": "Frailes", "area_km2": 19.67 },
+          { "codigo": "10307", "distrito": "Patarrá", "area_km2": 15.88 },
+          { "codigo": "10308", "distrito": "San Cristóbal", "area_km2": 25.03 },
+          { "codigo": "10309", "distrito": "Rosario", "area_km2": 14.85 },
+          { "codigo": "10310", "distrito": "Damas", "area_km2": 2.65 },
+          { "codigo": "10311", "distrito": "San Rafael Abajo", "area_km2": 2.02 },
+          { "codigo": "10312", "distrito": "Gravilias", "area_km2": 2.94 },
+          { "codigo": "10313", "distrito": "Los Guido", "area_km2": 3.06 }
+        ]
+      },
+      {
+        "codigo": "104",
+        "canton": "Puriscal",
+        "distritos": [
+          { "codigo": "10401", "distrito": "Santiago", "area_km2": 34.52 },
+          { "codigo": "10402", "distrito": "Mercedes Sur", "area_km2": 181.77 },
+          { "codigo": "10403", "distrito": "Barbacoas", "area_km2": 18.62 },
+          { "codigo": "10404", "distrito": "Grifo Alto", "area_km2": 26.4 },
+          { "codigo": "10405", "distrito": "San Rafael", "area_km2": 15.5 },
+          { "codigo": "10406", "distrito": "Candelarita", "area_km2": 26.73 },
+          { "codigo": "10407", "distrito": "Desamparaditos", "area_km2": 7.22 },
+          { "codigo": "10408", "distrito": "San Antonio", "area_km2": 14.62 },
+          { "codigo": "10409", "distrito": "Chires", "area_km2": 229.66 }
+        ]
+      },
+      {
+        "codigo": "105",
+        "canton": "Tarrazú",
+        "distritos": [
+          { "codigo": "10501", "distrito": "San Marcos", "area_km2": 46.02 },
+          { "codigo": "10502", "distrito": "San Lorenzo", "area_km2": 186.29 },
+          { "codigo": "10503", "distrito": "San Carlos", "area_km2": 58.96 }
+        ]
+      },
+      {
+        "codigo": "106",
+        "canton": "Aserrí",
+        "distritos": [
+          { "codigo": "10601", "distrito": "Aserrí", "area_km2": 15.26 },
+          { "codigo": "10602", "distrito": "Tarbaca", "area_km2": 15.34 },
+          { "codigo": "10603", "distrito": "Vuelta de Jorco", "area_km2": 22.05 },
+          { "codigo": "10604", "distrito": "San Gabriel", "area_km2": 11.73 },
+          { "codigo": "10605", "distrito": "Legua", "area_km2": 81.26 },
+          { "codigo": "10606", "distrito": "Monterrey", "area_km2": 8.28 },
+          { "codigo": "10607", "distrito": "Salitrillos", "area_km2": 14.34 }
+        ]
+      },
+      {
+        "codigo": "107",
+        "canton": "Mora",
+        "distritos": [
+          { "codigo": "10701", "distrito": "Colón", "area_km2": 39.89 },
+          { "codigo": "10702", "distrito": "Guayabo", "area_km2": 9.01 },
+          { "codigo": "10703", "distrito": "Tabarcia", "area_km2": 40.43 },
+          { "codigo": "10704", "distrito": "Piedras Negras", "area_km2": 14.88 },
+          { "codigo": "10705", "distrito": "Picagres", "area_km2": 27.16 },
+          { "codigo": "10706", "distrito": "Jaris", "area_km2": 5.49 },
+          { "codigo": "10707", "distrito": "Quitirrisí", "area_km2": 26.62 }
+        ]
+      },
+      {
+        "codigo": "108",
+        "canton": "Goicoechea",
+        "distritos": [
+          { "codigo": "10801", "distrito": "Guadalupe", "area_km2": 2.39 },
+          { "codigo": "10802", "distrito": "San Francisco", "area_km2": 0.58 },
+          { "codigo": "10803", "distrito": "Calle Blancos", "area_km2": 2.36 },
+          { "codigo": "10804", "distrito": "Mata de Plátano", "area_km2": 7.79 },
+          { "codigo": "10805", "distrito": "Ipís", "area_km2": 2.5 },
+          { "codigo": "10806", "distrito": "Rancho Redondo", "area_km2": 13.08 },
+          { "codigo": "10807", "distrito": "Purral", "area_km2": 3.0 }
+        ]
+      },
+      {
+        "codigo": "109",
+        "canton": "Santa Ana",
+        "distritos": [
+          { "codigo": "10901", "distrito": "Santa Ana", "area_km2": 5.44 },
+          { "codigo": "10902", "distrito": "Salitral", "area_km2": 20.29 },
+          { "codigo": "10903", "distrito": "Pozos", "area_km2": 13.35 },
+          { "codigo": "10904", "distrito": "Uruca", "area_km2": 7.03 },
+          { "codigo": "10905", "distrito": "Piedades", "area_km2": 12.07 },
+          { "codigo": "10906", "distrito": "Brasil", "area_km2": 3.24 }
+        ]
+      },
+      {
+        "codigo": "110",
+        "canton": "Alajuelita",
+        "distritos": [
+          { "codigo": "11001", "distrito": "Alajuelita", "area_km2": 1.27 },
+          { "codigo": "11002", "distrito": "San Josecito", "area_km2": 2.37 },
+          { "codigo": "11003", "distrito": "San Antonio", "area_km2": 10.26 },
+          { "codigo": "11004", "distrito": "Concepción", "area_km2": 2.43 },
+          { "codigo": "11005", "distrito": "San Felipe", "area_km2": 5.13 }
+        ]
+      },
+      {
+        "codigo": "111",
+        "canton": "Vázquez de Coronado",
+        "distritos": [
+          { "codigo": "11101", "distrito": "San Isidro", "area_km2": 5.16 },
+          { "codigo": "11102", "distrito": "San Rafael", "area_km2": 16.91 },
+          { "codigo": "11103", "distrito": "Dulce Nombre de Jesús", "area_km2": 67.92 },
+          { "codigo": "11104", "distrito": "Patalillo", "area_km2": 1.92 },
+          { "codigo": "11105", "distrito": "Cascajal", "area_km2": 132.02 }
+        ]
+      },
+      {
+        "codigo": "112",
+        "canton": "Acosta",
+        "distritos": [
+          { "codigo": "11201", "distrito": "San Ignacio", "area_km2": 22.74 },
+          { "codigo": "11202", "distrito": "Guaitil", "area_km2": 43.99 },
+          { "codigo": "11203", "distrito": "Palmichal", "area_km2": 34.14 },
+          { "codigo": "11204", "distrito": "Cangrejal", "area_km2": 64.33 },
+          { "codigo": "11205", "distrito": "Sabanillas", "area_km2": 177.36 }
+        ]
+      },
+      {
+        "codigo": "113",
+        "canton": "Tibás",
+        "distritos": [
+          { "codigo": "11301", "distrito": "San Juan", "area_km2": 3.51 },
+          { "codigo": "11302", "distrito": "Cinco Esquinas", "area_km2": 0.65 },
+          { "codigo": "11303", "distrito": "Anselmo Llorente", "area_km2": 1.37 },
+          { "codigo": "11304", "distrito": "León XIII", "area_km2": 0.72 },
+          { "codigo": "11305", "distrito": "Colima", "area_km2": 2.01 }
+        ]
+      },
+      {
+        "codigo": "114",
+        "canton": "Moravia",
+        "distritos": [
+          { "codigo": "11401", "distrito": "San Vicente", "area_km2": 5.4 },
+          { "codigo": "11402", "distrito": "San Jerónimo", "area_km2": 18.53 },
+          { "codigo": "11403", "distrito": "Trinidad", "area_km2": 4.9 }
+        ]
+      },
+      {
+        "codigo": "115",
+        "canton": "Montes de Oca",
+        "distritos": [
+          { "codigo": "11501", "distrito": "San Pedro", "area_km2": 4.74 },
+          { "codigo": "11502", "distrito": "Sabanilla", "area_km2": 1.79 },
+          { "codigo": "11503", "distrito": "Mercedes", "area_km2": 1.43 },
+          { "codigo": "11504", "distrito": "San Rafael", "area_km2": 7.82 }
+        ]
+      },
+      {
+        "codigo": "116",
+        "canton": "Turrubares",
+        "distritos": [
+          { "codigo": "11601", "distrito": "San Pablo", "area_km2": 26.41 },
+          { "codigo": "11602", "distrito": "San Pedro", "area_km2": 39.2 },
+          { "codigo": "11603", "distrito": "San Juan de Mata", "area_km2": 86.25 },
+          { "codigo": "11604", "distrito": "San Luis", "area_km2": 43.84 },
+          { "codigo": "11605", "distrito": "Carara", "area_km2": 220.55 }
+        ]
+      },
+      {
+        "codigo": "117",
+        "canton": "Dota",
+        "distritos": [
+          { "codigo": "11701", "distrito": "Santa María", "area_km2": 93.6 },
+          { "codigo": "11702", "distrito": "Jardín", "area_km2": 33.27 },
+          { "codigo": "11703", "distrito": "Copey", "area_km2": 277.58 }
+        ]
+      },
+      {
+        "codigo": "118",
+        "canton": "Curridabat",
+        "distritos": [
+          { "codigo": "11801", "distrito": "Curridabat", "area_km2": 6.17 },
+          { "codigo": "11802", "distrito": "Granadilla", "area_km2": 3.51 },
+          { "codigo": "11803", "distrito": "Sánchez", "area_km2": 4.51 },
+          { "codigo": "11804", "distrito": "Tirrases", "area_km2": 1.88 }
+        ]
+      },
+      {
+        "codigo": "119",
+        "canton": "Pérez Zeledón",
+        "distritos": [
+          { "codigo": "11901", "distrito": "San Isidro de El General", "area_km2": 191.82 },
+          { "codigo": "11902", "distrito": "General", "area_km2": 76.88 },
+          { "codigo": "11903", "distrito": "Daniel Flores", "area_km2": 64.06 },
+          { "codigo": "11904", "distrito": "Rivas", "area_km2": 310.0 },
+          { "codigo": "11905", "distrito": "San Pedro", "area_km2": 206.12 },
+          { "codigo": "11906", "distrito": "Platanares", "area_km2": 80.92 },
+          { "codigo": "11907", "distrito": "Pejibaye", "area_km2": 141.18 },
+          { "codigo": "11908", "distrito": "Cajón", "area_km2": 118.63 },
+          { "codigo": "11909", "distrito": "Barú", "area_km2": 189.66 },
+          { "codigo": "11910", "distrito": "Río Nuevo", "area_km2": 242.19 },
+          { "codigo": "11911", "distrito": "Páramo", "area_km2": 203.33 },
+          { "codigo": "11912", "distrito": "La Amistad", "area_km2": 76.29 }
+        ]
+      },
+      {
+        "codigo": "120",
+        "canton": "León Cortés Castro",
+        "distritos": [
+          { "codigo": "12001", "distrito": "San Pablo", "area_km2": 20.76 },
+          { "codigo": "12002", "distrito": "San Andrés", "area_km2": 16.1 },
+          { "codigo": "12003", "distrito": "Llano Bonito", "area_km2": 34.1 },
+          { "codigo": "12004", "distrito": "San Isidro", "area_km2": 19.02 },
+          { "codigo": "12005", "distrito": "Santa Cruz", "area_km2": 21.78 },
+          { "codigo": "12006", "distrito": "San Antonio", "area_km2": 10.14 }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": "2",
+    "provincia": "Alajuela",
+    "cantones": [
+      {
+        "codigo": "201",
+        "canton": "Alajuela",
+        "distritos": [
+          { "codigo": "20101", "distrito": "Alajuela", "area_km2": 10.61 },
+          { "codigo": "20102", "distrito": "San José", "area_km2": 14.87 },
+          { "codigo": "20103", "distrito": "Carrizal", "area_km2": 16.22 },
+          { "codigo": "20104", "distrito": "San Antonio", "area_km2": 8.76 },
+          { "codigo": "20105", "distrito": "Guácima", "area_km2": 28.07 },
+          { "codigo": "20106", "distrito": "San Isidro", "area_km2": 34.69 },
+          { "codigo": "20107", "distrito": "Sabanilla", "area_km2": 43.18 },
+          { "codigo": "20108", "distrito": "San Rafael", "area_km2": 19.33 },
+          { "codigo": "20109", "distrito": "Río Segundo", "area_km2": 5.46 },
+          { "codigo": "20110", "distrito": "Desamparados", "area_km2": 12.95 },
+          { "codigo": "20111", "distrito": "Turrúcares", "area_km2": 35.89 },
+          { "codigo": "20112", "distrito": "Tambor", "area_km2": 13.89 },
+          { "codigo": "20113", "distrito": "Garita", "area_km2": 33.9 },
+          { "codigo": "20114", "distrito": "Sarapiquí", "area_km2": 113.79 }
+        ]
+      },
+      {
+        "codigo": "202",
+        "canton": "San Ramón",
+        "distritos": [
+          { "codigo": "20201", "distrito": "San Ramón", "area_km2": 1.28 },
+          { "codigo": "20202", "distrito": "Santiago", "area_km2": 61.06 },
+          { "codigo": "20203", "distrito": "San Juan", "area_km2": 5.12 },
+          { "codigo": "20204", "distrito": "Piedades Norte", "area_km2": 47.68 },
+          { "codigo": "20205", "distrito": "Piedades Sur", "area_km2": 115.63 },
+          { "codigo": "20206", "distrito": "San Rafael", "area_km2": 30.69 },
+          { "codigo": "20207", "distrito": "San Isidro", "area_km2": 8.69 },
+          { "codigo": "20208", "distrito": "Ángeles", "area_km2": 84.91 },
+          { "codigo": "20209", "distrito": "Alfaro", "area_km2": 17.84 },
+          { "codigo": "20210", "distrito": "Volio", "area_km2": 20.67 },
+          { "codigo": "20211", "distrito": "Concepción", "area_km2": 9.51 },
+          { "codigo": "20212", "distrito": "Zapotal", "area_km2": 67.13 },
+          { "codigo": "20213", "distrito": "Peñas Blancas", "area_km2": 246.8 },
+          { "codigo": "20214", "distrito": "San Lorenzo", "area_km2": 304.74 }
+        ]
+      },
+      {
+        "codigo": "203",
+        "canton": "Grecia",
+        "distritos": [
+          { "codigo": "20301", "distrito": "Grecia", "area_km2": 7.57 },
+          { "codigo": "20302", "distrito": "San Isidro", "area_km2": 16.83 },
+          { "codigo": "20303", "distrito": "San José", "area_km2": 12.41 },
+          { "codigo": "20304", "distrito": "San Roque", "area_km2": 26.95 },
+          { "codigo": "20305", "distrito": "Tacares", "area_km2": 24.9 },
+          { "codigo": "20307", "distrito": "Puente de Piedra", "area_km2": 23.03 },
+          { "codigo": "20308", "distrito": "Bolívar", "area_km2": 30.78 }
+        ]
+      },
+      {
+        "codigo": "204",
+        "canton": "San Mateo",
+        "distritos": [
+          { "codigo": "20401", "distrito": "San Mateo", "area_km2": 64.89 },
+          { "codigo": "20402", "distrito": "Desmonte", "area_km2": 20.22 },
+          { "codigo": "20403", "distrito": "Jesús María", "area_km2": 18.66 },
+          { "codigo": "20404", "distrito": "Labrador", "area_km2": 21.26 }
+        ]
+      },
+      {
+        "codigo": "205",
+        "canton": "Atenas",
+        "distritos": [
+          { "codigo": "20501", "distrito": "Atenas", "area_km2": 9.76 },
+          { "codigo": "20502", "distrito": "Jesús", "area_km2": 18.11 },
+          { "codigo": "20503", "distrito": "Mercedes", "area_km2": 7.84 },
+          { "codigo": "20504", "distrito": "San Isidro", "area_km2": 14.39 },
+          { "codigo": "20505", "distrito": "Concepción", "area_km2": 21.91 },
+          { "codigo": "20506", "distrito": "San José", "area_km2": 13.47 },
+          { "codigo": "20507", "distrito": "Santa Eulalia", "area_km2": 14.56 },
+          { "codigo": "20508", "distrito": "Escobal", "area_km2": 26.28 }
+        ]
+      },
+      {
+        "codigo": "206",
+        "canton": "Naranjo",
+        "distritos": [
+          { "codigo": "20601", "distrito": "Naranjo", "area_km2": 16.85 },
+          { "codigo": "20602", "distrito": "San Miguel", "area_km2": 15.59 },
+          { "codigo": "20603", "distrito": "San José", "area_km2": 20.9 },
+          { "codigo": "20604", "distrito": "Cirrí Sur", "area_km2": 32.11 },
+          { "codigo": "20605", "distrito": "San Jerónimo", "area_km2": 9.05 },
+          { "codigo": "20606", "distrito": "San Juan", "area_km2": 7.15 },
+          { "codigo": "20607", "distrito": "Rosario", "area_km2": 17.15 },
+          { "codigo": "20608", "distrito": "Palmitos", "area_km2": 8.23 }
+        ]
+      },
+      {
+        "codigo": "207",
+        "canton": "Palmares",
+        "distritos": [
+          { "codigo": "20701", "distrito": "Palmares", "area_km2": 1.19 },
+          { "codigo": "20702", "distrito": "Zaragoza", "area_km2": 8.43 },
+          { "codigo": "20703", "distrito": "Buenos Aires", "area_km2": 6.84 },
+          { "codigo": "20704", "distrito": "Santiago", "area_km2": 7.96 },
+          { "codigo": "20705", "distrito": "Candelaria", "area_km2": 4.72 },
+          { "codigo": "20706", "distrito": "Esquipulas", "area_km2": 5.4 },
+          { "codigo": "20707", "distrito": "La Granja", "area_km2": 4.39 }
+        ]
+      },
+      {
+        "codigo": "208",
+        "canton": "Poás",
+        "distritos": [
+          { "codigo": "20801", "distrito": "San Pedro", "area_km2": 13.58 },
+          { "codigo": "20802", "distrito": "San Juan", "area_km2": 16.38 },
+          { "codigo": "20803", "distrito": "San Rafael", "area_km2": 14.18 },
+          { "codigo": "20804", "distrito": "Carrillos", "area_km2": 10.13 },
+          { "codigo": "20805", "distrito": "Sabana Redonda", "area_km2": 20.21 }
+        ]
+      },
+      {
+        "codigo": "209",
+        "canton": "Orotina",
+        "distritos": [
+          { "codigo": "20901", "distrito": "Orotina", "area_km2": 21.56 },
+          { "codigo": "20902", "distrito": "Mastate", "area_km2": 9.5 },
+          { "codigo": "20903", "distrito": "Hacienda Vieja", "area_km2": 16.91 },
+          { "codigo": "20904", "distrito": "Coyolar", "area_km2": 36.48 },
+          { "codigo": "20905", "distrito": "La Ceiba", "area_km2": 60.66 }
+        ]
+      },
+      {
+        "codigo": "210",
+        "canton": "San Carlos",
+        "distritos": [
+          { "codigo": "21001", "distrito": "Quesada", "area_km2": 143.48 },
+          { "codigo": "21002", "distrito": "Florencia", "area_km2": 199.66 },
+          { "codigo": "21003", "distrito": "Buenavista", "area_km2": 25.97 },
+          { "codigo": "21004", "distrito": "Aguas Zarcas", "area_km2": 185.7 },
+          { "codigo": "21005", "distrito": "Venecia", "area_km2": 132.53 },
+          { "codigo": "21006", "distrito": "Pital", "area_km2": 379.27 },
+          { "codigo": "21007", "distrito": "Fortuna", "area_km2": 229.59 },
+          { "codigo": "21008", "distrito": "Tigra", "area_km2": 56.21 },
+          { "codigo": "21009", "distrito": "Palmera", "area_km2": 100.36 },
+          { "codigo": "21010", "distrito": "Venado", "area_km2": 169.19 },
+          { "codigo": "21011", "distrito": "Cutris", "area_km2": 849.19 },
+          { "codigo": "21012", "distrito": "Monterrey", "area_km2": 220.59 },
+          { "codigo": "21013", "distrito": "Pocosol", "area_km2": 660.59 }
+        ]
+      },
+      {
+        "codigo": "211",
+        "canton": "Zarcero",
+        "distritos": [
+          { "codigo": "21101", "distrito": "Zarcero", "area_km2": 11.83 },
+          { "codigo": "21102", "distrito": "Laguna", "area_km2": 23.28 },
+          { "codigo": "21103", "distrito": "Tapezco", "area_km2": 6.39 },
+          { "codigo": "21104", "distrito": "Guadalupe", "area_km2": 22.58 },
+          { "codigo": "21105", "distrito": "Palmira", "area_km2": 30.67 },
+          { "codigo": "21106", "distrito": "Zapote", "area_km2": 44.76 },
+          { "codigo": "21107", "distrito": "Brisas", "area_km2": 17.85 }
+        ]
+      },
+      {
+        "codigo": "212",
+        "canton": "Sarchí",
+        "distritos": [
+          { "codigo": "21201", "distrito": "Sarchí Norte", "area_km2": 21.14 },
+          { "codigo": "21202", "distrito": "Sarchí Sur", "area_km2": 6.35 },
+          { "codigo": "21203", "distrito": "Toro Amarillo", "area_km2": 91.13 },
+          { "codigo": "21204", "distrito": "San Pedro", "area_km2": 10.87 },
+          { "codigo": "21205", "distrito": "Rodríguez", "area_km2": 7.28 }
+        ]
+      },
+      {
+        "codigo": "213",
+        "canton": "Upala",
+        "distritos": [
+          { "codigo": "21301", "distrito": "Upala", "area_km2": 148.65 },
+          { "codigo": "21302", "distrito": "Aguas Claras", "area_km2": 408.54 },
+          { "codigo": "21303", "distrito": "San José (Pizote)", "area_km2": 285.43 },
+          { "codigo": "21304", "distrito": "Bijagua", "area_km2": 186.8 },
+          { "codigo": "21305", "distrito": "Delicias", "area_km2": 98.52 },
+          { "codigo": "21306", "distrito": "Dos Ríos", "area_km2": 218.67 },
+          { "codigo": "21307", "distrito": "Yolillal", "area_km2": 139.62 },
+          { "codigo": "21308", "distrito": "Canalete", "area_km2": 106.45 }
+        ]
+      },
+      {
+        "codigo": "214",
+        "canton": "Los Chiles",
+        "distritos": [
+          { "codigo": "21401", "distrito": "Los Chiles", "area_km2": 503.61 },
+          { "codigo": "21402", "distrito": "Caño Negro", "area_km2": 301.27 },
+          { "codigo": "21403", "distrito": "El Amparo", "area_km2": 312.89 },
+          { "codigo": "21404", "distrito": "San Jorge", "area_km2": 214.95 }
+        ]
+      },
+      {
+        "codigo": "215",
+        "canton": "Guatuso",
+        "distritos": [
+          { "codigo": "21501", "distrito": "San Rafael", "area_km2": 303.99 },
+          { "codigo": "21502", "distrito": "Buenavista", "area_km2": 150.86 },
+          { "codigo": "21503", "distrito": "Cote", "area_km2": 183.58 },
+          { "codigo": "21504", "distrito": "Katira", "area_km2": 114.4 }
+        ]
+      },
+      {
+        "codigo": "216",
+        "canton": "Río Cuarto",
+        "distritos": [
+          { "codigo": "21601", "distrito": "Río Cuarto", "area_km2": 97.62 },
+          { "codigo": "21602", "distrito": "Santa Rita", "area_km2": 53.19 },
+          { "codigo": "21603", "distrito": "Santa Isabel", "area_km2": 104.09 }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": "3",
+    "provincia": "Cartago",
+    "cantones": [
+      {
+        "codigo": "301",
+        "canton": "Cartago",
+        "distritos": [
+          { "codigo": "30101", "distrito": "Oriental", "area_km2": 2.04 },
+          { "codigo": "30102", "distrito": "Occidental", "area_km2": 2.01 },
+          { "codigo": "30103", "distrito": "Carmen", "area_km2": 4.33 },
+          { "codigo": "30104", "distrito": "San Nicolás", "area_km2": 29.23 },
+          { "codigo": "30105", "distrito": "Agua Caliente", "area_km2": 99.26 },
+          { "codigo": "30106", "distrito": "Guadalupe (Corralillo)", "area_km2": 13.16 },
+          { "codigo": "30107", "distrito": "Corralillo", "area_km2": 32.69 },
+          { "codigo": "30108", "distrito": "Tierra Blanca", "area_km2": 12.8 },
+          { "codigo": "30109", "distrito": "Dulce Nombre", "area_km2": 33.64 },
+          { "codigo": "30110", "distrito": "Llano Grande", "area_km2": 30.35 },
+          { "codigo": "30111", "distrito": "Quebradilla", "area_km2": 19.15 }
+        ]
+      },
+      {
+        "codigo": "302",
+        "canton": "Paraíso",
+        "distritos": [
+          { "codigo": "30201", "distrito": "Paraíso", "area_km2": 18.29 },
+          { "codigo": "30202", "distrito": "Santiago", "area_km2": 25.64 },
+          { "codigo": "30203", "distrito": "Orosi", "area_km2": 376.54 },
+          { "codigo": "30204", "distrito": "Cachí", "area_km2": 41.11 },
+          { "codigo": "30205", "distrito": "Llanos de Santa Lucía", "area_km2": 6.54 },
+          { "codigo": "30206", "distrito": "Birrisito", "area_km2": 8.88 }
+        ]
+      },
+      {
+        "codigo": "303",
+        "canton": "La Unión",
+        "distritos": [
+          { "codigo": "30301", "distrito": "Tres Ríos", "area_km2": 2.28 },
+          { "codigo": "30302", "distrito": "San Diego", "area_km2": 8.08 },
+          { "codigo": "30303", "distrito": "San Juan", "area_km2": 3.95 },
+          { "codigo": "30304", "distrito": "San Rafael", "area_km2": 9.51 },
+          { "codigo": "30305", "distrito": "Concepción", "area_km2": 3.79 },
+          { "codigo": "30306", "distrito": "Dulce Nombre", "area_km2": 8.26 },
+          { "codigo": "30307", "distrito": "San Ramón", "area_km2": 3.47 },
+          { "codigo": "30308", "distrito": "Río Azul", "area_km2": 4.85 }
+        ]
+      },
+      {
+        "codigo": "304",
+        "canton": "Jiménez",
+        "distritos": [
+          { "codigo": "30401", "distrito": "Juan Viñas", "area_km2": 43.37 },
+          { "codigo": "30402", "distrito": "Tucurrique", "area_km2": 33.5 },
+          { "codigo": "30403", "distrito": "Pejibaye", "area_km2": 173.2 }
+        ]
+      },
+      {
+        "codigo": "305",
+        "canton": "Turrialba",
+        "distritos": [
+          { "codigo": "30501", "distrito": "Turrialba", "area_km2": 56.63 },
+          { "codigo": "30502", "distrito": "La Suiza", "area_km2": 160.93 },
+          { "codigo": "30503", "distrito": "Peralta", "area_km2": 9.69 },
+          { "codigo": "30504", "distrito": "Santa Cruz", "area_km2": 129.57 },
+          { "codigo": "30505", "distrito": "Santa Teresita", "area_km2": 60.14 },
+          { "codigo": "30506", "distrito": "Pavones", "area_km2": 42.05 },
+          { "codigo": "30507", "distrito": "Tuis", "area_km2": 39.2 },
+          { "codigo": "30508", "distrito": "Tayutic", "area_km2": 74.77 },
+          { "codigo": "30509", "distrito": "Santa Rosa", "area_km2": 18.62 },
+          { "codigo": "30510", "distrito": "Tres Equis", "area_km2": 36.95 },
+          { "codigo": "30511", "distrito": "La Isabel", "area_km2": 19.79 },
+          { "codigo": "30512", "distrito": "Chirripó", "area_km2": 940.9 }
+        ]
+      },
+      {
+        "codigo": "306",
+        "canton": "Alvarado",
+        "distritos": [
+          { "codigo": "30601", "distrito": "Pacayas", "area_km2": 29.62 },
+          { "codigo": "30602", "distrito": "Cervantes", "area_km2": 15.18 },
+          { "codigo": "30603", "distrito": "Capellades", "area_km2": 34.39 }
+        ]
+      },
+      {
+        "codigo": "307",
+        "canton": "Oreamuno",
+        "distritos": [
+          { "codigo": "30701", "distrito": "San Rafael", "area_km2": 10.28 },
+          { "codigo": "30702", "distrito": "Cot", "area_km2": 14.86 },
+          { "codigo": "30703", "distrito": "Potrero Cerrado", "area_km2": 18.11 },
+          { "codigo": "30704", "distrito": "Cipreses", "area_km2": 9.37 },
+          { "codigo": "30705", "distrito": "Santa Rosa", "area_km2": 150.27 }
+        ]
+      },
+      {
+        "codigo": "308",
+        "canton": "El Guarco",
+        "distritos": [
+          { "codigo": "30801", "distrito": "Tejar", "area_km2": 6.12 },
+          { "codigo": "30802", "distrito": "San Isidro", "area_km2": 134.88 },
+          { "codigo": "30803", "distrito": "Tobosi", "area_km2": 20.06 },
+          { "codigo": "30804", "distrito": "Patio de Agua", "area_km2": 10.94 }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": "4",
+    "provincia": "Heredia",
+    "cantones": [
+      {
+        "codigo": "401",
+        "canton": "Heredia",
+        "distritos": [
+          { "codigo": "40101", "distrito": "Heredia", "area_km2": 2.86 },
+          { "codigo": "40102", "distrito": "Mercedes", "area_km2": 4.15 },
+          { "codigo": "40103", "distrito": "San Francisco", "area_km2": 6.56 },
+          { "codigo": "40104", "distrito": "Ulloa", "area_km2": 11.38 },
+          { "codigo": "40105", "distrito": "Varablanca", "area_km2": 258.17 }
+        ]
+      },
+      {
+        "codigo": "402",
+        "canton": "Barva",
+        "distritos": [
+          { "codigo": "40201", "distrito": "Barva", "area_km2": 0.84 },
+          { "codigo": "40202", "distrito": "San Pedro", "area_km2": 7.17 },
+          { "codigo": "40203", "distrito": "San Pablo", "area_km2": 6.83 },
+          { "codigo": "40204", "distrito": "San Roque", "area_km2": 1.28 },
+          { "codigo": "40205", "distrito": "Santa Lucía", "area_km2": 2.86 },
+          { "codigo": "40206", "distrito": "San José de la Montaña", "area_km2": 37.04 }
+        ]
+      },
+      {
+        "codigo": "403",
+        "canton": "Santo Domingo",
+        "distritos": [
+          { "codigo": "40301", "distrito": "Santo Domingo", "area_km2": 0.78 },
+          { "codigo": "40302", "distrito": "San Vicente", "area_km2": 2.88 },
+          { "codigo": "40303", "distrito": "San Miguel", "area_km2": 5.9 },
+          { "codigo": "40304", "distrito": "Paracito", "area_km2": 1.27 },
+          { "codigo": "40305", "distrito": "Santo Tomás", "area_km2": 3.54 },
+          { "codigo": "40306", "distrito": "Santa Rosa", "area_km2": 4.27 },
+          { "codigo": "40307", "distrito": "Tures", "area_km2": 3.88 },
+          { "codigo": "40308", "distrito": "Pará", "area_km2": 2.87 }
+        ]
+      },
+      {
+        "codigo": "404",
+        "canton": "Santa Bárbara",
+        "distritos": [
+          { "codigo": "40401", "distrito": "Santa Bárbara", "area_km2": 1.28 },
+          { "codigo": "40402", "distrito": "San Pedro", "area_km2": 2.56 },
+          { "codigo": "40403", "distrito": "San Juan", "area_km2": 4.48 },
+          { "codigo": "40404", "distrito": "Jesús", "area_km2": 11.15 },
+          { "codigo": "40405", "distrito": "Santo Domingo", "area_km2": 26.49 },
+          { "codigo": "40406", "distrito": "Purabá", "area_km2": 6.14 }
+        ]
+      },
+      {
+        "codigo": "405",
+        "canton": "San Rafael",
+        "distritos": [
+          { "codigo": "40501", "distrito": "San Rafael", "area_km2": 1.33 },
+          { "codigo": "40502", "distrito": "San Josecito", "area_km2": 1.35 },
+          { "codigo": "40503", "distrito": "Santiago", "area_km2": 1.57 },
+          { "codigo": "40504", "distrito": "Ángeles", "area_km2": 21.24 },
+          { "codigo": "40505", "distrito": "Concepción", "area_km2": 22.81 }
+        ]
+      },
+      {
+        "codigo": "406",
+        "canton": "San Isidro",
+        "distritos": [
+          { "codigo": "40601", "distrito": "San Isidro", "area_km2": 2.67 },
+          { "codigo": "40602", "distrito": "San José", "area_km2": 11.37 },
+          { "codigo": "40603", "distrito": "Concepción", "area_km2": 8.07 },
+          { "codigo": "40604", "distrito": "San Francisco", "area_km2": 4.56 }
+        ]
+      },
+      {
+        "codigo": "407",
+        "canton": "Belén",
+        "distritos": [
+          { "codigo": "40701", "distrito": "San Antonio", "area_km2": 3.56 },
+          { "codigo": "40702", "distrito": "La Ribera", "area_km2": 4.26 },
+          { "codigo": "40703", "distrito": "La Asunción", "area_km2": 4.57 }
+        ]
+      },
+      {
+        "codigo": "408",
+        "canton": "Flores",
+        "distritos": [
+          { "codigo": "40801", "distrito": "San Joaquín", "area_km2": 2.75 },
+          { "codigo": "40802", "distrito": "Barrantes", "area_km2": 2.14 },
+          { "codigo": "40803", "distrito": "Llorente", "area_km2": 1.86 }
+        ]
+      },
+      {
+        "codigo": "409",
+        "canton": "San Pablo",
+        "distritos": [
+          { "codigo": "40901", "distrito": "San Pablo", "area_km2": 5.93 },
+          { "codigo": "40902", "distrito": "Rincón de Sabanilla", "area_km2": 2.41 }
+        ]
+      },
+      {
+        "codigo": "410",
+        "canton": "Sarapiquí",
+        "distritos": [
+          { "codigo": "41001", "distrito": "Puerto Viejo", "area_km2": 428.52 },
+          { "codigo": "41002", "distrito": "La Virgen", "area_km2": 514.19 },
+          { "codigo": "41003", "distrito": "Horquetas", "area_km2": 564.59 },
+          { "codigo": "41004", "distrito": "Llanuras del Gaspar", "area_km2": 267.34 },
+          { "codigo": "41005", "distrito": "Cureña", "area_km2": 369.73 }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": "5",
+    "provincia": "Guanacaste",
+    "cantones": [
+      {
+        "codigo": "501",
+        "canton": "Liberia",
+        "distritos": [
+          { "codigo": "50101", "distrito": "Liberia", "area_km2": 563.02 },
+          { "codigo": "50102", "distrito": "Cañas Dulces", "area_km2": 243.41 },
+          { "codigo": "50103", "distrito": "Mayorga", "area_km2": 227.51 },
+          { "codigo": "50104", "distrito": "Nacascolo", "area_km2": 326.91 },
+          { "codigo": "50105", "distrito": "Curubandé", "area_km2": 81.32 }
+        ]
+      },
+      {
+        "codigo": "502",
+        "canton": "Nicoya",
+        "distritos": [
+          { "codigo": "50201", "distrito": "Nicoya", "area_km2": 310.66 },
+          { "codigo": "50202", "distrito": "Mansión", "area_km2": 212.15 },
+          { "codigo": "50203", "distrito": "San Antonio", "area_km2": 339.5 },
+          { "codigo": "50204", "distrito": "Quebrada Honda", "area_km2": 109.17 },
+          { "codigo": "50205", "distrito": "Sámara", "area_km2": 109.36 },
+          { "codigo": "50206", "distrito": "Nosara", "area_km2": 133.65 },
+          { "codigo": "50207", "distrito": "Belén de Nosarita", "area_km2": 123.07 }
+        ]
+      },
+      {
+        "codigo": "503",
+        "canton": "Santa Cruz",
+        "distritos": [
+          { "codigo": "50301", "distrito": "Santa Cruz", "area_km2": 288.92 },
+          { "codigo": "50302", "distrito": "Bolsón", "area_km2": 32.28 },
+          { "codigo": "50303", "distrito": "Veintisiete de Abril", "area_km2": 303.0 },
+          { "codigo": "50304", "distrito": "Tempate", "area_km2": 139.69 },
+          { "codigo": "50305", "distrito": "Cartagena", "area_km2": 72.9 },
+          { "codigo": "50306", "distrito": "Cuajiniquil", "area_km2": 218.0 },
+          { "codigo": "50307", "distrito": "Diriá", "area_km2": 66.22 },
+          { "codigo": "50308", "distrito": "Cabo Velas", "area_km2": 73.7 },
+          { "codigo": "50309", "distrito": "Tamarindo", "area_km2": 126.09 }
+        ]
+      },
+      {
+        "codigo": "504",
+        "canton": "Bagaces",
+        "distritos": [
+          { "codigo": "50401", "distrito": "Bagaces", "area_km2": 889.07 },
+          { "codigo": "50402", "distrito": "Fortuna", "area_km2": 163.47 },
+          { "codigo": "50403", "distrito": "Mogote", "area_km2": 181.77 },
+          { "codigo": "50404", "distrito": "Río Naranjo", "area_km2": 43.62 }
+        ]
+      },
+      {
+        "codigo": "505",
+        "canton": "Carrillo",
+        "distritos": [
+          { "codigo": "50501", "distrito": "Filadelfia", "area_km2": 125.24 },
+          { "codigo": "50502", "distrito": "Palmira", "area_km2": 31.46 },
+          { "codigo": "50503", "distrito": "Sardinal", "area_km2": 260.17 },
+          { "codigo": "50504", "distrito": "Belén", "area_km2": 182.14 }
+        ]
+      },
+      {
+        "codigo": "506",
+        "canton": "Cañas",
+        "distritos": [
+          { "codigo": "50601", "distrito": "Cañas", "area_km2": 193.09 },
+          { "codigo": "50602", "distrito": "Palmira", "area_km2": 204.03 },
+          { "codigo": "50603", "distrito": "San Miguel", "area_km2": 120.95 },
+          { "codigo": "50604", "distrito": "Bebedero", "area_km2": 58.06 },
+          { "codigo": "50605", "distrito": "Porozal", "area_km2": 110.91 }
+        ]
+      },
+      {
+        "codigo": "507",
+        "canton": "Abangares",
+        "distritos": [
+          { "codigo": "50701", "distrito": "Juntas", "area_km2": 228.71 },
+          { "codigo": "50702", "distrito": "Sierra", "area_km2": 112.0 },
+          { "codigo": "50703", "distrito": "San Juan", "area_km2": 107.47 },
+          { "codigo": "50704", "distrito": "Colorado", "area_km2": 197.84 }
+        ]
+      },
+      {
+        "codigo": "508",
+        "canton": "Tilarán",
+        "distritos": [
+          { "codigo": "50801", "distrito": "Tilarán", "area_km2": 144.75 },
+          { "codigo": "50802", "distrito": "Quebrada Grande", "area_km2": 34.45 },
+          { "codigo": "50803", "distrito": "Tronadora", "area_km2": 139.93 },
+          { "codigo": "50804", "distrito": "Santa Rosa", "area_km2": 71.06 },
+          { "codigo": "50805", "distrito": "Líbano", "area_km2": 72.13 },
+          { "codigo": "50806", "distrito": "Tierras Morenas", "area_km2": 83.32 },
+          { "codigo": "50807", "distrito": "Arenal", "area_km2": 72.67 },
+          { "codigo": "50808", "distrito": "Cabeceras", "area_km2": 50.93 }
+        ]
+      },
+      {
+        "codigo": "509",
+        "canton": "Nandayure",
+        "distritos": [
+          { "codigo": "50901", "distrito": "Carmona", "area_km2": 31.66 },
+          { "codigo": "50902", "distrito": "Santa Rita", "area_km2": 51.38 },
+          { "codigo": "50903", "distrito": "Zapotal", "area_km2": 105.08 },
+          { "codigo": "50904", "distrito": "San Pablo", "area_km2": 78.08 },
+          { "codigo": "50905", "distrito": "Porvenir", "area_km2": 40.15 },
+          { "codigo": "50906", "distrito": "Bejuco", "area_km2": 261.78 }
+        ]
+      },
+      {
+        "codigo": "510",
+        "canton": "La Cruz",
+        "distritos": [
+          { "codigo": "51001", "distrito": "La Cruz", "area_km2": 344.39 },
+          { "codigo": "51002", "distrito": "Santa Cecilia", "area_km2": 258.01 },
+          { "codigo": "51003", "distrito": "Garita", "area_km2": 273.39 },
+          { "codigo": "51004", "distrito": "Santa Elena", "area_km2": 509.59 }
+        ]
+      },
+      {
+        "codigo": "511",
+        "canton": "Hojancha",
+        "distritos": [
+          { "codigo": "51101", "distrito": "Hojancha", "area_km2": 70.4 },
+          { "codigo": "51102", "distrito": "Monte Romo", "area_km2": 75.27 },
+          { "codigo": "51103", "distrito": "Puerto Carrillo", "area_km2": 76.87 },
+          { "codigo": "51104", "distrito": "Huacas", "area_km2": 31.74 },
+          { "codigo": "51105", "distrito": "Matambú", "area_km2": 8.71 }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": "6",
+    "provincia": "Puntarenas",
+    "cantones": [
+      {
+        "codigo": "601",
+        "canton": "Puntarenas",
+        "distritos": [
+          { "codigo": "60101", "distrito": "Puntarenas", "area_km2": 34.03 },
+          { "codigo": "60102", "distrito": "Pitahaya", "area_km2": 109.55 },
+          { "codigo": "60103", "distrito": "Chomes", "area_km2": 118.95 },
+          { "codigo": "60104", "distrito": "Lepanto", "area_km2": 424.31 },
+          { "codigo": "60105", "distrito": "Paquera", "area_km2": 335.63 },
+          { "codigo": "60106", "distrito": "Manzanillo", "area_km2": 59.86 },
+          { "codigo": "60107", "distrito": "Guacimal", "area_km2": 114.94 },
+          { "codigo": "60108", "distrito": "Barranca", "area_km2": 36.21 },
+          { "codigo": "60110", "distrito": "Isla del Coco", "area_km2": 23.52 },
+          { "codigo": "60111", "distrito": "Cóbano", "area_km2": 319.27 },
+          { "codigo": "60112", "distrito": "Chacarita", "area_km2": 4.92 },
+          { "codigo": "60113", "distrito": "Chira", "area_km2": 42.02 },
+          { "codigo": "60114", "distrito": "Acapulco", "area_km2": 110.91 },
+          { "codigo": "60115", "distrito": "El Roble", "area_km2": 7.93 },
+          { "codigo": "60116", "distrito": "Arancibia", "area_km2": 44.86 }
+        ]
+      },
+      {
+        "codigo": "602",
+        "canton": "Esparza",
+        "distritos": [
+          { "codigo": "60201", "distrito": "Espíritu Santo", "area_km2": 18.91 },
+          { "codigo": "60202", "distrito": "San Juan Grande", "area_km2": 18.71 },
+          { "codigo": "60203", "distrito": "Macacona", "area_km2": 34.13 },
+          { "codigo": "60204", "distrito": "San Rafael", "area_km2": 34.32 },
+          { "codigo": "60205", "distrito": "San Jerónimo", "area_km2": 49.14 },
+          { "codigo": "60206", "distrito": "Caldera", "area_km2": 62.02 }
+        ]
+      },
+      {
+        "codigo": "603",
+        "canton": "Buenos Aires",
+        "distritos": [
+          { "codigo": "60301", "distrito": "Buenos Aires", "area_km2": 554.83 },
+          { "codigo": "60302", "distrito": "Volcán", "area_km2": 187.41 },
+          { "codigo": "60303", "distrito": "Potrero Grande", "area_km2": 626.7 },
+          { "codigo": "60304", "distrito": "Boruca", "area_km2": 125.79 },
+          { "codigo": "60305", "distrito": "Pilas", "area_km2": 114.34 },
+          { "codigo": "60306", "distrito": "Colinas", "area_km2": 128.8 },
+          { "codigo": "60307", "distrito": "Chánguena", "area_km2": 273.04 },
+          { "codigo": "60308", "distrito": "Biolley", "area_km2": 208.27 },
+          { "codigo": "60309", "distrito": "Brunka", "area_km2": 163.77 }
+        ]
+      },
+      {
+        "codigo": "604",
+        "canton": "Montes de Oro",
+        "distritos": [
+          { "codigo": "60401", "distrito": "Miramar", "area_km2": 110.96 },
+          { "codigo": "60402", "distrito": "Unión", "area_km2": 78.93 },
+          { "codigo": "60403", "distrito": "San Isidro", "area_km2": 57.71 }
+        ]
+      },
+      {
+        "codigo": "605",
+        "canton": "Osa",
+        "distritos": [
+          { "codigo": "60501", "distrito": "Puerto Cortés", "area_km2": 234.39 },
+          { "codigo": "60502", "distrito": "Palmar", "area_km2": 250.8 },
+          { "codigo": "60503", "distrito": "Sierpe", "area_km2": 634.18 },
+          { "codigo": "60504", "distrito": "Bahía Ballena", "area_km2": 158.33 },
+          { "codigo": "60505", "distrito": "Piedras Blancas", "area_km2": 262.58 },
+          { "codigo": "60506", "distrito": "Bahía Drake", "area_km2": 392.41 }
+        ]
+      },
+      {
+        "codigo": "606",
+        "canton": "Quepos",
+        "distritos": [
+          { "codigo": "60601", "distrito": "Quepos", "area_km2": 236.05 },
+          { "codigo": "60602", "distrito": "Savegre", "area_km2": 216.47 },
+          { "codigo": "60603", "distrito": "Naranjito", "area_km2": 105.33 }
+        ]
+      },
+      {
+        "codigo": "607",
+        "canton": "Golfito",
+        "distritos": [
+          { "codigo": "60701", "distrito": "Golfito", "area_km2": 355.9 },
+          { "codigo": "60702", "distrito": "Puerto Jiménez", "area_km2": 720.43 },
+          { "codigo": "60703", "distrito": "Guaycará", "area_km2": 323.1 },
+          { "codigo": "60704", "distrito": "Pavón", "area_km2": 353.32 }
+        ]
+      },
+      {
+        "codigo": "608",
+        "canton": "Coto Brus",
+        "distritos": [
+          { "codigo": "60801", "distrito": "San Vito", "area_km2": 74.59 },
+          { "codigo": "60802", "distrito": "Sabalito", "area_km2": 186.86 },
+          { "codigo": "60803", "distrito": "Aguabuena", "area_km2": 63.89 },
+          { "codigo": "60804", "distrito": "Limoncito", "area_km2": 123.64 },
+          { "codigo": "60805", "distrito": "Pittier", "area_km2": 257.05 },
+          { "codigo": "60806", "distrito": "Gutiérrez Braun", "area_km2": 238.19 }
+        ]
+      },
+      {
+        "codigo": "609",
+        "canton": "Parrita",
+        "distritos": [
+          { "codigo": "60901", "distrito": "Parrita", "area_km2": 483.22 }
+        ]
+      },
+      {
+        "codigo": "610",
+        "canton": "Corredores",
+        "distritos": [
+          { "codigo": "61001", "distrito": "Corredor", "area_km2": 275.67 },
+          { "codigo": "61002", "distrito": "La Cuesta", "area_km2": 37.08 },
+          { "codigo": "61003", "distrito": "Canoas", "area_km2": 122.02 },
+          { "codigo": "61004", "distrito": "Laurel", "area_km2": 188.85 }
+        ]
+      },
+      {
+        "codigo": "611",
+        "canton": "Garabito",
+        "distritos": [
+          { "codigo": "61101", "distrito": "Jacó", "area_km2": 141.37 },
+          { "codigo": "61102", "distrito": "Tárcoles", "area_km2": 93.64 },
+          { "codigo": "61103", "distrito": "Lagunillas", "area_km2": 81.0 }
+        ]
+      },
+      {
+        "codigo": "612",
+        "canton": "Monteverde",
+        "distritos": [
+          { "codigo": "61201", "distrito": "Monteverde", "area_km2": 53.47 }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": "7",
+    "provincia": "Limón",
+    "cantones": [
+      {
+        "codigo": "701",
+        "canton": "Limón",
+        "distritos": [
+          { "codigo": "70101", "distrito": "Limón", "area_km2": 59.18 },
+          { "codigo": "70102", "distrito": "Valle La Estrella", "area_km2": 1238.42 },
+          { "codigo": "70103", "distrito": "Río Blanco", "area_km2": 131.31 },
+          { "codigo": "70104", "distrito": "Matama", "area_km2": 340.47 }
+        ]
+      },
+      {
+        "codigo": "702",
+        "canton": "Pococí",
+        "distritos": [
+          { "codigo": "70201", "distrito": "Guápiles", "area_km2": 221.74 },
+          { "codigo": "70202", "distrito": "Jiménez", "area_km2": 108.23 },
+          { "codigo": "70203", "distrito": "Rita", "area_km2": 503.74 },
+          { "codigo": "70204", "distrito": "Roxana", "area_km2": 166.21 },
+          { "codigo": "70205", "distrito": "Cariari", "area_km2": 201.03 },
+          { "codigo": "70206", "distrito": "Colorado", "area_km2": 948.51 },
+          { "codigo": "70207", "distrito": "La Colonia", "area_km2": 38.79 }
+        ]
+      },
+      {
+        "codigo": "703",
+        "canton": "Siquirres",
+        "distritos": [
+          { "codigo": "70301", "distrito": "Siquirres", "area_km2": 184.21 },
+          { "codigo": "70302", "distrito": "Pacuarito", "area_km2": 220.02 },
+          { "codigo": "70303", "distrito": "Florida", "area_km2": 81.93 },
+          { "codigo": "70304", "distrito": "Germania", "area_km2": 33.96 },
+          { "codigo": "70305", "distrito": "Cairo", "area_km2": 106.96 },
+          { "codigo": "70306", "distrito": "Alegría", "area_km2": 38.05 },
+          { "codigo": "70307", "distrito": "Reventazón", "area_km2": 190.01 }
+        ]
+      },
+      {
+        "codigo": "704",
+        "canton": "Talamanca",
+        "distritos": [
+          { "codigo": "70401", "distrito": "Bratsi", "area_km2": 180.85 },
+          { "codigo": "70402", "distrito": "Sixaola", "area_km2": 169.01 },
+          { "codigo": "70403", "distrito": "Cahuita", "area_km2": 234.07 },
+          { "codigo": "70404", "distrito": "Telire", "area_km2": 2208.3 }
+        ]
+      },
+      {
+        "codigo": "705",
+        "canton": "Matina",
+        "distritos": [
+          { "codigo": "70501", "distrito": "Matina", "area_km2": 351.45 },
+          { "codigo": "70502", "distrito": "Batán", "area_km2": 213.41 },
+          { "codigo": "70503", "distrito": "Carrandí", "area_km2": 205.54 }
+        ]
+      },
+      {
+        "codigo": "706",
+        "canton": "Guácimo",
+        "distritos": [
+          { "codigo": "70601", "distrito": "Guácimo", "area_km2": 223.79 },
+          { "codigo": "70602", "distrito": "Mercedes", "area_km2": 90.06 },
+          { "codigo": "70603", "distrito": "Pocora", "area_km2": 72.88 },
+          { "codigo": "70604", "distrito": "Río Jiménez", "area_km2": 184.62 },
+          { "codigo": "70605", "distrito": "Duacarí", "area_km2": 174.94 }
+        ]
+      }
+    ]
+  }
+]
