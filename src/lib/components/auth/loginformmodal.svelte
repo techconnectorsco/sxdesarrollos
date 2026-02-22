@@ -56,8 +56,9 @@
 					Iniciar Sesión
 				</Dialog.Title>
 				<Dialog.Description class="text-sm text-gray-600 mt-1">
-					Accede a tu cuenta de SITO.cr
+					Accede a tu cuenta de SX - SoporteXperto
 				</Dialog.Description>
+
 			</div>
 
 			<!-- Contenido del Formulario -->

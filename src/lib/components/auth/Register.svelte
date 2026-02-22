@@ -57,9 +57,6 @@
 			<h1 class="text-3xl font-bold text-gray-900">
 				¡Únete a {siteConfig.title}! 🚀
 			</h1>
-			<p class="text-base text-gray-600">
-				Crea tu cuenta y encuentra tu próxima propiedad ideal
-			</p>
 		</div>
 
 		<!-- Card del formulario -->
@@ -98,37 +95,5 @@
 			</div>
 		</div>
 
-		<!-- Beneficios de registrarse -->
-		<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-			<h3 class="text-sm font-semibold text-gray-900 mb-3 text-center">
-				¿Por qué unirte a {siteConfig.title}?
-			</h3>
-			<ul class="space-y-2 text-sm text-gray-600">
-				<li class="flex items-center gap-2">
-					<svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-					</svg>
-					<span>Guarda tus propiedades favoritas</span>
-				</li>
-				<li class="flex items-center gap-2">
-					<svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-					</svg>
-					<span>Recibe alertas de nuevas propiedades</span>
-				</li>
-				<li class="flex items-center gap-2">
-					<svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-					</svg>
-					<span>Acceso a herramientas exclusivas</span>
-				</li>
-				<li class="flex items-center gap-2">
-					<svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-					</svg>
-					<span>Contacta directamente con propietarios</span>
-				</li>
-			</ul>
-		</div>
 	</div>
 </div>

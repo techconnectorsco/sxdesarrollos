@@ -54,14 +54,11 @@
 			loading="lazy"
 		/>
 
-		<!-- Badge SITO (TOP RIGHT) -->
-		<div class="absolute top-3 right-3 z-10 ">
-			<img 
-				src="/LogoSITOnuevofooterrecortado.png" 
-				alt="SITO"
-				class="w-7 h-7 object-contain"
-			/>
+		<!-- Badge SX (TOP RIGHT) -->
+		<div class="absolute top-3 right-3 z-10 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">
+			SX
 		</div>
+
 
 		<!-- Icono de categoría (TOP LEFT) -->
 		<div class="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg">
@@ -97,13 +94,10 @@
 			</div>
 		</div>
 
-		<!-- Footer con logo pequeño -->
+		<!-- Footer con badge SX -->
 		<div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-center">
-			<img 
-				src="/LogoSITOnuevorecortado.png" 
-				alt="SITO"
-				class="h-8 opacity-40 group-hover:opacity-60 transition-opacity"
-			/>
+			<span class="text-xs font-bold text-blue-600 opacity-40">SX - SoporteXperto</span>
 		</div>
+
 	</div>
 </a>

@@ -47,7 +47,8 @@
       </div>
       <div class="flex-1">
         <p class="text-sm font-medium">Admin</p>
-        <p class="text-xs text-white/70">admin@sito.com</p>
+        <p class="text-xs text-white/70">admin@soportexperto.com</p>
+
       </div>
     </div>
   </div>

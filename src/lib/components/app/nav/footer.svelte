@@ -8,27 +8,22 @@
 
 		<!-- Left: About -->
         <div class="text-center md:text-left">
-            <img src="/LogoSITOnuevofooterrecortado.png" alt="Logo SITO footer" class="h-14 mb-2 mx-auto md:mx-0">
-            <!-- <p class="text-xs max-w-sm mx-auto md:mx-0">
-                 Su fuente de confianza en el mercado inmobiliario. Encontramos la propiedad perfecta para usted
-            </p> -->
-			<p class="text-sm"><strong>SITO.cr, Publicá, explorá y analizá el mercado inmobiliario desde una sola plataforma digital</strong></p>
+            <h2 class="text-2xl font-bold text-blue-600 mb-2">SX</h2>
+			<p class="text-sm"><strong>SoporteXperto - Oficina de Transformación Digital. Automatización y RPA.</strong></p>
         </div>
 
 		<!-- Center: Quick Links -->
-        <nav class="flex flex-wrap justify-center gap-4 text-sm">
-            <a href="/acerca">Acerca de</a>
-            <a href="/contacto">Contacto</a>
-            <a href="/propiedades-venta">Propiedades</a>
-            <a href="/remates">Remates</a>
-            <a href="/terminos-y-condiciones">Términos y Condiciones</a>
+        <nav class="flex flex-wrap justify-center gap-4 text-sm font-medium text-slate-600">
+            <a href="/acerca" class="hover:text-blue-600 transition-colors">Acerca de</a>
+            <a href="/contacto" class="hover:text-blue-600 transition-colors">Contacto</a>
+            <a href="/privacidad" class="hover:text-blue-600 transition-colors">Políticas de Privacidad</a>
         </nav>
 
 		<!-- Right: Contact -->
         <div class="text-center md:text-right text-xs text-gray-400 space-y-1">
             <p>
-                <a href="mailto:info@sitocr.com " class="hover:underline">
-                    info@sitocr.com 
+                <a href="mailto:transformacion@soportexperto.com" class="hover:underline">
+                    transformacion@soportexperto.com 
                 </a>
             </p>
             <p>
@@ -74,8 +69,8 @@
 				</svg>
 			</a>
 
-			<!-- WhatsApp -->
-			<a href="https://wa.me/50686978542" target="_blank" aria-label="WhatsApp"
+			<!-- WhatsApp placeholder -->
+			<a href="#" target="_blank" aria-label="WhatsApp"
 				class="hover:text-green-400 transition-all hover:scale-110">
 				<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor"
 					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

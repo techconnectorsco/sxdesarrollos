@@ -25,7 +25,7 @@ export const authGuard: Handle = async ({ event, resolve }) => {
 			.from('perfiles')
 			.select('es_admin')
 			.eq('id', user!.id)
-			.single();
+			.maybeSingle();
 
 		if (!perfil?.es_admin) {
 			throw redirect(303, '/');
@@ -43,7 +43,7 @@ export const authGuard: Handle = async ({ event, resolve }) => {
 			.from('perfiles')
 			.select('es_admin')
 			.eq('id', user!.id)
-			.single();
+			.maybeSingle();
 
 		if (!perfil?.es_admin) {
 			throw error(403, 'Acceso denegado');

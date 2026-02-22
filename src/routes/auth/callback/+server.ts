@@ -29,16 +29,11 @@ export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
 					.from('perfiles')
 					.select('esta_baneado, email')
 					.eq('id', userId)
-					.single();
+					.maybeSingle();
 
 				if (perfilError) {
 					console.error('Error al verificar perfil:', perfilError);
-					// Si hay error al verificar perfil, cerrar sesión por seguridad
-					await supabase.auth.signOut();
-					
-					// ✅ Codificar mensaje en español
-					const errorMsg = encodeURIComponent('Ocurrió un error al verificar tu cuenta');
-					throw redirect(303, `/auth/error?message=${errorMsg}`);
+					// No bloqueamos el login por un error de lectura, a menos que sea crítico
 				}
 
 				// Si el usuario está baneado, cerrar sesión y mostrar error

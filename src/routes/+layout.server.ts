@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession, supabas
             .from('perfiles')
             .select('url_imagen')
             .eq('id', user.id)
-            .single();
+            .maybeSingle();
         perfilNav = data ?? null;
     }
     

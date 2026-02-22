@@ -31,25 +31,28 @@ import User from "@lucide/svelte/icons/user";
  * @property {string} footer.rights - Copyright notice for the footer.
  */
 export const siteConfig = {
-	title: 'SITO.cr',
-	description: 'Your trusted source for the real estate market.',
-	logo: '/LogoSITOnuevorecortado.png',
-	logoDark: '/sito3.png',
-	favicon: '/favicon.png',
+	title: 'SX - SoporteXperto',
+	description: 'Oficina de Transformación Digital - RPA y Automatización.',
+	logo: '/logoSX.jpg',
+	logoDark: '/logoSX.jpg',
+	favicon: '/logoSX.jpg',
+
+
 	contact: {
-		email: 'info@sito.com',
-		phone: '+506 8697 8542'
+		email: 'transformacion@soportexperto.com',
+		phone: '+506 0000 0000'
 	},
 	links: {
-		about: '/acercat',
+		about: '/acerca',
 		contact: '/contacto',
 		properties: '/propiedades',
 		foreclosures: '/remates'
 	},
 	footer: {
-		rights: '© 2025 SITO.cr All rights reserved.'
+		rights: '© 2026 SX - SoporteXperto. Todos los derechos reservados.'
 	}
 };
+
 
 /**
  * Main navigation array for the application.
