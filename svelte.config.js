@@ -8,9 +8,8 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		// Configuración del adapter de Vercel con maxDuration extendido
 		adapter: adapter({
-			maxDuration: 600 // Duración máxima en segundos (10 minutos)
+			maxDuration: 60 // Hobby plan: max 300s
 		})
 	}
 };
