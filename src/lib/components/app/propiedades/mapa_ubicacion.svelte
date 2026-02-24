@@ -2,7 +2,8 @@
 	import { onMount } from 'svelte';
 	import mapboxgl from 'mapbox-gl';
 	import { obtenerCodigoCatastral, obtenerCentroDistrito } from '$lib/utils/ubicaciones';
-	import { getTilesetsByDistrito } from '$lib/data/mapbox_tilesets';
+	// import { getTilesetsByDistrito } from '$lib/data/mapbox_tilesets'; // archivo pendiente
+	const getTilesetsByDistrito = (_codigo: string): any[] => []; // stub temporal
 	
 	// ✅ Svelte 5: Props con $props()
 	let { provincia, canton, distrito, finca_id }: { 

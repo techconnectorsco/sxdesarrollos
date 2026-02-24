@@ -1,4 +1,5 @@
-import ubicacionesData from '$lib/data/costa_rica_ubicaciones.json';
+// import ubicacionesData from '$lib/data/costa_rica_ubicaciones.json'; // archivo pendiente
+const ubicacionesData: any[] = []; // stub temporal hasta tener el JSON
 
 /**
  * Obtiene el código catastral completo a partir de nombres de provincia, cantón y distrito
