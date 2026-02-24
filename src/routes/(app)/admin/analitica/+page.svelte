@@ -1,12 +1,12 @@
 <script>
-	import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte';
+	// import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte';
 	
 	// 🔥 URL de tu proyecto en Vercel
 	const VERCEL_PROJECT_URL = 'https://vercel.com/sito-dev-team/sito-sveltekit';
 </script>
 
 <div class="min-h-screen bg-gray-50">
-	<SidebarAdmin />
+	<!-- <SidebarAdmin /> -->
 	
 	<main class="pl-80 pr-8 py-8">
 		<!-- Header -->

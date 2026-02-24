@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte';
-	import VideoModal from '$lib/components/app/admin/VideoModal.svelte';
-	import VideoTable from '$lib/components/app/admin/VideoTable.svelte';
+	// import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte'; // componente pendiente
+	// import VideoModal from '$lib/components/app/admin/VideoModal.svelte'; // componente pendiente
+	// import VideoTable from '$lib/components/app/admin/VideoTable.svelte'; // componente pendiente
 
 	let showModal = $state(false);
 	let selectedVideo = $state<any>(null);
@@ -134,7 +134,7 @@
 </script>
 
 <div class="min-h-screen bg-gray-50">
-	<SidebarAdmin />
+	<!-- <SidebarAdmin /> -->
 
 	<!-- Main Content - Con margen para el sidebar flotante -->
 	<main class="pl-80 pr-8 py-8">
@@ -176,20 +176,11 @@
 					</div>
 				</div>
 			{:else}
-				<VideoTable
-					{videos}
-					onEdit={handleEdit}
-					onToggleVisible={handleToggleVisible}
-					onDelete={handleDelete}
-				/>
+				<!-- <VideoTable ... /> -->
+			<div class="p-8 text-center text-gray-500">Tabla de videos (componente pendiente)</div>
 			{/if}
 		</div>
 	</main>
 </div>
 
-<!-- Modal -->
-<VideoModal
-	bind:showModal
-	video={selectedVideo}
-	onSave={handleSave}
-/>
+<!-- VideoModal: componente pendiente -->

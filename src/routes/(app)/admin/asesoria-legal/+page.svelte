@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte';
-	import AbogadoModal from '$lib/components/app/admin/AbogadoModal.svelte';
-	import AbogadoTable from '$lib/components/app/admin/AbogadoTable.svelte';
+	// import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte'; // componente pendiente
+	// import AbogadoModal from '$lib/components/app/admin/AbogadoModal.svelte'; // componente pendiente
+	// import AbogadoTable from '$lib/components/app/admin/AbogadoTable.svelte'; // componente pendiente
 
 	let { data } = $props();
 	
@@ -117,7 +117,7 @@
 </script>
 
 <div class="min-h-screen bg-gray-50">
-	<SidebarAdmin />
+	<!-- <SidebarAdmin /> -->
 
 	<!-- Main Content - Con margen para el sidebar flotante -->
 	<main class="pl-80 pr-8 py-8">
@@ -159,20 +159,11 @@
 					</div>
 				</div>
 			{:else}
-				<AbogadoTable
-					{abogados}
-					onEdit={handleEdit}
-					onToggleActive={handleToggleActive}
-				/>
+				<!-- <AbogadoTable {abogados} onEdit={handleEdit} onToggleActive={handleToggleActive} /> -->
+				<div class="p-8 text-center text-gray-500">Tabla de abogados (componente pendiente)</div>
 			{/if}
 		</div>
 	</main>
 </div>
 
-<!-- Modal -->
-<AbogadoModal
-	bind:showModal
-	abogado={selectedAbogado}
-	onSave={handleSave}
-	supabase={data.supabase}
-/>
+<!-- AbogadoModal: componente pendiente -->

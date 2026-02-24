@@ -1,6 +1,6 @@
 <script>
-	import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte';
-	import HistorialBoletines from '$lib/components/app/admin/HistorialBoletines.svelte';
+	// import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte'; // componente pendiente
+	// import HistorialBoletines from '$lib/components/app/admin/HistorialBoletines.svelte'; // componente pendiente
 	
 	let { data } = $props();
 
@@ -245,7 +245,7 @@ else if (eventData.type === 'error_remate') {
 </script>
 
 <div class="min-h-screen bg-gray-50">
-	<SidebarAdmin />
+	<!-- <SidebarAdmin /> -->
 
 	<!-- Main Content -->
 	<main class="pl-80 pr-8 py-8">
@@ -257,10 +257,7 @@ else if (eventData.type === 'error_remate') {
 			</p>
 		</div>
 
-		<!-- HISTORIAL DE PROCESAMIENTOS -->
-		<div class="mb-6">
-			<HistorialBoletines bind:this={historialRef} />
-		</div>
+		<!-- HISTORIAL DE PROCESAMIENTOS: HistorialBoletines pendiente -->
 
 		<!-- Upload Section -->
 		<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">

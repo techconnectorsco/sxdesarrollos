@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte';
+	// import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte'; // componente pendiente
 	import { onMount } from 'svelte';
 	
 	let usuarios = $state([]);
@@ -184,7 +184,7 @@
 </script>
 
 <div class="min-h-screen bg-gray-50">
-	<SidebarAdmin />
+	<!-- <SidebarAdmin /> -->
 
 	<main class="pl-80 pr-8 py-8">
 		<!-- Header -->

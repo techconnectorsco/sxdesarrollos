@@ -1,5 +1,5 @@
 <script lang="ts">
-    import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte';
+    // import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte'; // componente pendiente
     import { onMount } from 'svelte';
     import { 
         Bot, Activity, BookOpen, RefreshCw,
@@ -81,7 +81,7 @@
 </script>
 
 <div class="min-h-screen bg-gray-50 font-sans">
-    <SidebarAdmin />
+    <!-- <SidebarAdmin /> -->
 
     <main class="pl-80 pr-8 py-8">
         <div class="flex justify-between items-center mb-8">
