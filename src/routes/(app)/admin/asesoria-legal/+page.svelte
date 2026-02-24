@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	// import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte'; // componente pendiente
 	// import AbogadoModal from '$lib/components/app/admin/AbogadoModal.svelte'; // componente pendiente
-	// import AbogadoTable from '$lib/components/app/admin/AbogadoTable.svelte'; // componente pendiente
+	// import AbogadoTable from '$lib/components/app/admin/AbogadoTable.svelte'; // componente pendiente  
 
 	let { data } = $props();
 	
