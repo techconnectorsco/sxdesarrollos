@@ -70,7 +70,7 @@
 			</a>
 
 			<!-- WhatsApp placeholder -->
-			<a href="#" target="_blank" aria-label="WhatsApp"
+			<a href="https://wa.me/" target="_blank" aria-label="WhatsApp"
 				class="hover:text-green-400 transition-all hover:scale-110">
 				<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor"
 					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
