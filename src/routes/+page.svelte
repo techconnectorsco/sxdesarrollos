@@ -30,9 +30,10 @@
 						<button class="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all duration-300">
 							Explorar Soluciones
 						</button>
-						<button class="px-8 py-4 bg-white text-slate-700 border border-slate-200 font-bold rounded-xl hover:bg-slate-50 transition-all duration-300">
+						<a href="/dashboard" class="px-8 py-4 bg-white text-slate-700 border border-slate-200 font-bold rounded-xl hover:bg-slate-50 transition-all duration-300 text-center inline-block">
 							Ver Dashboard
-						</button>
+						</a>
+
 					</div>
 				</div>
                 
