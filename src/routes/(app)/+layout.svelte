@@ -12,7 +12,7 @@
 
 	<!-- Main Content Area -->
 	<div class="flex-1 flex flex-col transition-all duration-300 ml-0 lg:ml-64" id="main-canvas">
-		<MainNav session={data.session} user={data.user} supabase={data.supabase} />
+		<MainNav session={data.session} user={data.user} perfil={data.perfilNav} />
 		
 		<main id="content" class="pt-20 px-4 sm:px-8 pb-12 w-full max-w-7xl mx-auto">
 			<div class="py-4">

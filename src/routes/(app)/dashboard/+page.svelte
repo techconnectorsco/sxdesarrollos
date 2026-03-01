@@ -5,7 +5,11 @@
 	import ExecutionCard from '$lib/components/app/robots/ExecutionCard.svelte';
 	import { apiService } from '$lib/services/api.service';
 	import type { Ejecucion, Automatizacion } from '$lib/types/database';
-	import { CheckCircle2, AlertCircle, XCircle, Clock, Activity } from 'lucide-svelte';
+	import CheckCircle2 from '@lucide/svelte/icons/check-circle-2';
+	import AlertCircle from '@lucide/svelte/icons/alert-circle';
+	import XCircle from '@lucide/svelte/icons/x-circle';
+	import Clock from '@lucide/svelte/icons/clock';
+	import Activity from '@lucide/svelte/icons/activity';
 
 	let { data }: { data: PageData } = $props();
 

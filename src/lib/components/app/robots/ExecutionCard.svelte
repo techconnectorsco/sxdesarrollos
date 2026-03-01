@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { Ejecucion } from '$lib/types/database';
-	import { CheckCircle2, AlertCircle, XCircle, Clock, FileText } from 'lucide-svelte';
+	import CheckCircle2 from '@lucide/svelte/icons/check-circle-2';
+	import AlertCircle from '@lucide/svelte/icons/alert-circle';
+	import XCircle from '@lucide/svelte/icons/x-circle';
+	import FileText from '@lucide/svelte/icons/file-text';
 
 	let { ejecucion }: { ejecucion: Ejecucion } = $props();
 
@@ -22,7 +25,7 @@
 		}
 	};
 
-	const config = estadoConfig[ejecucion.estado];
+	const config = estadoConfig[ejecucion.estado] ?? estadoConfig['Exitoso'];
 	const Icon = config.icon;
 	const fecha = new Date(ejecucion.fecha_inicio);
 	const hora = fecha.toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit' });

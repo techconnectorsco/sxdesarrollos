@@ -1,6 +1,10 @@
 <script lang="ts">
 	import type { Automatizacion } from '$lib/types/database';
-	import { CheckCircle2, AlertCircle, XCircle, Clock, FileText } from 'lucide-svelte';
+	import CheckCircle2 from '@lucide/svelte/icons/check-circle-2';
+	import AlertCircle from '@lucide/svelte/icons/alert-circle';
+	import XCircle from '@lucide/svelte/icons/x-circle';
+	import Clock from '@lucide/svelte/icons/clock';
+	import FileText from '@lucide/svelte/icons/file-text';
 
 	let { automatizacion }: { automatizacion: Automatizacion } = $props();
 
@@ -19,7 +23,7 @@
 	};
 
 	const estado = automatizacion.ultima_ejecucion?.estado || 'SinEjecucion';
-	const Icon = estadoIcon[estado];
+	const Icon = estadoIcon[estado as keyof typeof estadoIcon] ?? Clock;
 	const fechaUltimaEjecucion = automatizacion.ultima_ejecucion
 		? new Date(automatizacion.ultima_ejecucion.fecha_inicio).toLocaleString('es-CR', {
 				day: '2-digit',

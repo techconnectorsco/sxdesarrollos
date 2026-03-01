@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(head -100 \"d:/Users/Usuario/Desktop/SX-Desarrollos/src/routes/\\(app\\)/admin/usuarios/+page.svelte\")",
+      "Bash(head -100 \"d:/Users/Usuario/Desktop/SX-Desarrollos/src/routes/\\(app\\)/clientes/+page.svelte\")",
+      "Bash(head -200 \"d:/Users/Usuario/Desktop/SX-Desarrollos/src/routes/\\(app\\)/clientes/+page.svelte\")"
+    ]
+  }
+}

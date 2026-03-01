@@ -1,18 +1,20 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { createServices } from '$lib/services';
+import { supabaseAdmin, getUserPerfil } from '$lib/server/supabase-admin';
 
 export const GET: RequestHandler = async ({ locals, url }) => {
-	const { supabase, safeGetSession } = locals;
+	const { safeGetSession } = locals;
 	const { session, user } = await safeGetSession();
 
 	if (!session || !user) {
 		throw error(401, 'No autenticado');
 	}
 
-	const services = createServices(supabase);
+	const perfil = await getUserPerfil(user.id);
+	const services = createServices(supabaseAdmin);
 	const clienteId = user.user_metadata?.cliente_id || null;
-	const esAdmin = user.user_metadata?.es_admin === true || user.email?.includes('admin');
+	const esAdmin = perfil?.es_admin === true || user.user_metadata?.es_admin === true || user.email?.includes('admin');
 	const limit = parseInt(url.searchParams.get('limit') || '20');
 	const automatizacionId = url.searchParams.get('automatizacion_id');
 
@@ -38,14 +40,14 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 };
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-	const { supabase, safeGetSession } = locals;
+	const { safeGetSession } = locals;
 	const { session, user } = await safeGetSession();
 
 	if (!session || !user) {
 		throw error(401, 'No autenticado');
 	}
 
-	const services = createServices(supabase);
+	const services = createServices(supabaseAdmin);
 	const body = await request.json();
 
 	try {
