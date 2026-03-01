@@ -3,27 +3,20 @@
 	import { onMount } from 'svelte';
 	import RobotCard from '$lib/components/app/robots/RobotCard.svelte';
 	import ExecutionCard from '$lib/components/app/robots/ExecutionCard.svelte';
-	import { createServices } from '$lib/services';
+	import { apiService } from '$lib/services/api.service';
 	import type { Ejecucion, Automatizacion } from '$lib/types/database';
 	import { CheckCircle2, AlertCircle, XCircle, Clock, Activity } from 'lucide-svelte';
 
 	let { data }: { data: PageData } = $props();
 
-	let {
-		automatizaciones = [],
-		ejecuciones = [],
-		estadisticas,
-		proyectos = [],
-		clienteId,
-		esAdmin
-	} = $derived(data);
+	let { clienteId, esAdmin } = $derived(data);
 
-	let supabase = $derived(data.supabase);
-	let services = $derived(supabase ? createServices(supabase) : null);
-
-	// Variables reactivas para actualizaciones en tiempo real
-	let automatizacionesReactive = $state([...automatizaciones]);
-	let ejecucionesReactive = $state([...ejecuciones]);
+	// Variables reactivas para datos
+	let automatizacionesReactive = $state<Automatizacion[]>([]);
+	let ejecucionesReactive = $state<Ejecucion[]>([]);
+	let estadisticas = $state<any>(null);
+	let loading = $state(true);
+	let error = $state<string | null>(null);
 
 	// Calcular KPIs desde datos reales
 	let botsActivos = $derived(automatizacionesReactive.filter((a) => a.esta_activa).length);
@@ -113,29 +106,63 @@
 		});
 	});
 
-	// Suscripción a Realtime para actualizaciones en vivo
+	// Cargar datos iniciales
+	async function loadData() {
+		loading = true;
+		error = null;
+		try {
+			// Cargar en paralelo
+			const [automatizacionesData, ejecucionesData, estadisticasData] = await Promise.all([
+				apiService.getAutomatizaciones(clienteId || undefined),
+				apiService.getEjecuciones({ limit: 20 }),
+				clienteId ? apiService.getEstadisticas(clienteId) : Promise.resolve(null)
+			]);
+
+			automatizacionesReactive = automatizacionesData;
+			ejecucionesReactive = ejecucionesData;
+			estadisticas = estadisticasData;
+		} catch (err) {
+			console.error('Error cargando datos:', err);
+			error = err instanceof Error ? err.message : 'Error al cargar datos';
+		} finally {
+			loading = false;
+		}
+	}
+
+	// Cargar datos al montar el componente
 	onMount(() => {
-		if (!services) return;
+		loadData();
 
-		const subscription = services.automatizaciones.subscribeEjecuciones(clienteId, (ejecucion) => {
-			// Actualizar la lista de ejecuciones
-			ejecucionesReactive = [ejecucion, ...ejecucionesReactive].slice(0, 20);
-
-			// Actualizar la última ejecución de la automatización correspondiente
-			automatizacionesReactive = automatizacionesReactive.map((auto) => {
-				if (auto.id === ejecucion.automatizacion_id) {
-					return { ...auto, ultima_ejecucion: ejecucion };
-				}
-				return auto;
-			});
-		});
+		// Opcional: Recargar cada 30 segundos para mantener datos actualizados
+		const interval = setInterval(() => {
+			loadData();
+		}, 30000);
 
 		return () => {
-			subscription.unsubscribe();
+			clearInterval(interval);
 		};
 	});
 </script>
 
+{#if loading}
+	<div class="flex items-center justify-center h-96">
+		<div class="text-center">
+			<div class="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+			<p class="text-muted-foreground">Cargando dashboard...</p>
+		</div>
+	</div>
+{:else if error}
+	<div class="bg-destructive/10 border border-destructive rounded-xl p-6 text-center">
+		<p class="text-destructive font-semibold mb-2">Error al cargar datos</p>
+		<p class="text-sm text-muted-foreground mb-4">{error}</p>
+		<button
+			onclick={loadData}
+			class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+		>
+			Reintentar
+		</button>
+	</div>
+{:else}
 <div class="space-y-6 animate-fade-in">
 	<!-- Encabezado -->
 	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -420,6 +447,7 @@
 		</div>
 	</div>
 </div>
+{/if}
 
 <style>
 	@keyframes fade-in {
