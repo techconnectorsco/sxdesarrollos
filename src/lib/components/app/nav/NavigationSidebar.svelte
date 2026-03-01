@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { 
-		LayoutDashboard, 
-		Users, 
-		Cpu, 
-		FileText, 
-		Settings, 
+		LayoutDashboard,
+		Users,
+		Cpu,
+		FileText,
+		Settings,
 		ChevronLeft,
 		ChevronRight,
 		LogOut,
-		ExternalLink
+		ExternalLink,
+		Globe
 	} from 'lucide-svelte';
 	import { siteConfig } from '$lib/config/site';
 
@@ -17,6 +18,7 @@
 
 	const navItems = [
 		{ label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+		{ label: 'Aplicaciones', icon: Globe, href: '/apps' },
 		{ label: 'Clientes', icon: Users, href: '/clientes' },
 		{ label: 'Centro de Control', icon: Cpu, href: '/bots' },
 		{ label: 'Bitácora', icon: FileText, href: '/logs' },
