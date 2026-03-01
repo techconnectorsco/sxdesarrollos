@@ -50,9 +50,9 @@
 	<!-- Encabezado (solo si hay título) -->
 	{#if title}
 		<div class="flex flex-col space-y-2 text-center">
-			<h1 class="text-2xl font-bold text-gray-900">{title}</h1>
+			<h1 class="text-2xl font-bold text-foreground">{title}</h1>
 			{#if description}
-				<p class="text-sm text-gray-600">{description}</p>
+				<p class="text-sm text-muted-foreground">{description}</p>
 			{/if}
 		</div>
 	{/if}
@@ -69,20 +69,20 @@
 			<Form.Field {form} name="email">
 				<Form.Control>
 					{#snippet children({ props }: { props: any })}
-						<Form.Label class="text-sm font-medium text-gray-700">
+						<Form.Label class="text-sm font-medium text-foreground">
 							Correo electrónico
 						</Form.Label>
 						<Input
 							{...props}
 							type="email"
 							placeholder="correo@ejemplo.com"
-							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+							class="w-full px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
 							disabled={submitting}
 							bind:value={$formData.email}
 						/>
 					{/snippet}
 				</Form.Control>
-				<Form.FieldErrors class="text-xs text-red-600 mt-1" />
+				<Form.FieldErrors class="text-xs text-destructive mt-1" />
 			</Form.Field>
 		</div>
 
@@ -92,7 +92,7 @@
 				<Form.Control>
 					{#snippet children({ props }: { props: any })}
 						<div class="flex justify-between items-center">
-							<Form.Label class="text-sm font-medium text-gray-700">
+							<Form.Label class="text-sm font-medium text-foreground">
 								Contraseña
 							</Form.Label>
 							{#if showForgotPassword}
@@ -108,14 +108,14 @@
 							{...props}
 							type="password"
 							placeholder="••••••••"
-							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+							class="w-full px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
 							disabled={submitting}
 							bind:value={$formData.password}
 							{showPasswordToggle}
 						/>
 					{/snippet}
 				</Form.Control>
-				<Form.FieldErrors class="text-xs text-red-600 mt-1" />
+				<Form.FieldErrors class="text-xs text-destructive mt-1" />
 			</Form.Field>
 		</div>
 
@@ -138,10 +138,10 @@
 		<!-- Divisor -->
 		<div class="relative my-6">
 			<div class="absolute inset-0 flex items-center">
-				<span class="w-full border-t border-gray-200"></span>
+				<span class="w-full border-t border-border"></span>
 			</div>
 			<div class="relative flex justify-center text-xs">
-				<span class="bg-white px-3 text-gray-500 font-medium">O continúa con</span>
+				<span class="bg-card px-3 text-muted-foreground font-medium">O continúa con</span>
 			</div>
 		</div>
 
@@ -153,7 +153,7 @@
 
 	<!-- Footer -->
 	{#if footerText && footerLinkText}
-		<div class="text-center text-sm text-gray-600">
+		<div class="text-center text-sm text-muted-foreground">
 			{footerText}
 			<a 
 				href={footerLinkHref} 

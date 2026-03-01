@@ -71,17 +71,17 @@
 
 <div class="w-full">
   {#if localFavoritos.length === 0}
-    <div class="rounded-lg border border-gray-200 p-12 text-center bg-gray-50">
-      <Heart class="mx-auto mb-4 h-12 w-12 text-gray-300" />
-      <h3 class="mb-2 text-lg font-semibold text-gray-700">No tienes favoritos aún</h3>
-      <p class="text-gray-500">Explora propiedades y agrega tus preferidas a favoritos</p>
+    <div class="rounded-lg border border-border p-12 text-center bg-muted">
+      <Heart class="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+      <h3 class="mb-2 text-lg font-semibold text-foreground">No tienes favoritos aún</h3>
+      <p class="text-muted-foreground">Explora propiedades y agrega tus preferidas a favoritos</p>
     </div>
   {:else}
     <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {#each localFavoritos as favorito (favorito.id)}
-        <div class="rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow bg-white">
+        <div class="rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow bg-card">
           <!-- Imagen -->
-          <div class="relative h-48 bg-gray-100 overflow-hidden group cursor-pointer" onclick={() => irAPropiedad(favorito.anuncio.id)}>
+          <div class="relative h-48 bg-muted overflow-hidden group cursor-pointer" onclick={() => irAPropiedad(favorito.anuncio.id)}>
             {#if getImageUrl(favorito.anuncio)}
               <img 
                 src={getImageUrl(favorito.anuncio)} 
@@ -89,8 +89,8 @@
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
             {:else}
-              <div class="w-full h-full flex items-center justify-center bg-gray-200">
-                <span class="text-gray-400">Sin imagen</span>
+              <div class="w-full h-full flex items-center justify-center bg-muted/50">
+                <span class="text-muted-foreground">Sin imagen</span>
               </div>
             {/if}
             
@@ -107,7 +107,7 @@
                 e.stopPropagation();
                 eliminarFavorito(favorito.id, favorito.anuncio.id);
               }}
-              class="absolute top-3 right-3 p-2 rounded-full bg-white hover:bg-red-50 transition-colors shadow-md hover:shadow-lg"
+              class="absolute top-3 right-3 p-2 rounded-full bg-card hover:bg-destructive/10 transition-colors shadow-md hover:shadow-lg"
               title="Eliminar de favoritos"
             >
               <Heart class="h-5 w-5 text-red-500 fill-current" />
@@ -118,7 +118,7 @@
           <div class="p-4">
             <!-- Título -->
             <h3 
-              class="font-semibold text-gray-900 mb-2 line-clamp-2 cursor-pointer hover:text-blue-600"
+              class="font-semibold text-foreground mb-2 line-clamp-2 cursor-pointer hover:text-primary"
               onclick={() => irAPropiedad(favorito.anuncio.id)}
             >
               {favorito.anuncio.titulo}
@@ -126,13 +126,13 @@
 
             <!-- Ubicación -->
             {#if favorito.anuncio.propiedades_datos?.provincia || favorito.anuncio.propiedades_datos?.canton}
-              <p class="text-sm text-gray-600 mb-3">
+              <p class="text-sm text-muted-foreground mb-3">
                 📍 {favorito.anuncio.propiedades_datos?.distrito || ''}{favorito.anuncio.propiedades_datos?.distrito && favorito.anuncio.propiedades_datos?.canton ? ', ' : ''}{favorito.anuncio.propiedades_datos?.canton || ''}{favorito.anuncio.propiedades_datos?.canton && favorito.anuncio.propiedades_datos?.provincia ? ', ' : ''}{favorito.anuncio.propiedades_datos?.provincia || ''}
               </p>
             {/if}
 
             <!-- Características -->
-            <div class="flex gap-3 text-xs text-gray-600 mb-4 border-t border-b border-gray-100 py-3">
+            <div class="flex gap-3 text-xs text-muted-foreground mb-4 border-t border-b border-border py-3">
               {#if favorito.anuncio.propiedades_datos?.dormitorios}
                 <span class="flex items-center gap-1">
                   🛏️ {favorito.anuncio.propiedades_datos.dormitorios}
@@ -151,7 +151,7 @@
             </div>
 
             <!-- Precio -->
-            <div class="text-2xl font-bold text-gray-900 mb-4">
+            <div class="text-2xl font-bold text-foreground mb-4">
               {#if favorito.anuncio.moneda === 'USD'}
                 ${favorito.anuncio.precio.toLocaleString('en-US')}
               {:else}

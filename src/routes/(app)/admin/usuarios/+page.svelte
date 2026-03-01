@@ -183,21 +183,21 @@
 	}
 </script>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-background">
 	<!-- <SidebarAdmin /> -->
 
 	<main class="pl-80 pr-8 py-8">
 		<!-- Header -->
 		<div class="mb-8">
-			<h1 class="text-3xl font-bold text-gray-800 mb-2">Gestión de Usuarios</h1>
-			<p class="text-gray-600">Administra usuarios, permisos y estados de cuenta</p>
+			<h1 class="text-3xl font-bold text-foreground mb-2">Gestión de Usuarios</h1>
+			<p class="text-muted-foreground">Administra usuarios, permisos y estados de cuenta</p>
 		</div>
 
 		<!-- Stats -->
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-			<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-				<p class="text-sm text-gray-600 mb-1">Total Usuarios</p>
-				<p class="text-3xl font-bold text-gray-800">{stats.total}</p>
+			<div class="bg-card rounded-xl shadow-sm border border-border p-5">
+				<p class="text-sm text-muted-foreground mb-1">Total Usuarios</p>
+				<p class="text-3xl font-bold text-foreground">{stats.total}</p>
 			</div>
 			<div class="bg-blue-50 rounded-xl shadow-sm border border-blue-100 p-5">
 				<p class="text-sm text-blue-700 mb-1">👑 Administradores</p>
@@ -214,15 +214,15 @@
 		</div>
 
 		<!-- Filtros -->
-		<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+		<div class="bg-card rounded-xl shadow-sm border border-border p-6 mb-6">
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 				<input
 					type="text"
 					bind:value={busqueda}
 					placeholder="🔍 Buscar por nombre o email..."
-					class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+					class="px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring"
 				/>
-				<select bind:value={filtroAdmin} class="px-4 py-2 border border-gray-300 rounded-lg">
+				<select bind:value={filtroAdmin} class="px-4 py-2 border border-input rounded-lg bg-background text-foreground">
 					<option value="todos">Todos los roles</option>
 					<option value="admin">Solo admins</option>
 					<option value="usuario">Solo usuarios</option>
@@ -237,24 +237,24 @@
 
 		<!-- Lista de Usuarios -->
 		{#if loading}
-			<div class="bg-white rounded-xl p-12 text-center">
-				<div class="animate-spin h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-				<p class="text-gray-600">Cargando usuarios...</p>
+			<div class="bg-card rounded-xl p-12 text-center">
+				<div class="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+				<p class="text-muted-foreground">Cargando usuarios...</p>
 			</div>
 		{:else if error}
 			<div class="bg-red-50 border border-red-200 rounded-xl p-6">
 				<p class="text-red-800">❌ {error}</p>
 			</div>
 		{:else if usuarios.length === 0}
-			<div class="bg-white rounded-xl p-12 text-center">
-				<p class="text-gray-600">No se encontraron usuarios</p>
+			<div class="bg-card rounded-xl p-12 text-center">
+				<p class="text-muted-foreground">No se encontraron usuarios</p>
 			</div>
 		{:else}
-			<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+			<div class="bg-card rounded-xl shadow-sm border border-border overflow-hidden mb-6">
 				{#each usuarios as usuario}
-					<div class="border-b border-gray-100 last:border-b-0">
+					<div class="border-b border-border last:border-b-0">
 						<!-- Fila principal del usuario -->
-						<div class="p-6 hover:bg-gray-50 transition-colors">
+						<div class="p-6 hover:bg-muted transition-colors">
 							<div class="flex items-center justify-between gap-4">
 								<div class="flex items-center gap-4 flex-1">
 									<!-- Avatar -->
@@ -285,8 +285,8 @@
 												</span>
 											{/if}
 										</div>
-										<p class="text-sm text-gray-600 truncate">{usuario.email}</p>
-										<div class="flex gap-4 mt-2 text-xs text-gray-500 flex-wrap">
+										<p class="text-sm text-muted-foreground truncate">{usuario.email}</p>
+										<div class="flex gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
 											<span>📝 {usuario.total_anuncios} anuncios</span>
 											<span>✅ {usuario.anuncios_activos} activos</span>
 											<span>⏳ {usuario.anuncios_pendientes} pendientes</span>
@@ -301,7 +301,7 @@
 									{#if usuario.total_anuncios > 0}
 										<button
 											onclick={() => toggleUsuario(usuario.id)}
-											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-blue-600 text-blue-600 bg-white hover:bg-blue-600 hover:text-white transition-colors whitespace-nowrap"
+											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-blue-600 text-blue-600 bg-card hover:bg-blue-600 hover:text-white transition-colors whitespace-nowrap"
 										>
 											{usuarioExpandido === usuario.id ? '▲ Ocultar' : '▼ Ver'} Anuncios ({usuario.total_anuncios})
 										</button>
@@ -344,18 +344,18 @@
 						
 						<!-- Anuncios expandidos -->
 						{#if usuarioExpandido === usuario.id}
-							<div class="px-6 pb-6 bg-gray-50">
+							<div class="px-6 pb-6 bg-muted">
 								{#if loadingAnuncios}
-									<p class="text-center text-gray-600 py-4">Cargando anuncios...</p>
+									<p class="text-center text-muted-foreground py-4">Cargando anuncios...</p>
 								{:else if anunciosUsuario.length === 0}
-									<p class="text-center text-gray-600 py-4">No hay anuncios</p>
+									<p class="text-center text-muted-foreground py-4">No hay anuncios</p>
 								{:else}
 									<div class="space-y-2">
 										{#each anunciosUsuario as anuncio}
-											<div class="bg-white rounded-lg p-4 flex justify-between items-center gap-4">
+											<div class="bg-card rounded-lg p-4 flex justify-between items-center gap-4">
 												<div class="flex-1 min-w-0">
-													<p class="font-semibold text-gray-900 truncate">{anuncio.titulo}</p>
-													<div class="flex gap-3 mt-1 text-xs text-gray-600 flex-wrap">
+													<p class="font-semibold text-foreground truncate">{anuncio.titulo}</p>
+													<div class="flex gap-3 mt-1 text-xs text-muted-foreground flex-wrap">
 														<span class="px-2 py-0.5 rounded font-semibold {anuncio.estado === 'activo' ? 'bg-green-100 text-green-700' : anuncio.estado === 'pendiente_revision' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}">
 															{anuncio.estado.replace('_', ' ')}
 														</span>
@@ -373,7 +373,7 @@
 												
 												<a	href="/admin/propiedades/preview/{anuncio.id}"
 													target="_blank"
-													class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-blue-600 text-blue-600 bg-white hover:bg-blue-600 hover:text-white transition-colors whitespace-nowrap"
+													class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-blue-600 text-blue-600 bg-card hover:bg-blue-600 hover:text-white transition-colors whitespace-nowrap"
 												>
 													👁️ Ver Preview
 												</a>
@@ -389,9 +389,9 @@
 
 			<!-- Paginación -->
 			{#if totalPaginas > 1}
-				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+				<div class="bg-card rounded-xl shadow-sm border border-border p-4">
 					<div class="flex items-center justify-between gap-4 flex-wrap">
-						<p class="text-sm text-gray-600">
+						<p class="text-sm text-muted-foreground">
 							Mostrando {(paginaActual - 1) * usuariosPorPagina + 1} - {Math.min(paginaActual * usuariosPorPagina, totalUsuarios)} de {totalUsuarios} usuarios
 						</p>
 						
@@ -399,7 +399,7 @@
 							<button
 								onclick={() => cambiarPagina(paginaActual - 1)}
 								disabled={paginaActual === 1}
-								class="px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+								class="px-4 py-2 text-sm font-semibold rounded-lg border border-input text-foreground bg-card hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 							>
 								← Anterior
 							</button>
@@ -407,7 +407,7 @@
 							{#each paginasVisibles as pagina}
 								<button
 									onclick={() => cambiarPagina(pagina)}
-									class="px-4 py-2 text-sm font-semibold rounded-lg border transition-colors {paginaActual === pagina ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'}"
+									class="px-4 py-2 text-sm font-semibold rounded-lg border transition-colors {paginaActual === pagina ? 'border-primary bg-primary text-primary-foreground' : 'border-input text-foreground bg-card hover:bg-muted'}"
 								>
 									{pagina}
 								</button>
@@ -416,7 +416,7 @@
 							<button
 								onclick={() => cambiarPagina(paginaActual + 1)}
 								disabled={paginaActual === totalPaginas}
-								class="px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+								class="px-4 py-2 text-sm font-semibold rounded-lg border border-input text-foreground bg-card hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 							>
 								Siguiente →
 							</button>
@@ -429,8 +429,8 @@
 		<!-- Modal Confirmación -->
 		{#if showModal && modalData}
 			<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-1000 p-5">
-				<div class="bg-white rounded-xl p-6 max-w-md w-full">
-					<h3 class="text-xl font-bold text-gray-900 mb-2">
+				<div class="bg-card rounded-xl p-6 max-w-md w-full">
+					<h3 class="text-xl font-bold text-foreground mb-2">
 						{#if modalData.accion === 'banear'}
 							🚫 Banear Usuario
 						{:else if modalData.accion === 'desbanear'}
@@ -441,11 +441,11 @@
 							👤 Quitar Administrador
 						{/if}
 					</h3>
-					<p class="text-sm text-gray-600 mb-5">
+					<p class="text-sm text-muted-foreground mb-5">
 						{modalData.usuario.nombre_completo || modalData.usuario.email}
 					</p>
 					
-					<p class="text-sm text-gray-700 mb-6">
+					<p class="text-sm text-foreground mb-6">
 						{#if modalData.accion === 'banear'}
 							¿Estás seguro de banear a este usuario? No podrá acceder a la plataforma.
 						{:else if modalData.accion === 'desbanear'}
@@ -460,7 +460,7 @@
 					<div class="flex gap-3">
 						<button
 							onclick={cerrarModal}
-							class="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors"
+							class="flex-1 px-4 py-2.5 bg-muted text-foreground rounded-lg text-sm font-semibold hover:bg-muted/80 transition-colors"
 						>
 							Cancelar
 						</button>

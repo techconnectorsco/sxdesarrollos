@@ -2,6 +2,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
+	import { ModeWatcher } from 'mode-watcher';
 	import '../app.css';
 
 	// SVELTE 5: Usamos $props para recibir la data y el slot (children)
@@ -22,12 +23,12 @@
 
 		return () => subscription.unsubscribe();
 	});
-
 </script>
+
+<ModeWatcher />
 
 <div class="relative flex min-h-screen flex-col">
 	{@render children()}
 </div>
 
 <Toaster richColors duration={4000} />
-

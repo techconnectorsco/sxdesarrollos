@@ -133,7 +133,7 @@
 	}
 </script>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-background">
 	<!-- <SidebarAdmin /> -->
 
 	<!-- Main Content - Con margen para el sidebar flotante -->
@@ -141,8 +141,8 @@
 		<!-- Encabezado -->
 		<div class="flex justify-between items-center mb-8">
 			<div>
-				<h1 class="text-3xl font-bold text-gray-800">Gestión de Videos</h1>
-				<p class="text-gray-600 mt-1">Administra videos publicitarios de empresas</p>
+				<h1 class="text-3xl font-bold text-foreground">Gestión de Videos</h1>
+				<p class="text-muted-foreground mt-1">Administra videos publicitarios de empresas</p>
 			</div>
 			<button
 				onclick={handleAddClick}
@@ -161,7 +161,7 @@
 		</div>
 
 		<!-- Tabla -->
-		<div class="bg-white rounded-lg shadow">
+		<div class="bg-card rounded-lg shadow">
 			{#if loading}
 				<div class="flex justify-center items-center py-12">
 					<div class="animate-spin">
@@ -177,7 +177,7 @@
 				</div>
 			{:else}
 				<!-- <VideoTable ... /> -->
-			<div class="p-8 text-center text-gray-500">Tabla de videos (componente pendiente)</div>
+			<div class="p-8 text-center text-muted-foreground">Tabla de videos (componente pendiente)</div>
 			{/if}
 		</div>
 	</main>

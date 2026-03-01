@@ -13,7 +13,7 @@
   <Dialog.Content
     class="fixed z-50 top-1/2 left-1/2
            -translate-x-1/2 -translate-y-1/2
-           w-full max-w-md bg-white rounded-xl p-6 shadow-xl"
+           w-full max-w-md bg-card rounded-xl p-6 shadow-xl"
   >
     <LoginPage />
   </Dialog.Content>

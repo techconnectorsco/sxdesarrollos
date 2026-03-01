@@ -49,8 +49,8 @@
 				<span class="text-white text-lg">💼</span>
 			</div>
 			<div>
-				<p class="font-semibold text-gray-900">Perfil de Agente Inmobiliario</p>
-				<p class="text-sm text-gray-600">¿Eres agente Inmobiliario? Llena la siguiente informacion para que uno de nuestros administradores te apruebe como agente.</p>
+				<p class="font-semibold text-foreground">Perfil de Agente Inmobiliario</p>
+				<p class="text-sm text-muted-foreground">¿Eres agente Inmobiliario? Llena la siguiente informacion para que uno de nuestros administradores te apruebe como agente.</p>
 			</div>
 		</div>
 		<Switch id="isAgent" bind:checked={isAgent} />
@@ -61,13 +61,13 @@
 			<!-- Información Básica -->
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 				<div class="space-y-2">
-					<Label for="agency_name" class="font-semibold text-gray-900">Nombre de la Agencia</Label>
+					<Label for="agency_name" class="font-semibold text-foreground">Nombre de la Agencia</Label>
 					<Input 
 						id="agency_name"
 						name="agency_name" 
 						placeholder="Ej: Inmobiliaria Costa Rica Pro"
 						bind:value={$formData.agency_name}
-						class="border-gray-300 rounded-lg py-3 px-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+						class="border-input rounded-lg py-3 px-4 focus:border-ring focus:ring-2 focus:ring-ring transition-all"
 					/>
 					{#if $errors.agency_name}
 						<p class="text-red-500 text-sm flex items-center gap-1">⚠️ {$errors.agency_name}</p>
@@ -81,7 +81,7 @@
 						name="license_number" 
 						placeholder="Ej: LIC-2024-12345"
 						bind:value={$formData.license_number}
-						class="border-gray-300 rounded-lg py-3 px-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+						class="border-input rounded-lg py-3 px-4 focus:border-ring focus:ring-2 focus:ring-ring transition-all"
 					/>
 					{#if $errors.license_number}
 						<p class="text-red-500 text-sm flex items-center gap-1">⚠️ {$errors.license_number}</p>
@@ -93,7 +93,7 @@
 			<div class="space-y-4">
 				<div class="flex items-center gap-2 mb-2">
 					<span class="text-lg">🏢</span>
-					<h3 class="font-semibold text-gray-900">Información Profesional</h3>
+					<h3 class="font-semibold text-foreground">Información Profesional</h3>
 				</div>
 				
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -104,7 +104,7 @@
 							name="province" 
 							placeholder="Ej: San José"
 							bind:value={$formData.province}
-							class="border-gray-300 rounded-lg py-3 px-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+							class="border-input rounded-lg py-3 px-4 focus:border-ring focus:ring-2 focus:ring-ring transition-all"
 						/>
 						{#if $errors.province}
 							<p class="text-red-500 text-sm flex items-center gap-1">⚠️ {$errors.province}</p>
@@ -114,7 +114,7 @@
 					<div class="space-y-2">
 						<div class="flex items-center justify-between">
 							<Label for="website" class="font-semibold text-gray-900">Sitio Web</Label>
-							<span class="text-xs text-gray-500">Opcional</span>
+							<span class="text-xs text-muted-foreground">Opcional</span>
 						</div>
 						<Input 
 							id="website"
@@ -122,7 +122,7 @@
 							type="url"
 							placeholder="https://www.miagencia.com"
 							bind:value={$formData.website}
-							class="border-gray-300 rounded-lg py-3 px-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+							class="border-input rounded-lg py-3 px-4 focus:border-ring focus:ring-2 focus:ring-ring transition-all"
 						/>
 						{#if $errors.website}
 							<p class="text-red-500 text-sm flex items-center gap-1">⚠️ {$errors.website}</p>

@@ -6,9 +6,9 @@
 	let { data, children } = $props();
 </script>
 
-<div class="flex min-h-screen bg-slate-50">
+<div class="flex min-h-screen bg-background">
 	<!-- Persistent Sidebar -->
-	<NavigationSidebar />
+	 <NavigationSidebar />
 
 	<!-- Main Content Area -->
 	<div class="flex-1 flex flex-col transition-all duration-300 ml-0 lg:ml-64" id="main-canvas">

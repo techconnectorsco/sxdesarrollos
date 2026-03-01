@@ -23,8 +23,8 @@
     <!-- Nombre Completo -->
     <div class="space-y-2">
         <div class="flex items-center justify-between">
-            <Label for="name" class="font-semibold text-gray-900">Nombre Completo</Label>
-            <span class="text-xs text-gray-500">Requerido</span>
+            <Label for="name" class="font-semibold text-foreground">Nombre Completo</Label>
+            <span class="text-xs text-muted-foreground">Requerido</span>
         </div>
         <Input 
             id="nombre_completo"
@@ -32,10 +32,10 @@
             bind:value={nombre_completo}
             placeholder="Tu nombre completo"
             disabled={!isEditing}
-            class="border-gray-300 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+            class="border-input rounded-lg py-3 px-4 focus:border-ring focus:ring-2 focus:ring-ring transition-all disabled:bg-muted disabled:cursor-not-allowed"
             oninput={() => isModified = true}
         />
-        <p class="text-xs text-gray-500 mt-1">
+        <p class="text-xs text-muted-foreground mt-1">
             Este es el nombre que aparecerá en tu perfil público.
         </p>
     </div>
@@ -43,8 +43,8 @@
     <!-- Email -->
     <div class="space-y-2">
         <div class="flex items-center justify-between">
-            <Label for="email" class="font-semibold text-gray-900">Correo Electrónico</Label>
-            <span class="text-xs text-gray-500">Requerido</span>
+            <Label for="email" class="font-semibold text-foreground">Correo Electrónico</Label>
+            <span class="text-xs text-muted-foreground">Requerido</span>
         </div>
         <Input 
             type="email" 
@@ -53,26 +53,26 @@
             bind:value={email}
             placeholder="tu@email.com"
             disabled={!isEditing}
-            class="border-gray-300 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+            class="border-input rounded-lg py-3 px-4 focus:border-ring focus:ring-2 focus:ring-ring transition-all disabled:bg-muted disabled:cursor-not-allowed"
             oninput={() => isModified = true}
         />
-        <p class="text-xs text-gray-500 mt-1">
+        <p class="text-xs text-muted-foreground mt-1">
             Usaremos este correo para notificaciones importantes de tu cuenta.
         </p>
     </div>
 
     <!-- Información de Contacto -->
-    <div class="border-t border-gray-200 pt-6">
+    <div class="border-t border-border pt-6">
         <div class="flex items-center gap-2 mb-4">
             <span class="text-lg">📞</span>
-            <h3 class="font-semibold text-gray-900">Información de Contacto</h3>
+            <h3 class="font-semibold text-foreground">Información de Contacto</h3>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                    <Label for="phone" class="font-semibold text-gray-900">Teléfono Principal</Label>
-                    <span class="text-xs text-gray-500">Requerido</span>
+                    <Label for="phone" class="font-semibold text-foreground">Teléfono Principal</Label>
+                    <span class="text-xs text-muted-foreground">Requerido</span>
                 </div>
                 <Input 
                     id="phone" 
@@ -81,18 +81,18 @@
                     bind:value={telefono_principal}
                     placeholder="Ej: +506 2234-5678"
                     disabled={!isEditing}
-                    class="border-gray-300 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    class="border-input rounded-lg py-3 px-4 focus:border-ring focus:ring-2 focus:ring-ring transition-all disabled:bg-muted disabled:cursor-not-allowed"
                     oninput={() => isModified = true}
                 />
-                <p class="text-xs text-gray-500 mt-1">
+                <p class="text-xs text-muted-foreground mt-1">
                     Tu número de teléfono principal de contacto.
                 </p>
             </div>
 
             <div class="space-y-2">
                 <div class="flex items-center justify-between">
-                    <Label for="phone_secondary" class="font-semibold text-gray-900">Teléfono Secundario</Label>
-                    <span class="text-xs text-gray-500">Opcional</span>
+                    <Label for="phone_secondary" class="font-semibold text-foreground">Teléfono Secundario</Label>
+                    <span class="text-xs text-muted-foreground">Opcional</span>
                 </div>
                 <Input 
                     id="phone_secondary" 
@@ -101,10 +101,10 @@
                     bind:value={telefono_secundario}
                     placeholder="Ej: +506 8888-9999"
                     disabled={!isEditing}
-                    class="border-gray-300 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    class="border-input rounded-lg py-3 px-4 focus:border-ring focus:ring-2 focus:ring-ring transition-all disabled:bg-muted disabled:cursor-not-allowed"
                     oninput={() => isModified = true}
                 />
-                <p class="text-xs text-gray-500 mt-1">
+                <p class="text-xs text-muted-foreground mt-1">
                     Opcional: un número alternativo de contacto.
                 </p>
             </div>
@@ -112,7 +112,7 @@
     </div>
 
     <!-- Botones de Acción -->
-    <div class="flex gap-3 pt-4 border-t border-gray-200">
+    <div class="flex gap-3 pt-4 border-t border-border">
         {#if !isEditing}
             <Button 
                 type="button"
@@ -129,7 +129,7 @@
             <Button 
                 type="submit"
                 disabled={!isModified || isSaving}
-                class="bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white transition-all"
+                class="bg-green-500 hover:bg-green-600 disabled:bg-muted text-white transition-all"
             >
                 {#if isSaving}
                     <span class="inline-block animate-spin mr-2">⏳</span>

@@ -32,10 +32,10 @@
   <form method="POST" action="?/updateRedesSociales" on:submit={() => { isSaving = true; }}>
     <div class="flex items-center gap-2 mb-4">
       <span class="text-lg">🌐</span>
-      <h3 class="font-semibold text-gray-900">Redes Sociales</h3>
-      <span class="text-xs text-gray-500 ml-2">(Opcional)</span>
+      <h3 class="font-semibold text-foreground">Redes Sociales</h3>
+      <span class="text-xs text-muted-foreground ml-2">(Opcional)</span>
     </div>
-    <p class="text-sm text-gray-600 mb-6">Comparte tus perfiles para conectar mejor con tus clientes</p>
+    <p class="text-sm text-muted-foreground mb-6">Comparte tus perfiles para conectar mejor con tus clientes</p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <!-- Facebook -->
@@ -44,7 +44,7 @@
         <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
         </svg>
-        <Label for="facebook" class="text-gray-700">Facebook</Label>
+        <Label for="facebook" class="text-foreground">Facebook</Label>
       </div>
       <Input 
         id="facebook"
@@ -53,7 +53,7 @@
         placeholder="https://facebook.com/tu-pagina"
         bind:value={socialData.facebook}
         disabled={!isEditing}
-        class="border-gray-300 rounded-lg py-2 px-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+        class="border-input rounded-lg py-2 px-3 focus:border-ring focus:ring-2 focus:ring-ring transition-all disabled:bg-muted disabled:cursor-not-allowed"
         on:input={() => isModified = true}
       />
       {#if errors.facebook}
@@ -133,7 +133,7 @@
     <!-- TikTok -->
     <div class="space-y-2">
       <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-gray-900" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="w-5 h-5 text-foreground" viewBox="0 0 24 24" fill="currentColor">
           <path d="M21.58 7.13a5.53 5.53 0 0 1-3.46-2.6 5.52 5.52 0 0 1-.63-2.12h-3.3v12.38a2.78 2.78 0 1 1-2-2.65V8.59a6.08 6.08 0 0 0-1-.08 5.94 5.94 0 1 0 5.94 5.94V8.5a8.78 8.78 0 0 0 5.45 1.87V7.13z"/>
         </svg>
         <Label for="tiktok" class="text-gray-700">TikTok</Label>
@@ -201,7 +201,7 @@
   </div>
 
     <!-- Action Buttons -->
-    <div class="flex gap-3 pt-6 border-t border-gray-200 mt-6">
+    <div class="flex gap-3 pt-6 border-t border-border mt-6">
       {#if !isEditing}
         <Button 
           type="button"
@@ -215,7 +215,7 @@
         <Button 
           type="submit"
           disabled={!isModified || isSaving}
-          class="bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white transition-all"
+          class="bg-green-500 hover:bg-green-600 disabled:bg-muted text-white transition-all"
         >
           {#if isSaving}
             <span class="inline-block animate-spin mr-2">⏳</span>
@@ -233,7 +233,7 @@
             socialData = { ...originalSocialData };
             errors = {};
           }}
-          class="text-gray-700 border-gray-300"
+          class="text-foreground border-border"
         >
           Cancelar
         </Button>

@@ -36,7 +36,7 @@
 <Dialog.Root bind:open>
 	<!-- Trigger Button -->
 	<Dialog.Trigger 
-		class="p-2 rounded-full hover:bg-blue-50 transition-all duration-200"
+	class="p-2 rounded-full hover:bg-accent transition-all duration-200"
 		aria-label="Iniciar sesión"
 	>
 		<User class="w-6 h-6 text-blue-600" />
@@ -47,15 +47,15 @@
 		<Dialog.Overlay class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" />
 		<Dialog.Content
 			class="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-				   bg-white rounded-2xl shadow-2xl max-w-md w-[calc(100%-2rem)] sm:w-full
+				   bg-card rounded-2xl shadow-2xl max-w-md w-[calc(100%-2rem)] sm:w-full
 				   max-h-[90vh] overflow-y-auto"
 		>
 			<!-- Header del Modal -->
-			<div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-2xl">
-				<Dialog.Title class="text-2xl font-bold text-gray-900">
+			<div class="sticky top-0 bg-card border-b border-border px-6 py-4 rounded-t-2xl">
+				<Dialog.Title class="text-2xl font-bold text-foreground">
 					Iniciar Sesión
 				</Dialog.Title>
-				<Dialog.Description class="text-sm text-gray-600 mt-1">
+				<Dialog.Description class="text-sm text-muted-foreground mt-1">
 					Accede a tu cuenta de SX - SoporteXperto
 				</Dialog.Description>
 
@@ -81,7 +81,7 @@
 				/>
 
 				<!-- Ayuda adicional -->
-				<div class="text-center text-xs text-gray-500 mt-6 pt-6 border-t border-gray-100">
+				<div class="text-center text-xs text-muted-foreground mt-6 pt-6 border-t border-border">
 					¿Necesitas ayuda?
 					<a 
 						href="/auth/reset" 

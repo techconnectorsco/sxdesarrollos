@@ -41,7 +41,7 @@
     let redirectUrl = $derived(page.url.searchParams.get('redirect'));
 </script>
 
-<div class="flex min-h-screen items-center justify-center px-4 py-12 bg-gradient-to-br from-gray-50 to-blue-50">
+<div class="flex min-h-screen items-center justify-center px-4 py-12 bg-gradient-to-br from-background to-muted">
     <div class="w-full max-w-md space-y-8">
         
         <div class="text-center space-y-3">
@@ -54,15 +54,15 @@
                     />
                 </a>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900">
+            <h1 class="text-3xl font-bold text-foreground">
                 ¡Bienvenido de nuevo! 👋
             </h1>
-            <p class="text-base text-gray-600">
+            <p class="text-base text-muted-foreground">
                 Inicia sesión para acceder a tu cuenta de {siteConfig.title}
             </p>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+        <div class="bg-card rounded-2xl shadow-lg border border-border p-8">
             <AuthForm
                 title=""
                 description=""
@@ -84,7 +84,7 @@
         </div>
 
         <div class="text-center">
-            <div class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200">
+            <div class="inline-flex items-center gap-2 text-sm text-muted-foreground bg-card px-4 py-2 rounded-full shadow-sm border border-border">
                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -99,7 +99,7 @@
         </div>
 
         <div class="text-center space-y-3">
-            <div class="text-sm text-gray-500">
+            <div class="text-sm text-muted-foreground">
                 Al continuar, aceptas nuestros
                 <a href="/terminos" class="text-blue-600 hover:text-blue-700 font-medium">Términos de Servicio</a>
                 y

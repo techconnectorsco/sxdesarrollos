@@ -43,7 +43,7 @@
 <Button
 	type="button"
 	variant="outline"
-	class="w-full flex items-center justify-center gap-3 py-2.5 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 rounded-lg transition-all font-medium text-gray-700"
+	class="w-full flex items-center justify-center gap-3 py-2.5 border-2 border-input hover:border-ring hover:bg-accent rounded-lg transition-all font-medium text-foreground"
 	onclick={signInWithGoogle}
 	disabled={loading}
 >
