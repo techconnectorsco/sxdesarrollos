@@ -1,6 +1,12 @@
-// Middleware to protect private routes and manage authentication redirects
+
+// ARCHIVO: src/lib/features/auth/hooks/auth-guard.server.ts
+
+
 import { type Handle, redirect, error } from '@sveltejs/kit';
 import { AUTH_PATHS, AUTH_REDIRECT_PATHS } from '../config/auth';
+
+// Rutas que requieren tener un cliente_id asignado (aprobado por admin)
+const RUTAS_REQUIEREN_CLIENTE = ['/robots', '/mensajes'];
 
 export const authGuard: Handle = async ({ event, resolve }) => {
 	const { session, user } = await event.locals.safeGetSession();
@@ -9,18 +15,21 @@ export const authGuard: Handle = async ({ event, resolve }) => {
 
 	const pathname = event.url.pathname;
 
-	// Protect all routes under /private
+	// ============================================
+	// 1. Proteger rutas bajo /private
+	// ============================================
 	if (!session && pathname.startsWith('/private')) {
 		throw redirect(303, AUTH_PATHS.LOGIN);
 	}
 
-	// Protect /admin routes (UI pages)
+	// ============================================
+	// 2. Proteger rutas de admin (UI)
+	// ============================================
 	if (pathname.startsWith('/admin')) {
 		if (!session) {
 			throw redirect(303, `${AUTH_PATHS.LOGIN}&redirect=${encodeURIComponent(pathname)}`);
 		}
 
-		// Check if user is admin
 		const { data: perfil } = await event.locals.supabase
 			.from('perfiles')
 			.select('es_admin')
@@ -32,13 +41,14 @@ export const authGuard: Handle = async ({ event, resolve }) => {
 		}
 	}
 
-	// Protect /api/admin/* routes (API endpoints)
+	// ============================================
+	// 3. Proteger rutas de admin (API)
+	// ============================================
 	if (pathname.startsWith('/api/admin')) {
 		if (!session) {
 			throw error(401, 'No autorizado');
 		}
 
-		// Check if user is admin
 		const { data: perfil } = await event.locals.supabase
 			.from('perfiles')
 			.select('es_admin')
@@ -50,7 +60,52 @@ export const authGuard: Handle = async ({ event, resolve }) => {
 		}
 	}
 
-	// Redirect authenticated users away from auth pages
+	// ============================================
+	// 4. Proteger rutas que requieren cliente_id
+	//    (/robots, /robots/*, /mensajes)
+	// ============================================
+	const requiereCliente = RUTAS_REQUIEREN_CLIENTE.some(
+		(ruta) => pathname === ruta || pathname.startsWith(ruta + '/')
+	);
+
+	if (requiereCliente) {
+		if (!session) {
+			throw redirect(303, `${AUTH_PATHS.LOGIN}&redirect=${encodeURIComponent(pathname)}`);
+		}
+
+		// Verificar si tiene cliente_id asignado o es admin
+		const { data: perfil } = await event.locals.supabase
+			.from('perfiles')
+			.select('es_admin, cliente_id')
+			.eq('id', user!.id)
+			.maybeSingle();
+
+		const esAdmin = perfil?.es_admin === true;
+		const tieneCliente =
+			perfil?.cliente_id != null || user?.user_metadata?.cliente_id != null;
+
+		if (!esAdmin && !tieneCliente) {
+			// Redirigir a página de solicitar acceso
+			throw redirect(303, '/solicitar-acceso');
+		}
+	}
+
+	// ============================================
+	// 5. Proteger rutas bajo /(app) que requieren auth
+	//    (dashboard, apps, solicitar-acceso, perfil)
+	// ============================================
+	const rutasApp = ['/dashboard', '/apps', '/solicitar-acceso', '/perfil', '/bots', '/clientes', '/logs'];
+	const requiereAuth = rutasApp.some(
+		(ruta) => pathname === ruta || pathname.startsWith(ruta + '/')
+	);
+
+	if (requiereAuth && !session) {
+		throw redirect(303, `${AUTH_PATHS.LOGIN}&redirect=${encodeURIComponent(pathname)}`);
+	}
+
+	// ============================================
+	// 6. Redirigir usuarios autenticados fuera de /auth
+	// ============================================
 	if (session && pathname === '/auth') {
 		throw redirect(303, AUTH_REDIRECT_PATHS.SUCCESS.LOGIN);
 	}

@@ -1,5 +1,5 @@
 export function initDevToolsProtection() {
-  if (typeof window === 'undefined') return;
+ /*  if (typeof window === 'undefined') return;
 
   // Bloquear teclas
   document.addEventListener('keydown', (e) => {
@@ -24,5 +24,5 @@ export function initDevToolsProtection() {
       console.clear();
       // Aquí puedes redirigir o tomar otra acción
     }
-  }, 500);
-}
+  }, 500);*/
+} 

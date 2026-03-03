@@ -1,9 +1,7 @@
-/**
- * @module AuthServerService
- * @description This module provides server-side authentication services, including functions for user login and registration with Supabase.
- * It handles form validation, Supabase interactions, and error/redirect responses for SvelteKit server-side operations.
- */
-// Authentication service for handling user login and registration
+// ============================================================
+// ARCHIVO: src/lib/features/auth/services/auth.server.ts
+
+
 import { fail, setError } from 'sveltekit-superforms';
 import { redirect, type RequestEvent } from '@sveltejs/kit';
 import type { SuperValidated } from 'sveltekit-superforms';
@@ -16,12 +14,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 type RegisterFormData = RegisterSchema;
 
 /**
- * Handles user login by validating the form data and authenticating with Supabase.
- * Redirects to the dashboard on successful login or returns form errors.
- * @param {RequestEvent} event - The SvelteKit request event object.
- * @param {SuperValidated<LoginFormData>} form - The super validated form data for login.
- * @returns {Promise<import('sveltekit-superforms').SuperValidated<LoginFormData>>} A promise that resolves to the form object with potential errors,
- * or throws a redirect on successful login.
+ * Handles user login (sin cambios)
  */
 export async function handleLogin(event: RequestEvent, form: SuperValidated<LoginFormData>) {
 	if (!form.valid) {
@@ -30,10 +23,8 @@ export async function handleLogin(event: RequestEvent, form: SuperValidated<Logi
 
 	const supabase = event.locals.supabase;
 	const { email, password } = form.data;
-	
-	// ============================================
-	// PASO 1: Autenticar con Supabase
-	// ============================================
+
+	// PASO 1: Autenticar
 	const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
 		email,
 		password
@@ -47,12 +38,10 @@ export async function handleLogin(event: RequestEvent, form: SuperValidated<Logi
 		return setError(form, '', errorMessage);
 	}
 
-	// ============================================
-	// PASO 2: Verificar si el usuario está baneado
-	// ============================================
+	// PASO 2: Verificar si baneado
 	if (signInData?.user) {
 		const userId = signInData.user.id;
-		
+
 		try {
 			const { data: perfil, error: perfilError } = await supabase
 				.from('perfiles')
@@ -62,106 +51,92 @@ export async function handleLogin(event: RequestEvent, form: SuperValidated<Logi
 
 			if (perfilError) {
 				console.error('Error al verificar perfil:', perfilError);
-				// Si hay error al verificar perfil, cerrar sesión por seguridad
 				await supabase.auth.signOut();
 				return setError(form, '', 'Ocurrió un error. Por favor, intenta de nuevo más tarde.');
 			}
 
-			// Si el usuario está baneado, cerrar sesión y mostrar error
 			if (perfil?.esta_baneado) {
 				console.log(`🚫 Usuario baneado intentó iniciar sesión: ${perfil.email}`);
-				
-				// Cerrar la sesión que acabamos de crear
 				await supabase.auth.signOut();
-				
 				return setError(
-					form, 
-					'', 
+					form,
+					'',
 					'Tu cuenta ha sido suspendida. Por favor, contacta a soporte para más información.'
 				);
 			}
 		} catch (error) {
 			console.error('Error inesperado al verificar perfil:', error);
-			// Por seguridad, cerrar sesión
 			await supabase.auth.signOut();
 			return setError(form, '', 'Ocurrió un error. Por favor, intenta de nuevo más tarde.');
 		}
 	}
 
-	// ============================================
-	// PASO 3: Si todo está bien, hacer redirect
-	// ============================================
+	// PASO 3: Redirect
 	throw redirect(303, AUTH_REDIRECT_PATHS.SUCCESS.LOGIN);
 }
 
 /**
- * Handles new user registration by validating the form data, checking for existing emails,
- * and registering the user with Supabase. Redirects to the login page on successful registration.
- * @param {RequestEvent} event - The SvelteKit request event object.
- * @param {SuperValidated<RegisterFormData>} form - The super validated form data for registration.
- * @returns {Promise<import('sveltekit-superforms').SuperValidated<RegisterFormData>>} A promise that resolves to the form object with potential errors,
- * or throws a redirect on successful registration.
+ * Handles user registration con campos nuevos del perfil + solicitud de acceso
  */
-export async function handleRegister(event: RequestEvent, form: SuperValidated<RegisterFormData>) {
-	
+export async function handleRegister(
+	event: RequestEvent,
+	form: SuperValidated<RegisterFormData>
+) {
 	if (!form.valid) {
-		
 		return fail(400, { form });
 	}
 
-	const { email, password } = form.data;
+	const {
+		email,
+		password,
+		nombre_completo,
+		empresa,
+		cargo,
+		telefono,
+		solicitar_acceso,
+		cliente_id,
+		mensaje_solicitud
+	} = form.data;
 
-	// Check if email already exists using Supabase Admin
-	
+	// PASO 1: Verificar email existente
 	try {
-		// Usar getUserByEmail que es más específico y eficiente
-		const { data: existingUser, error: getUserError } = await supabaseAdmin.auth.admin.getUserByEmail(email);
+		const { data: existingUser, error: getUserError } =
+			await supabaseAdmin.auth.admin.getUserByEmail(email);
 
-		
-		// Si encontramos un usuario, el email ya existe
 		if (existingUser && existingUser.user) {
-			
-			
-			
 			return setError(form, 'email', 'Este correo electrónico ya está registrado');
 		}
 
-		// Si hay error pero no es "User not found", es un error real
 		if (getUserError && !getUserError.message.includes('User not found')) {
-			
 			return setError(form, '', 'Ocurrió un error. Por favor, intenta de nuevo más tarde.');
 		}
-
-		
 	} catch (error) {
-		
 		return setError(form, '', 'Ocurrió un error. Por favor, intenta de nuevo más tarde.');
 	}
 
-	// Proceed with registration
+	// PASO 2: Crear usuario
 	const supabase = event.locals.supabase;
-	
+
 	const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
 		email,
 		password,
 		options: {
 			data: {
+				nombre_completo,
 				created_at: new Date().toISOString()
 			}
 		}
 	});
 
-	
 	if (signUpError) {
-		
 		let errorMessage = 'Error al crear la cuenta';
-		
+
 		if (signUpError.message.includes('already registered')) {
 			errorMessage = 'Este correo electrónico ya está registrado';
 		} else if (signUpError.message.includes('password')) {
 			errorMessage = 'La contraseña no cumple con los requisitos';
 		}
-		
+
 		return setError(
 			form,
 			signUpError.message.includes('already registered') ? 'email' : 'password',
@@ -169,6 +144,41 @@ export async function handleRegister(event: RequestEvent, form: SuperValidated<R
 		);
 	}
 
-	
+	// PASO 3: Crear perfil
+	if (signUpData?.user) {
+		const userId = signUpData.user.id;
+
+		try {
+			await supabaseAdmin.from('perfiles').upsert(
+				{
+					id: userId,
+					nombre_completo: nombre_completo || null,
+					empresa: empresa || null,
+					cargo: cargo || null,
+					telefono: telefono || null,
+					es_admin: false,
+					esta_baneado: false
+				},
+				{ onConflict: 'id' }
+			);
+
+			// PASO 4: Crear solicitud de acceso si aplica
+			if (solicitar_acceso && cliente_id && cliente_id !== '') {
+				await supabaseAdmin.from('solicitudes_acceso').insert({
+					user_id: userId,
+					cliente_id: cliente_id,
+					estado: 'pendiente',
+					mensaje: mensaje_solicitud || null
+				});
+
+				console.log(
+					`[auth.server.ts] ✓ Solicitud creada: user ${userId} → cliente ${cliente_id}`
+				);
+			}
+		} catch (err) {
+			console.error('[auth.server.ts] Error en post-registro:', err);
+		}
+	}
+
 	throw redirect(303, AUTH_REDIRECT_PATHS.SUCCESS.REGISTER);
 }

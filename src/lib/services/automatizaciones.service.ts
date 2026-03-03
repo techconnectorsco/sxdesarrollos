@@ -208,4 +208,21 @@ export class AutomatizacionesService {
 			}
 		};
 	}
+
+	/**
+	 * Toggle estado activo de una automatización (robot)
+	 * Solo admin puede hacer esto
+	 */
+	async toggleRobot(automatizacionId: string, estaActiva: boolean): Promise<Automatizacion> {
+		const { data, error } = await this.supabase
+			.from('automatizaciones')
+			.update({ esta_activa: estaActiva })
+			.eq('id', automatizacionId)
+			.select()
+			.single();
+
+		if (error) throw error;
+		return data;
+	}
 }
+

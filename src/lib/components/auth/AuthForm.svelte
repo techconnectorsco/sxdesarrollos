@@ -1,3 +1,7 @@
+<!-- ============================================================ -->
+<!-- ARCHIVO: src/lib/components/auth/AuthForm.svelte              -->
+
+
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -5,6 +9,7 @@
 	import { Spinner } from '$lib/components/ui/spinner';
 	import GoogleSignIn from './GoogleSignIn.svelte';
 	import { toast } from 'svelte-sonner';
+	import type { Snippet } from 'svelte';
 
 	let {
 		title,
@@ -21,7 +26,8 @@
 		footerText,
 		footerLinkText,
 		footerLinkHref,
-		enhance
+		enhance,
+		extraFields
 	} = $props<{
 		title: string;
 		description: string;
@@ -38,6 +44,7 @@
 		footerLinkText: string;
 		footerLinkHref: string;
 		enhance: (node: HTMLFormElement) => void;
+		extraFields?: Snippet;
 	}>();
 
 	$effect(() => {
@@ -118,6 +125,13 @@
 				<Form.FieldErrors class="text-xs text-destructive mt-1" />
 			</Form.Field>
 		</div>
+
+		<!-- ============================================ -->
+		<!-- CAMPOS EXTRA (inyectados por Register.svelte) -->
+		<!-- ============================================ -->
+		{#if extraFields}
+			{@render extraFields()}
+		{/if}
 
 		<!-- Botón de Submit -->
 		<Button 

@@ -1,3 +1,4 @@
+
 // Esquemas de validación para formularios de autenticación usando Zod
 import { z } from 'zod';
 import { PASSWORD_VALIDATION } from '../config/auth';
@@ -58,9 +59,41 @@ export const loginSchema = z.object({
 	password: loginPasswordValidation
 });
 
+// ============================================================
+// REGISTER SCHEMA — Campos nuevos para Fase 2
+// ============================================================
 export const registerSchema = z.object({
 	email: emailValidation,
-	password: passwordValidation
+	password: passwordValidation,
+	// Campos nuevos del perfil
+	nombre_completo: z.string({ required_error: 'El nombre es obligatorio' })
+		.trim()
+		.min(2, { message: 'El nombre debe tener al menos 2 caracteres' }),
+	empresa: z.string().trim().optional().default(''),
+	cargo: z.string().trim().optional().default(''),
+	telefono: z.string().trim().optional().default(''),
+	// Solicitud de acceso a cliente (opcional)
+	solicitar_acceso: z.boolean().default(false),
+	cliente_id: z.string().optional().default(''),
+	mensaje_solicitud: z.string().trim().optional().default('')
+}).superRefine((data, ctx) => {
+	// Si solicita acceso, cliente_id y mensaje son obligatorios
+	if (data.solicitar_acceso) {
+		if (!data.cliente_id || data.cliente_id === '') {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Debes seleccionar un cliente',
+				path: ['cliente_id']
+			});
+		}
+		if (!data.mensaje_solicitud || data.mensaje_solicitud.trim() === '') {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Describe tu relación con el cliente',
+				path: ['mensaje_solicitud']
+			});
+		}
+	}
 });
 
 export const resetPasswordSchema = z.object({

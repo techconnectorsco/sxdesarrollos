@@ -1,5 +1,7 @@
-// src/routes/auth/+page.server.ts
-// Main authentication page handling both login and registration
+// ============================================================
+// ARCHIVO: src/routes/auth/+page.server.ts
+
+
 import { redirect, type Actions } from '@sveltejs/kit';
 import { loginSchema, registerSchema } from '$lib/features/auth/schemas/auth';
 import { message, superValidate, setError } from 'sveltekit-superforms';
@@ -9,45 +11,58 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { AUTH_REDIRECT_PATHS } from '$lib/features/auth/config/auth';
 import { supabaseAdmin } from '$lib/features/auth/config/supabase-admin';
 
-// console.log('[auth/+page.server.ts] File loaded');
-
-// Initialize auth forms based on mode (login/register)
+// ============================================================
+// LOAD: Inicializa forms + carga lista de clientes
+// ============================================================
 export const load: PageServerLoad = async ({ parent, url }) => {
-	// console.log('[auth/+page.server.ts] Load function called');
 	const parentData = await parent();
 
-	// Redirect to private if already logged in
+	// Redirect si ya está logueado
 	if (parentData.session) {
 		throw redirect(303, AUTH_REDIRECT_PATHS.SUCCESS.LOGIN);
 	}
 
 	const mode = url.searchParams.get('mode');
-	// console.log('[auth/+page.server.ts] Mode:', mode);
 
-	// Initialize both forms
+	// Inicializar ambos forms
 	const loginForm = await superValidate(zod(loginSchema));
 	const registerForm = await superValidate(zod(registerSchema));
 
+	// Cargar lista de clientes para el select de registro
+	let clientes: Array<{ id: string; nombre: string }> = [];
+	try {
+		const { data, error } = await supabaseAdmin
+			.from('clientes')
+			.select('id, nombre')
+			.order('nombre');
+
+		if (!error && data) {
+			clientes = data;
+		}
+	} catch (err) {
+		console.error('[auth/+page.server.ts] Error cargando clientes:', err);
+	}
+
 	return {
 		...parentData,
-		form: mode === 'register' ? registerForm : loginForm
+		form: mode === 'register' ? registerForm : loginForm,
+		clientes
 	};
 };
 
-// Handle form submissions for both login and registration
+// ============================================================
+// ACTIONS
+// ============================================================
 export const actions: Actions = {
+	// ========== LOGIN (sin cambios) ==========
 	login: async ({ request, locals: { supabase }, url }: RequestEvent) => {
-		// console.log('[auth/+page.server.ts] Login action called');
 		const form = await superValidate(request, zod(loginSchema));
 
 		if (!form.valid) {
-			// Return validation errors from zod schema
 			return message(form, 'Por favor revisa los errores en el formulario');
 		}
 
-		// ============================================
-		// PASO 1: Autenticar con Supabase
-		// ============================================
+		// PASO 1: Autenticar
 		const { data: signInData, error } = await supabase.auth.signInWithPassword({
 			email: form.data.email,
 			password: form.data.password
@@ -61,12 +76,10 @@ export const actions: Actions = {
 			return message(form, errorMessage, { status: 400 });
 		}
 
-		// ============================================
-		// PASO 2: Verificar si el usuario está baneado
-		// ============================================
+		// PASO 2: Verificar si baneado
 		if (signInData?.user) {
 			const userId = signInData.user.id;
-			
+
 			try {
 				const { data: perfil, error: perfilError } = await supabase
 					.from('perfiles')
@@ -76,103 +89,105 @@ export const actions: Actions = {
 
 				if (perfilError) {
 					console.error('Error al verificar perfil:', perfilError);
-					// Si hay error al verificar perfil, cerrar sesión por seguridad
 					await supabase.auth.signOut();
-					return message(form, 'Ocurrió un error. Por favor, intenta de nuevo más tarde.', { status: 500 });
+					return message(form, 'Ocurrió un error. Por favor, intenta de nuevo más tarde.', {
+						status: 500
+					});
 				}
 
-				// Si el usuario está baneado, cerrar sesión y mostrar error
 				if (perfil?.esta_baneado) {
-					// console.log(`🚫 Usuario baneado intentó iniciar sesión: ${perfil.email}`);
-					
-					// Cerrar la sesión que acabamos de crear
 					await supabase.auth.signOut();
-					
 					return message(
-						form, 
-						'Tu cuenta ha sido suspendida. Por favor, contacta a soporte para más información.', 
+						form,
+						'Tu cuenta ha sido suspendida. Por favor, contacta a soporte para más información.',
 						{ status: 403 }
 					);
 				}
 			} catch (error) {
 				console.error('Error inesperado al verificar perfil:', error);
-				// Por seguridad, cerrar sesión
 				await supabase.auth.signOut();
-				return message(form, 'Ocurrió un error. Por favor, intenta de nuevo más tarde.', { status: 500 });
+				return message(form, 'Ocurrió un error. Por favor, intenta de nuevo más tarde.', {
+					status: 500
+				});
 			}
 		}
 
-		// ============================================
-		// PASO 3: Verificar si hay redirect o es modal
-		// ============================================
+		// PASO 3: Redirect
 		const redirectTo = url.searchParams.get('redirect');
-		
-		// Si viene de una página protegida (como /publicar), hacer redirect
 		if (redirectTo) {
-			// console.log('[auth/+page.server.ts] Redirecting to:', redirectTo);
 			throw redirect(303, redirectTo);
 		}
-		
-		// Si es login desde el modal (no hay redirect), retornar success
-		// console.log('[auth/+page.server.ts] Modal login, returning success message');
+
 		return message(form, 'Inicio de sesión exitoso');
 	},
 
+	// ========== REGISTER (modificado con campos nuevos) ==========
 	register: async ({ request, locals: { supabase } }: RequestEvent) => {
-		// console.log('[auth/+page.server.ts] 🎯 REGISTER ACTION CALLED');
-		
 		const form = await superValidate(request, zod(registerSchema));
 
+		console.log('========== DEBUG REGISTRO ==========');
+		console.log('[PASO 0] form.valid:', form.valid);
+		console.log('[PASO 0] form.data completo:', JSON.stringify(form.data, null, 2));
+		console.log('[PASO 0] form.errors:', form.errors);
+
 		if (!form.valid) {
-			// console.log('[auth/+page.server.ts] Form validation failed:', form.errors);
+			console.log('[ERROR] Formulario no válido. Errores:', form.errors);
 			return message(form, 'Por favor revisa los errores en el formulario');
 		}
 
-		const { email, password } = form.data;
+		const {
+			email,
+			password,
+			nombre_completo,
+			empresa,
+			cargo,
+			telefono,
+			solicitar_acceso,
+			cliente_id,
+			mensaje_solicitud
+		} = form.data;
+
+		console.log('[PASO 0.5] Valores desestructurados:');
+		console.log('  - email:', email);
+		console.log('  - nombre_completo:', nombre_completo);
+		console.log('  - nombre_completo type:', typeof nombre_completo);
+		console.log('  - nombre_completo === null:', nombre_completo === null);
+		console.log('  - nombre_completo === undefined:', nombre_completo === undefined);
+		console.log('  - nombre_completo === "":', nombre_completo === '');
+		console.log('  - empresa:', empresa);
+		console.log('  - cargo:', cargo);
+		console.log('  - telefono:', telefono);
 
 		// ============================================
-		// CHECK IF EMAIL ALREADY EXISTS
+		// PASO 1: Verificar email existente
 		// ============================================
-		// console.log(`[auth/+page.server.ts] Checking if email "${email}" already exists...`);
-		
 		try {
-			// List all users and check if email exists
 			const { data: userData, error: listError } = await supabaseAdmin.auth.admin.listUsers();
 
 			if (listError) {
 				console.error('[auth/+page.server.ts] Error listing users:', listError);
-				return message(form, 'Ocurrió un error. Por favor, intenta de nuevo más tarde.', { status: 500 });
+				return message(form, 'Ocurrió un error. Por favor, intenta de nuevo más tarde.', {
+					status: 500
+				});
 			}
 
-			// Check if email exists (case-insensitive)
 			const existingUser = userData?.users?.find(
-				user => user.email?.toLowerCase() === email.toLowerCase()
+				(user) => user.email?.toLowerCase() === email.toLowerCase()
 			);
 
-			// If user exists, return error
 			if (existingUser) {
-				// console.log(`[auth/+page.server.ts] ❌ Email "${email}" is already registered`);
-				// console.log('[auth/+page.server.ts] Existing user:', {
-				// 	id: existingUser.id,
-				// 	email: existingUser.email,
-				// 	created_at: existingUser.created_at
-				// });
-				
 				return setError(form, 'email', 'Este correo electrónico ya está registrado');
 			}
-
-			// console.log(`[auth/+page.server.ts] ✓ Email "${email}" is available`);
 		} catch (error) {
 			console.error('[auth/+page.server.ts] Unexpected error during email check:', error);
-			return message(form, 'Ocurrió un error. Por favor, intenta de nuevo más tarde.', { status: 500 });
+			return message(form, 'Ocurrió un error. Por favor, intenta de nuevo más tarde.', {
+				status: 500
+			});
 		}
 
 		// ============================================
-		// PROCEED WITH REGISTRATION
+		// PASO 2: Crear usuario en Supabase Auth
 		// ============================================
-		// console.log('[auth/+page.server.ts] Proceeding with registration...');
-
-		// Get the site URL for email confirmation
 		const siteUrl = new URL(request.url);
 		const redirectTo = `${siteUrl.protocol}//${siteUrl.host}/auth/confirm`;
 
@@ -180,29 +195,115 @@ export const actions: Actions = {
 			email,
 			password,
 			options: {
-				emailRedirectTo: redirectTo
+				emailRedirectTo: redirectTo,
+				data: {
+					nombre_completo,
+					created_at: new Date().toISOString()
+				}
 			}
 		});
 
-		// console.log('[auth/+page.server.ts] SignUp response:', {
-		// 	hasUser: !!signUpData?.user,
-		// 	error: signUpError
-		// });
-
 		if (signUpError) {
 			console.error('[auth/+page.server.ts] SignUp error:', signUpError);
-			
-			// Check for specific errors
+
 			if (signUpError.message.includes('already registered')) {
 				return setError(form, 'email', 'Este correo electrónico ya está registrado');
 			}
-			
+
 			return message(form, signUpError.message, { status: 400 });
 		}
 
-		// console.log(`[auth/+page.server.ts] ✓ Registration successful for "${email}"`);
+		console.log('[PASO 2.5] SignUp exitoso. signUpData:', {
+			userId: signUpData?.user?.id,
+			email: signUpData?.user?.email,
+			userMetadata: signUpData?.user?.user_metadata
+		});
 
-		// Redirect to confirmation message with email
+		// ============================================
+		// PASO 3: Crear perfil en tabla perfiles
+		// (usamos supabaseAdmin porque el user aún no confirmó email)
+		// ============================================
+		if (signUpData?.user) {
+			const userId = signUpData.user.id;
+
+			try {
+				// DEBUG: Log el objeto que vamos a insertar
+				const perfilData = {
+					id: userId,
+					email: email,
+					nombre_completo: nombre_completo,
+					empresa: empresa || null,
+					cargo: cargo || null,
+					telefono: telefono || null,
+					es_admin: false,
+					esta_baneado: false
+				};
+
+				console.log('[PASO 3] Datos de perfil a insertar:', JSON.stringify(perfilData, null, 2));
+
+				// Insertar perfil con los datos extra
+				const { error: perfilError, data: perfilInsertData } = await supabaseAdmin
+					.from('perfiles')
+					.upsert(perfilData, { onConflict: 'id' });
+
+				if (perfilError) {
+					console.error('[auth/+page.server.ts] Error creando perfil:', perfilError);
+					console.error('[PASO 3] Error details:', {
+						message: perfilError.message,
+						code: perfilError.code,
+						details: perfilError.details
+					});
+				} else {
+					console.log('[PASO 3] ✓ Perfil creado exitosamente');
+					console.log('[PASO 3] Datos retornados por Supabase:', perfilInsertData);
+				}
+
+				// ============================================
+				// PASO 4: Crear solicitud de acceso (si aplica)
+				// ============================================
+				if (solicitar_acceso && cliente_id && cliente_id !== '') {
+					console.log('[PASO 4] Creando solicitud de acceso:', {
+						user_id: userId,
+						cliente_id,
+						estado: 'pendiente',
+						mensaje: mensaje_solicitud
+					});
+
+					const { error: solicitudError } = await supabaseAdmin
+						.from('solicitudes_acceso')
+						.insert({
+							user_id: userId,
+							cliente_id: cliente_id,
+							estado: 'pendiente',
+							mensaje: mensaje_solicitud || null
+						});
+
+					if (solicitudError) {
+						console.error(
+							'[auth/+page.server.ts] Error creando solicitud:',
+							solicitudError
+						);
+					} else {
+						console.log(
+							`[auth/+page.server.ts] ✓ Solicitud de acceso creada para user ${userId} → cliente ${cliente_id}`
+						);
+					}
+				} else {
+					console.log('[PASO 4] No se crea solicitud de acceso', {
+						solicitar_acceso,
+						cliente_id
+					});
+				}
+			} catch (err) {
+				console.error('[auth/+page.server.ts] Error en post-registro:', err);
+			}
+		}
+
+		console.log('========== FIN DEBUG ==========');
+
+		// ============================================
+		// PASO 5: Redirect a verificación de email
+		// ============================================
 		throw redirect(
 			303,
 			`${AUTH_REDIRECT_PATHS.FLOW.VERIFY}?email=${encodeURIComponent(email)}`
