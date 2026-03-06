@@ -2,9 +2,9 @@
 	// import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte'; // componente pendiente
 	import { onMount } from 'svelte';
 	
-	let usuarios = $state([]);
+	let usuarios = $state<any[]>([]);
 	let loading = $state(true);
-	let error = $state(null);
+	let error = $state<string | null>(null);
 	
 	// Paginación
 	let paginaActual = $state(1);
@@ -18,7 +18,7 @@
 	
 	// Expandir detalles
 	let usuarioExpandido = $state<string | null>(null);
-	let anunciosUsuario = $state([]);
+	let anunciosUsuario = $state<any[]>([]);
 	let loadingAnuncios = $state(false);
 	
 	// Modal confirmación
@@ -183,10 +183,7 @@
 	}
 </script>
 
-<div class="min-h-screen bg-background">
-	<!-- <SidebarAdmin /> -->
-
-	<main class="pl-80 pr-8 py-8">
+<div class="py-8">
 		<!-- Header -->
 		<div class="mb-8">
 			<h1 class="text-3xl font-bold text-foreground mb-2">Gestión de Usuarios</h1>
@@ -199,15 +196,15 @@
 				<p class="text-sm text-muted-foreground mb-1">Total Usuarios</p>
 				<p class="text-3xl font-bold text-foreground">{stats.total}</p>
 			</div>
-			<div class="bg-blue-50 rounded-xl shadow-sm border border-blue-100 p-5">
+			<div class="bg-blue-500/10 rounded-xl shadow-sm border border-blue-500/20 p-5">
 				<p class="text-sm text-blue-700 mb-1">👑 Administradores</p>
 				<p class="text-3xl font-bold text-blue-600">{stats.admins}</p>
 			</div>
-			<div class="bg-red-50 rounded-xl shadow-sm border border-red-100 p-5">
+			<div class="bg-red-500/10 rounded-xl shadow-sm border border-red-500/20 p-5">
 				<p class="text-sm text-red-700 mb-1">🚫 Baneados</p>
 				<p class="text-3xl font-bold text-red-600">{stats.baneados}</p>
 			</div>
-			<div class="bg-green-50 rounded-xl shadow-sm border border-green-100 p-5">
+			<div class="bg-green-500/10 rounded-xl shadow-sm border border-green-500/20 p-5">
 				<p class="text-sm text-green-700 mb-1">📝 Con Anuncios</p>
 				<p class="text-3xl font-bold text-green-600">{stats.conAnuncios}</p>
 			</div>
@@ -227,7 +224,7 @@
 					<option value="admin">Solo admins</option>
 					<option value="usuario">Solo usuarios</option>
 				</select>
-				<select bind:value={filtroBaneado} class="px-4 py-2 border border-gray-300 rounded-lg">
+				<select bind:value={filtroBaneado} class="px-4 py-2 border border-input rounded-lg bg-background text-foreground">
 					<option value="todos">Todos los estados</option>
 					<option value="activo">Solo activos</option>
 					<option value="baneado">Solo baneados</option>
@@ -242,7 +239,7 @@
 				<p class="text-muted-foreground">Cargando usuarios...</p>
 			</div>
 		{:else if error}
-			<div class="bg-red-50 border border-red-200 rounded-xl p-6">
+			<div class="bg-red-500/10 border border-red-500/30 rounded-xl p-6">
 				<p class="text-red-800">❌ {error}</p>
 			</div>
 		{:else if usuarios.length === 0}
@@ -271,7 +268,7 @@
 									<!-- Info del usuario -->
 									<div class="flex-1 min-w-0">
 										<div class="flex items-center gap-2 mb-1 flex-wrap">
-											<p class="font-semibold text-gray-900 truncate">
+											<p class="font-semibold text-foreground truncate">
 												{usuario.nombre_completo || 'Sin nombre'}
 											</p>
 											{#if usuario.es_admin}
@@ -310,14 +307,14 @@
 									{#if usuario.esta_baneado}
 										<button
 											onclick={() => abrirModal(usuario, 'desbanear')}
-											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-green-600 text-green-600 bg-white hover:bg-green-600 hover:text-white transition-colors whitespace-nowrap"
+											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-green-600 text-green-600 bg-card hover:bg-green-600 hover:text-white transition-colors whitespace-nowrap"
 										>
 											✓ Desbanear
 										</button>
 									{:else}
 										<button
 											onclick={() => abrirModal(usuario, 'banear')}
-											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-red-600 text-red-600 bg-white hover:bg-red-600 hover:text-white transition-colors whitespace-nowrap"
+											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-red-600 text-red-600 bg-card hover:bg-red-600 hover:text-white transition-colors whitespace-nowrap"
 										>
 											🚫 Banear
 										</button>
@@ -326,14 +323,14 @@
 									{#if usuario.es_admin}
 										<button
 											onclick={() => abrirModal(usuario, 'quitar_admin')}
-											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-gray-600 text-gray-600 bg-white hover:bg-gray-600 hover:text-white transition-colors whitespace-nowrap"
+											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-border text-foreground bg-card hover:bg-muted transition-colors whitespace-nowrap"
 										>
 											👤 Quitar Admin
 										</button>
 									{:else}
 										<button
 											onclick={() => abrirModal(usuario, 'hacer_admin')}
-											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-amber-600 text-amber-600 bg-white hover:bg-amber-600 hover:text-white transition-colors whitespace-nowrap"
+											class="px-4 py-2.5 text-sm font-semibold rounded-lg border border-amber-600 text-amber-600 bg-card hover:bg-amber-600 hover:text-white transition-colors whitespace-nowrap"
 										>
 											👑 Hacer Admin
 										</button>
@@ -359,7 +356,7 @@
 														<span class="px-2 py-0.5 rounded font-semibold {anuncio.estado === 'activo' ? 'bg-green-100 text-green-700' : anuncio.estado === 'pendiente_revision' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}">
 															{anuncio.estado.replace('_', ' ')}
 														</span>
-														<span class="px-2 py-0.5 rounded font-semibold {anuncio.publico ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}">
+														<span class="px-2 py-0.5 rounded font-semibold {anuncio.publico ? 'bg-blue-500/15 text-blue-700' : 'bg-muted text-muted-foreground'}">
 															{anuncio.publico ? '👁️ Público' : '🔒 Privado'}
 														</span>
 														<span class="px-2 py-0.5 rounded font-semibold {anuncio.tipo_transaccion === 'venta' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}">
@@ -474,5 +471,4 @@
 				</div>
 			</div>
 		{/if}
-	</main>
 </div>

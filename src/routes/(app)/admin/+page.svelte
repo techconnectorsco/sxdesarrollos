@@ -1,6 +1,4 @@
 <script lang="ts">
-	import SidebarAdmin from '$lib/components/app/admin/SidebarAdmin.svelte';
-
 	let { data } = $props();
 
 	const accesosRapidos = [
@@ -49,20 +47,16 @@
 	];
 
 	const colorMap: Record<string, { card: string; iconBg: string; iconText: string; border: string; hover: string }> = {
-		amber:   { card: 'bg-amber-50',   iconBg: 'bg-amber-500',   iconText: 'text-white', border: 'border-amber-200',   hover: 'hover:border-amber-400' },
-		blue:    { card: 'bg-blue-50',     iconBg: 'bg-blue-500',    iconText: 'text-white', border: 'border-blue-200',    hover: 'hover:border-blue-400' },
-		cyan:    { card: 'bg-cyan-50',     iconBg: 'bg-cyan-600',    iconText: 'text-white', border: 'border-cyan-200',    hover: 'hover:border-cyan-400' },
-		purple:  { card: 'bg-purple-50',   iconBg: 'bg-purple-500',  iconText: 'text-white', border: 'border-purple-200',  hover: 'hover:border-purple-400' },
-		emerald: { card: 'bg-emerald-50',  iconBg: 'bg-emerald-500', iconText: 'text-white', border: 'border-emerald-200', hover: 'hover:border-emerald-400' },
-		slate:   { card: 'bg-slate-50',    iconBg: 'bg-slate-600',   iconText: 'text-white', border: 'border-slate-200',   hover: 'hover:border-slate-400' }
+		amber:   { card: 'bg-amber-500/10',   iconBg: 'bg-amber-500',   iconText: 'text-white', border: 'border-amber-500/30',   hover: 'hover:border-amber-500/60' },
+		blue:    { card: 'bg-blue-500/10',     iconBg: 'bg-blue-500',    iconText: 'text-white', border: 'border-blue-500/30',    hover: 'hover:border-blue-500/60' },
+		cyan:    { card: 'bg-cyan-500/10',     iconBg: 'bg-cyan-600',    iconText: 'text-white', border: 'border-cyan-500/30',    hover: 'hover:border-cyan-500/60' },
+		purple:  { card: 'bg-purple-500/10',   iconBg: 'bg-purple-500',  iconText: 'text-white', border: 'border-purple-500/30',  hover: 'hover:border-purple-500/60' },
+		emerald: { card: 'bg-emerald-500/10',  iconBg: 'bg-emerald-500', iconText: 'text-white', border: 'border-emerald-500/30', hover: 'hover:border-emerald-500/60' },
+		slate:   { card: 'bg-slate-500/10',    iconBg: 'bg-slate-600',   iconText: 'text-white', border: 'border-slate-500/30',   hover: 'hover:border-slate-500/60' }
 	};
 </script>
 
-<div class="min-h-screen bg-gray-50">
-	<SidebarAdmin />
-
-	<!-- Main Content -->
-	<main class="pl-80 pr-8 py-8">
+<div>
 		<!-- Header -->
 		<div class="mb-10">
 			<div class="flex items-center gap-3 mb-2">
@@ -73,15 +67,15 @@
 					</svg>
 				</div>
 				<div>
-					<h1 class="text-2xl font-bold text-gray-800">Administración</h1>
-					<p class="text-sm text-gray-500">Plataforma SX — Transformación Digital</p>
+					<h1 class="text-2xl font-bold text-foreground">Administración</h1>
+					<p class="text-sm text-muted-foreground">Plataforma SX — Transformación Digital</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- Accesos Rápidos -->
 		<div class="mb-8">
-			<h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+			<h2 class="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
 				<svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
 				</svg>
@@ -102,10 +96,10 @@
 								</svg>
 							</div>
 							<div class="flex-1 min-w-0">
-								<p class="font-semibold text-gray-800 group-hover:text-gray-900">{item.titulo}</p>
-								<p class="text-sm text-gray-500 mt-0.5 leading-relaxed">{item.descripcion}</p>
+								<p class="font-semibold text-foreground">{item.titulo}</p>
+								<p class="text-sm text-muted-foreground mt-0.5 leading-relaxed">{item.descripcion}</p>
 							</div>
-							<svg class="w-5 h-5 text-gray-300 group-hover:text-gray-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<svg class="w-5 h-5 text-muted-foreground/40 group-hover:text-muted-foreground group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
 							</svg>
 						</div>
@@ -132,42 +126,41 @@
 		</div>
 
 		<!-- Tareas Pendientes (placeholder para futuro) -->
-		<div class="mt-8 bg-white rounded-xl border border-gray-200 p-6">
-			<h3 class="text-base font-bold text-gray-700 mb-4 flex items-center gap-2">
+		<div class="mt-8 bg-card rounded-xl border border-border p-6">
+			<h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
 				<svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
 				</svg>
 				Pendientes
 			</h3>
 			<div class="space-y-3">
-				<a href="/admin/solicitudes" class="flex items-center justify-between p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors group">
+				<a href="/admin/solicitudes" class="flex items-center justify-between p-3 bg-amber-500/10 rounded-lg hover:bg-amber-500/20 transition-colors group">
 					<div class="flex items-center gap-3">
 						<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-						<span class="text-sm text-gray-700 font-medium">Revisar solicitudes de acceso pendientes</span>
+						<span class="text-sm text-foreground font-medium">Revisar solicitudes de acceso pendientes</span>
 					</div>
-					<svg class="w-4 h-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
 					</svg>
 				</a>
-				<a href="/admin/clientes" class="flex items-center justify-between p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group">
+				<a href="/admin/clientes" class="flex items-center justify-between p-3 bg-blue-500/10 rounded-lg hover:bg-blue-500/20 transition-colors group">
 					<div class="flex items-center gap-3">
 						<span class="w-2 h-2 rounded-full bg-blue-400"></span>
-						<span class="text-sm text-gray-700 font-medium">Agregar nuevos clientes al sistema</span>
+						<span class="text-sm text-foreground font-medium">Agregar nuevos clientes al sistema</span>
 					</div>
-					<svg class="w-4 h-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
 					</svg>
 				</a>
-				<a href="/admin/casos-exito" class="flex items-center justify-between p-3 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors group">
+				<a href="/admin/casos-exito" class="flex items-center justify-between p-3 bg-emerald-500/10 rounded-lg hover:bg-emerald-500/20 transition-colors group">
 					<div class="flex items-center gap-3">
 						<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-						<span class="text-sm text-gray-700 font-medium">Subir casos de éxito con imágenes a la landing</span>
+						<span class="text-sm text-foreground font-medium">Subir casos de éxito con imágenes a la landing</span>
 					</div>
-					<svg class="w-4 h-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
 					</svg>
 				</a>
 			</div>
 		</div>
-	</main>
 </div>

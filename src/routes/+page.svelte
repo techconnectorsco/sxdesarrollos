@@ -96,7 +96,6 @@
 	});
 </script>
 
-<!-- Sin bg aquí — hereda del body/html que maneja ModeWatcher -->
 <div class="flex min-h-screen flex-col">
 	<MainNav session={data.session} user={data.user} perfil={data.perfilNav} />
 
@@ -110,12 +109,8 @@
 			<div class="hero-grid absolute inset-0 pointer-events-none"></div>
 
 			<!-- Blobs decorativos -->
-			<div class="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full blur-[130px] pointer-events-none
-			            bg-blue-100 opacity-80
-			            dark:bg-blue-900/25 dark:opacity-40"></div>
-			<div class="absolute bottom-0 right-0 w-[360px] h-[360px] rounded-full blur-[100px] pointer-events-none
-			            bg-slate-200 opacity-60
-			            dark:bg-slate-800/30 dark:opacity-50"></div>
+			<div class="blob-blue absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full blur-[130px] pointer-events-none"></div>
+			<div class="blob-slate absolute bottom-0 right-0 w-[360px] h-[360px] rounded-full blur-[100px] pointer-events-none"></div>
 
 			<div
 				class="relative z-10 max-w-2xl transition-all duration-700 ease-out"
@@ -128,32 +123,28 @@
 					target="_blank"
 					rel="noopener noreferrer"
 					class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full no-underline
-					       border border-blue-300 dark:border-blue-800
-					       bg-blue-50 dark:bg-blue-950/50
-					       hover:border-blue-500 dark:hover:border-blue-600
-					       hover:bg-blue-100 dark:hover:bg-blue-900/50
+					       border border-blue-300/60 dark:border-blue-500/30
+					       bg-blue-500/10
+					       hover:bg-blue-500/20
 					       transition-colors duration-200"
 				>
-					<span class="w-1.5 h-1.5 rounded-full bg-blue-700 dark:bg-blue-400 animate-pulse"></span>
-					<span class="text-xs text-slate-700 dark:text-slate-400">Una iniciativa de</span>
-					<span class="text-xs font-bold uppercase tracking-wide text-blue-800 dark:text-blue-400">SoporteXperto</span>
-					<svg class="w-3 h-3 text-blue-700 dark:text-blue-500 opacity-80" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8">
+					<span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+					<span class="text-xs text-muted-foreground">Una iniciativa de</span>
+					<span class="text-xs font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400">SoporteXperto</span>
+					<svg class="w-3 h-3 text-blue-500 opacity-80" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M2.5 9.5l7-7M3.5 2.5h6v6"/>
 					</svg>
 				</a>
 
-				<!-- Heading principal -->
-				<h1 class="font-serif text-5xl md:text-6xl font-bold leading-[1.07] tracking-tight mb-5
-				           text-slate-900 dark:text-white">
+				<h1 class="font-serif text-5xl md:text-6xl font-bold leading-[1.07] tracking-tight mb-5 text-foreground">
 					Automatización<br />
-					<em class="not-italic text-blue-800 dark:text-blue-400">que genera valor</em>
+					<em class="not-italic text-blue-600 dark:text-blue-400">que genera valor</em>
 				</h1>
 
-				<!-- Descripción de la oficina -->
-				<div class="mb-9 pl-4 border-l-2 border-blue-600 dark:border-blue-500">
-					<p class="text-base leading-relaxed text-slate-800 dark:text-slate-300">
+				<div class="mb-9 pl-4 border-l-2 border-blue-500">
+					<p class="text-base leading-relaxed text-muted-foreground">
 						Somos la
-						<strong class="font-semibold text-slate-900 dark:text-slate-100">Oficina de Transformación Digital</strong>
+						<strong class="font-semibold text-foreground">Oficina de Transformación Digital</strong>
 						de SoporteXperto — el equipo especializado en automatizar procesos empresariales para que tu organización
 						opere más rápido, con menos errores y mayor rentabilidad.
 					</p>
@@ -163,8 +154,8 @@
 				<div class="flex flex-wrap gap-3 mb-12">
 					<a href="/auth?mode=register"
 					   class="inline-flex items-center gap-2 px-6 py-3 rounded-xl no-underline font-semibold text-sm
-					          bg-blue-800 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600
-					          text-white shadow-md shadow-blue-900/20 dark:shadow-blue-900/40
+					          bg-blue-600 hover:bg-blue-500 text-white
+					          shadow-md shadow-blue-600/20
 					          transition-all duration-200 hover:-translate-y-0.5">
 						Comienza Ahora
 						<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
@@ -173,18 +164,15 @@
 					</a>
 					<a href="#casos"
 					   class="inline-flex items-center px-6 py-3 rounded-xl no-underline font-semibold text-sm
-					          border border-slate-400 dark:border-slate-600
-					          text-slate-800 dark:text-slate-200
-					          hover:bg-slate-100 dark:hover:bg-slate-800
+					          border border-border text-foreground
+					          hover:bg-muted
 					          transition-colors duration-200">
 						Ver Casos de Éxito
 					</a>
 				</div>
 
 				<!-- Stats bar -->
-				<div class="inline-flex divide-x divide-slate-300 dark:divide-slate-700 rounded-xl overflow-hidden
-				            border border-slate-300 dark:border-slate-700
-				            bg-white dark:bg-slate-900 shadow-sm">
+				<div class="inline-flex divide-x divide-border rounded-xl overflow-hidden border border-border bg-card shadow-sm">
 					{#each [
 						{ v: '24+',   l: 'Procesos activos' },
 						{ v: '15+',   l: 'Clientes en CR'   },
@@ -192,59 +180,224 @@
 						{ v: '99.8%', l: 'Tasa de éxito'    }
 					] as s}
 						<div class="flex flex-col px-5 py-3.5 gap-1">
-							<span class="text-xl font-extrabold leading-none text-blue-800 dark:text-blue-400">{s.v}</span>
-							<span class="text-[10px] uppercase tracking-widest font-semibold text-slate-700 dark:text-slate-400">{s.l}</span>
+							<span class="text-xl font-extrabold leading-none text-blue-600 dark:text-blue-400">{s.v}</span>
+							<span class="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">{s.l}</span>
 						</div>
 					{/each}
 				</div>
 			</div>
 
-			<!-- Terminal (siempre dark — es un bloque de código) -->
-			<div class="absolute right-[5%] top-1/2 -translate-y-1/2 w-[375px] hidden xl:block z-10 shadow-2xl">
-				<div class="rounded-xl overflow-hidden border border-white/10 font-mono text-xs" style="background:#0d1117">
-					<div class="flex items-center gap-1.5 px-4 py-3 border-b border-white/8" style="background:#161b22">
-						<span class="w-3 h-3 rounded-full" style="background:#ff5f56"></span>
-						<span class="w-3 h-3 rounded-full" style="background:#ffbd2e"></span>
-						<span class="w-3 h-3 rounded-full" style="background:#27c93f"></span>
-						<span class="ml-2 text-[11px]" style="color:rgba(255,255,255,.35)">sx-automation.py</span>
-					</div>
-					<div class="px-5 py-5 leading-loose text-[12px]">
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">01</span><span style="color:#79c0ff">import</span> <span style="color:#c9d1d9">sx_rpa</span></p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">02</span></p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">03</span><span style="color:#d2a8ff">bot</span> = sx_rpa.<span style="color:#e3b341">Robot</span>(<span style="color:#56d364">"facturacion"</span>)</p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">04</span>bot.<span style="color:#e3b341">configurar</span>(retries=<span style="color:#f0883e">3</span>)</p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">05</span></p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">06</span><span style="color:#79c0ff">for</span> doc <span style="color:#79c0ff">in</span> bot.<span style="color:#e3b341">pendientes</span>():</p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">07</span>    bot.<span style="color:#e3b341">procesar</span>(doc)</p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">08</span>    bot.<span style="color:#e3b341">notificar</span>(doc.cliente)</p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">09</span></p>
-						<p><span class="select-none mr-3" style="color:rgba(255,255,255,.2)">10</span><span style="color:#8b949e"># ✅ 2,847 docs procesados hoy</span></p>
-					</div>
-					<div class="flex items-center gap-2 px-5 py-2.5 border-t text-[11px]"
-					     style="background:rgba(39,201,63,.08);border-color:rgba(255,255,255,.06);color:#56d364">
-						<span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#27c93f"></span>
-						Corriendo · 0 errores · 14:32:07
-					</div>
-				</div>
+			<!-- Terminal (siempre dark — bloque de código) -->
+			<!-- ================================================
+     TERMINAL HERO — reemplaza el bloque anterior
+     ================================================ -->
+<div class="absolute right-[4%] top-1/2 -translate-y-1/2 hidden xl:block z-10" style="width:420px">
+
+	<!-- Glow ambiental detrás -->
+	<div class="absolute inset-0 -z-10 pointer-events-none"
+	     style="
+	       background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(59,130,246,0.18) 0%, transparent 70%);
+	       transform: scale(1.3) translateY(4%);
+	       filter: blur(24px);
+	     ">
+	</div>
+
+	<!-- Tarjeta flotante: stats rápidas (arriba izquierda, sobresale) -->
+	<div class="absolute -top-5 -left-12 z-20 px-4 py-3 rounded-2xl shadow-xl
+	            border border-white/10
+	            font-sans"
+	     style="
+	       background: rgba(15, 23, 42, 0.85);
+	       backdrop-filter: blur(16px);
+	       -webkit-backdrop-filter: blur(16px);
+	       animation: floatA 5s ease-in-out infinite;
+	     ">
+		<p class="text-[9px] font-semibold uppercase tracking-widest mb-2" style="color:rgba(148,163,184,.6)">Hoy en producción</p>
+		<div class="flex items-end gap-3">
+			<div>
+				<p class="text-2xl font-extrabold leading-none" style="color:#60a5fa">2,847</p>
+				<p class="text-[9px] mt-0.5 font-medium" style="color:rgba(148,163,184,.7)">docs procesados</p>
 			</div>
+			<div class="pb-0.5">
+				<!-- Mini sparkline SVG -->
+				<svg width="54" height="24" viewBox="0 0 54 24" fill="none">
+					<polyline
+						points="0,22 9,16 18,18 27,10 36,12 45,5 54,2"
+						stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"
+					/>
+					<circle cx="54" cy="2" r="2.5" fill="#34d399"/>
+				</svg>
+			</div>
+		</div>
+	</div>
+
+	<!-- Tarjeta flotante: alerta positiva (abajo derecha, sobresale) -->
+	<div class="absolute -bottom-5 -right-8 z-20 flex items-center gap-2.5 px-4 py-2.5 rounded-2xl shadow-xl
+	            border border-white/10 font-sans"
+	     style="
+	       background: rgba(15, 23, 42, 0.85);
+	       backdrop-filter: blur(16px);
+	       -webkit-backdrop-filter: blur(16px);
+	       animation: floatB 6s ease-in-out infinite;
+	     ">
+		<div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+		     style="background:rgba(52,211,153,.15)">
+			<svg width="13" height="13" viewBox="0 0 20 20" fill="#34d399">
+				<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+			</svg>
+		</div>
+		<div>
+			<p class="text-[11px] font-semibold leading-tight" style="color:#f1f5f9">0 errores detectados</p>
+			<p class="text-[9px]" style="color:rgba(148,163,184,.6)">Último ciclo · hace 3s</p>
+		</div>
+	</div>
+
+	<!-- Terminal principal -->
+	<div class="rounded-2xl overflow-hidden font-mono text-xs shadow-2xl ring-1"
+	     style="
+	       background: #0d1117;
+	       box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06);
+	     ">
+
+		<!-- Barra de título -->
+		<div class="flex items-center justify-between px-4 py-3 border-b"
+		     style="background:#161b22; border-color:rgba(255,255,255,.06)">
+			<div class="flex items-center gap-1.5">
+				<span class="w-3 h-3 rounded-full transition-opacity duration-150 hover:opacity-80 cursor-default"
+				      style="background:#ff5f56"></span>
+				<span class="w-3 h-3 rounded-full transition-opacity duration-150 hover:opacity-80 cursor-default"
+				      style="background:#ffbd2e"></span>
+				<span class="w-3 h-3 rounded-full transition-opacity duration-150 hover:opacity-80 cursor-default"
+				      style="background:#27c93f"></span>
+			</div>
+			<div class="flex items-center gap-1.5 px-3 py-1 rounded-md"
+			     style="background:rgba(255,255,255,.04)">
+				<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2">
+					<path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/>
+				</svg>
+				<span style="color:rgba(255,255,255,.35); font-size:10px">sx-automation.py</span>
+			</div>
+			<div class="flex gap-1">
+				{#each [1,2,3] as _}
+					<span class="w-5 h-5 rounded flex items-center justify-center cursor-default hover:bg-white/5 transition-colors">
+						<span class="w-2.5 h-px block" style="background:rgba(255,255,255,.2)"></span>
+					</span>
+				{/each}
+			</div>
+		</div>
+
+		<!-- Pestañas tipo editor -->
+		<div class="flex border-b" style="background:#161b22; border-color:rgba(255,255,255,.04)">
+			<div class="flex items-center gap-1.5 px-4 py-2 border-r border-b-2"
+			     style="border-right-color:rgba(255,255,255,.05); border-bottom-color:#3b82f6">
+				<span style="color:#60a5fa; font-size:10px">●</span>
+				<span style="color:#e2e8f0; font-size:10px">sx-automation.py</span>
+			</div>
+			<div class="flex items-center gap-1.5 px-4 py-2 border-r border-b-2 border-b-transparent"
+			     style="border-right-color:rgba(255,255,255,.05)">
+				<span style="color:rgba(255,255,255,.2); font-size:10px">○</span>
+				<span style="color:rgba(255,255,255,.3); font-size:10px">config.yaml</span>
+			</div>
+		</div>
+
+		<!-- Código -->
+		<div class="px-5 py-5 leading-[1.9] text-[12.5px]">
+			<p>
+				<span class="code-ln">01</span>
+				<span style="color:#79c0ff">import</span>
+				<span style="color:#c9d1d9"> sx_rpa</span>
+			</p>
+			<p>
+				<span class="code-ln">02</span>
+				<span style="color:#79c0ff">from</span>
+				<span style="color:#c9d1d9"> sx_rpa.notificaciones </span>
+				<span style="color:#79c0ff">import</span>
+				<span style="color:#c9d1d9"> Teams</span>
+			</p>
+			<p><span class="code-ln">03</span></p>
+			<p>
+				<span class="code-ln">04</span>
+				<span style="color:#d2a8ff">bot</span>
+				<span style="color:#c9d1d9"> = sx_rpa.</span>
+				<span style="color:#e3b341">Robot</span>
+				<span style="color:#c9d1d9">(</span>
+				<span style="color:#56d364">"facturacion"</span>
+				<span style="color:#c9d1d9">)</span>
+			</p>
+			<p>
+				<span class="code-ln">05</span>
+				<span style="color:#c9d1d9">bot.</span>
+				<span style="color:#e3b341">configurar</span>
+				<span style="color:#c9d1d9">(retries=</span>
+				<span style="color:#f0883e">3</span>
+				<span style="color:#c9d1d9">, timeout=</span>
+				<span style="color:#f0883e">30</span>
+				<span style="color:#c9d1d9">)</span>
+			</p>
+			<p><span class="code-ln">06</span></p>
+			<p>
+				<span class="code-ln">07</span>
+				<span style="color:#79c0ff">for</span>
+				<span style="color:#c9d1d9"> doc </span>
+				<span style="color:#79c0ff">in</span>
+				<span style="color:#c9d1d9"> bot.</span>
+				<span style="color:#e3b341">pendientes</span>
+				<span style="color:#c9d1d9">():</span>
+			</p>
+			<p>
+				<span class="code-ln">08</span>
+				<span style="color:#c9d1d9">    bot.</span>
+				<span style="color:#e3b341">procesar</span>
+				<span style="color:#c9d1d9">(doc)</span>
+			</p>
+			<p>
+				<span class="code-ln">09</span>
+				<span style="color:#c9d1d9">    Teams.</span>
+				<span style="color:#e3b341">notificar</span>
+				<span style="color:#c9d1d9">(doc.cliente, doc.monto)</span>
+			</p>
+			<p><span class="code-ln">10</span></p>
+			<p>
+				<span class="code-ln">11</span>
+				<span style="color:#8b949e"># ✅  2,847 documentos procesados hoy</span>
+			</p>
+			<!-- Cursor parpadeante en la línea siguiente -->
+			<p>
+				<span class="code-ln">12</span>
+				<span class="terminal-cursor"></span>
+			</p>
+		</div>
+
+		<!-- Barra de estado — separada en 3 zonas como VS Code -->
+		<div class="flex items-center justify-between px-4 py-0 text-[10px]"
+		     style="background:#1f6feb; min-height:22px">
+			<div class="flex items-center gap-3 h-full" style="color:rgba(255,255,255,.85)">
+				<span class="flex items-center gap-1">
+					<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+					main
+				</span>
+				<span>Python 3.11</span>
+			</div>
+			<div class="flex items-center gap-1.5" style="color:rgba(255,255,255,.75)">
+				<span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#4ade80"></span>
+				<span>Corriendo · 0 errores</span>
+			</div>
+			<div style="color:rgba(255,255,255,.65)">Ln 12, Col 1</div>
+		</div>
+	</div>
+</div>
 		</section>
 
 		<!-- ================================================
 		     TRUST BAR
 		     ================================================ -->
-		<div class="border-y border-slate-200 dark:border-slate-800
-		            bg-slate-100 dark:bg-slate-900/80
-		            px-6 py-5 text-center">
-			<p class="text-[10px] uppercase tracking-[0.15em] font-semibold mb-3
-			          text-slate-700 dark:text-slate-400">
+		<div class="border-y border-border bg-muted px-6 py-5 text-center">
+			<p class="text-[10px] uppercase tracking-[0.15em] font-semibold mb-3 text-muted-foreground">
 				Integramos con tus herramientas actuales
 			</p>
 			<div class="flex flex-wrap justify-center gap-2">
 				{#each ['Microsoft 365','Dynamics 365','Power Automate','Azure','SAP','Google Workspace'] as tool}
-					<span class="px-4 py-1.5 rounded-full text-xs font-medium
-					             border border-slate-300 dark:border-slate-700
-					             text-slate-800 dark:text-slate-300
-					             bg-white dark:bg-slate-800">
+					<span class="px-4 py-1.5 rounded-full text-xs font-medium border border-border bg-card text-foreground">
 						{tool}
 					</span>
 				{/each}
@@ -258,47 +411,36 @@
 			<div class="max-w-6xl mx-auto">
 
 				<div class="text-center mb-14">
-					<p class="text-xs font-bold uppercase tracking-[0.14em] mb-3
-					          text-blue-800 dark:text-blue-400">
+					<p class="text-xs font-bold uppercase tracking-[0.14em] mb-3 text-blue-600 dark:text-blue-400">
 						Lo que ofrecemos
 					</p>
-					<h2 class="font-serif text-4xl font-bold tracking-tight mb-3
-					           text-slate-900 dark:text-white">
+					<h2 class="font-serif text-4xl font-bold tracking-tight mb-3 text-foreground">
 						Una suite completa<br />de automatización
 					</h2>
-					<p class="max-w-lg mx-auto leading-relaxed text-sm
-					          text-slate-700 dark:text-slate-400">
+					<p class="max-w-lg mx-auto leading-relaxed text-sm text-muted-foreground">
 						Desde robots RPA hasta pipelines en la nube, cubrimos todo el espectro de la automatización empresarial.
 					</p>
 				</div>
 
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px rounded-2xl overflow-hidden shadow-sm
-				            bg-slate-200 dark:bg-slate-800
-				            border border-slate-200 dark:border-slate-800">
+				            bg-border border border-border">
 					{#each servicios as s, i}
 						<div
-							class="group relative p-8 cursor-default transition-colors duration-200
-							       bg-white dark:bg-slate-900
-							       hover:bg-slate-50 dark:hover:bg-slate-800/80"
+							class="group relative p-8 cursor-default transition-colors duration-200 bg-card hover:bg-muted"
 							style="animation: fadeUp 0.4s ease {i * 55}ms both"
 						>
-							<!-- Ícono -->
 							<div class="w-11 h-11 flex items-center justify-center rounded-lg mb-5 transition-all duration-200
-							            border border-slate-200 dark:border-slate-700
-							            bg-slate-100 dark:bg-slate-800
-							            text-slate-700 dark:text-slate-400
-							            group-hover:bg-blue-50 dark:group-hover:bg-blue-950/50
-							            group-hover:border-blue-300 dark:group-hover:border-blue-800
-							            group-hover:text-blue-800 dark:group-hover:text-blue-400">
+							            border border-border bg-muted text-muted-foreground
+							            group-hover:bg-blue-500/10 group-hover:border-blue-500/30
+							            group-hover:text-blue-500">
 								{@html s.icon}
 							</div>
-							<h3 class="text-sm font-bold mb-2 text-slate-900 dark:text-white">{s.titulo}</h3>
-							<p class="text-sm leading-relaxed text-slate-700 dark:text-slate-400">{s.desc}</p>
-							<span class="absolute bottom-5 right-5 font-semibold
+							<h3 class="text-sm font-bold mb-2 text-foreground">{s.titulo}</h3>
+							<p class="text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+							<span class="absolute bottom-5 right-5 font-semibold text-blue-500
 							             opacity-0 -translate-x-1
 							             group-hover:opacity-100 group-hover:translate-x-0
-							             transition-all duration-200
-							             text-blue-800 dark:text-blue-400">→</span>
+							             transition-all duration-200">→</span>
 						</div>
 					{/each}
 				</div>
@@ -308,18 +450,14 @@
 		<!-- ================================================
 		     PROCESO
 		     ================================================ -->
-		<section class="py-24 px-6
-		                bg-slate-100 dark:bg-slate-900/60
-		                border-y border-slate-200 dark:border-slate-800">
+		<section class="py-24 px-6 bg-muted border-y border-border">
 			<div class="max-w-6xl mx-auto">
 
 				<div class="text-center mb-14">
-					<p class="text-xs font-bold uppercase tracking-[0.14em] mb-3
-					          text-blue-800 dark:text-blue-400">
+					<p class="text-xs font-bold uppercase tracking-[0.14em] mb-3 text-blue-600 dark:text-blue-400">
 						¿Cómo funciona?
 					</p>
-					<h2 class="font-serif text-4xl font-bold tracking-tight
-					           text-slate-900 dark:text-white">
+					<h2 class="font-serif text-4xl font-bold tracking-tight text-foreground">
 						De cero a automatizado<br />en semanas, no meses
 					</h2>
 				</div>
@@ -329,18 +467,15 @@
 						<div class="flex items-start">
 							<div class="text-center w-44 px-3">
 								<div class="inline-flex items-center justify-center w-11 h-11 rounded-full mb-4
-								            border-2 border-blue-300 dark:border-blue-800
-								            bg-blue-50 dark:bg-blue-950/40
-								            text-blue-800 dark:text-blue-400 text-xs font-extrabold tracking-wider">
+								            border-2 border-blue-500/40 bg-blue-500/10
+								            text-blue-600 dark:text-blue-400 text-xs font-extrabold tracking-wider">
 									{step.n}
 								</div>
-								<h3 class="text-sm font-bold mb-2 text-slate-900 dark:text-white">{step.t}</h3>
-								<p class="text-xs leading-relaxed text-slate-700 dark:text-slate-400">{step.d}</p>
+								<h3 class="text-sm font-bold mb-2 text-foreground">{step.t}</h3>
+								<p class="text-xs leading-relaxed text-muted-foreground">{step.d}</p>
 							</div>
 							{#if i < 3}
-								<div class="hidden md:block w-10 h-px mt-[22px] flex-shrink-0
-								            bg-gradient-to-r from-blue-400 to-slate-300
-								            dark:from-blue-700 dark:to-slate-700 opacity-70"></div>
+								<div class="hidden md:block w-10 h-px mt-[22px] flex-shrink-0 bg-border"></div>
 							{/if}
 						</div>
 					{/each}
@@ -355,41 +490,34 @@
 			<div class="max-w-6xl mx-auto">
 
 				<div class="text-center mb-14">
-					<p class="text-xs font-bold uppercase tracking-[0.14em] mb-3
-					          text-blue-800 dark:text-blue-400">
+					<p class="text-xs font-bold uppercase tracking-[0.14em] mb-3 text-blue-600 dark:text-blue-400">
 						Resultados reales
 					</p>
-					<h2 class="font-serif text-4xl font-bold tracking-tight
-					           text-slate-900 dark:text-white">
+					<h2 class="font-serif text-4xl font-bold tracking-tight text-foreground">
 						Casos de Éxito
 					</h2>
 				</div>
 
-				<div class="flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-sm
-				            border border-slate-200 dark:border-slate-800">
+				<div class="flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-sm border border-border">
 
 					<!-- Tabs -->
-					<div class="md:w-72 flex-shrink-0 divide-y divide-slate-200 dark:divide-slate-800
-					            bg-slate-100 dark:bg-slate-900/60">
+					<div class="md:w-72 flex-shrink-0 divide-y divide-border bg-muted">
 						{#each casosExito as caso, i}
 							<button
 								onclick={() => (currentCaseIndex = i)}
 								class="w-full flex items-start gap-3 px-5 py-5 text-left transition-colors duration-200
 								       border-l-2
 								       {i === currentCaseIndex
-								         ? 'border-blue-700 dark:border-blue-500 bg-white dark:bg-slate-800/80'
-								         : 'border-transparent hover:bg-white dark:hover:bg-slate-800/40'}"
+								         ? 'border-blue-500 bg-card'
+								         : 'border-transparent hover:bg-card'}"
 							>
 								<span class="text-xl flex-shrink-0 mt-0.5">{caso.icon}</span>
 								<div>
-									<p class="text-[10px] font-bold uppercase tracking-widest mb-1
-									          text-blue-800 dark:text-blue-400">
+									<p class="text-[10px] font-bold uppercase tracking-widest mb-1 text-blue-600 dark:text-blue-400">
 										{caso.industria}
 									</p>
 									<p class="text-xs font-semibold leading-snug
-									          {i === currentCaseIndex
-									            ? 'text-slate-900 dark:text-slate-100'
-									            : 'text-slate-800 dark:text-slate-300'}">
+									          {i === currentCaseIndex ? 'text-foreground' : 'text-muted-foreground'}">
 										{caso.titulo}
 									</p>
 								</div>
@@ -398,39 +526,30 @@
 					</div>
 
 					<!-- Panel del caso -->
-					<div class="flex-1 p-8 md:p-12 bg-white dark:bg-slate-900">
+					<div class="flex-1 p-8 md:p-12 bg-card">
 						{#each casosExito as caso, i}
 							{#if i === currentCaseIndex}
 								<div class="caso-animate">
-									<!-- Badge industria -->
 									<span class="inline-block px-3 py-1 rounded-full mb-4 text-[10px] font-bold uppercase tracking-widest
-									            border border-blue-300 dark:border-blue-800
-									            bg-blue-50 dark:bg-blue-950/40
-									            text-blue-800 dark:text-blue-400">
+									            border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400">
 										{caso.industria}
 									</span>
 
-									<h3 class="font-serif text-2xl md:text-3xl font-bold tracking-tight mb-3
-									           text-slate-900 dark:text-white">
+									<h3 class="font-serif text-2xl md:text-3xl font-bold tracking-tight mb-3 text-foreground">
 										{caso.titulo}
 									</h3>
 
-									<p class="text-sm leading-relaxed mb-8 text-slate-700 dark:text-slate-400">
+									<p class="text-sm leading-relaxed mb-8 text-muted-foreground">
 										{caso.descripcion}
 									</p>
 
-									<!-- Métricas -->
 									<div class="flex flex-wrap gap-4 mb-8">
 										{#each caso.stats as stat}
-											<div class="flex-1 min-w-[90px] px-5 py-4 rounded-xl
-											            border border-slate-200 dark:border-slate-700
-											            bg-slate-50 dark:bg-slate-800/50">
-												<p class="text-2xl font-extrabold leading-none mb-1
-												          text-blue-800 dark:text-blue-400">
+											<div class="flex-1 min-w-[90px] px-5 py-4 rounded-xl border border-border bg-muted">
+												<p class="text-2xl font-extrabold leading-none mb-1 text-blue-600 dark:text-blue-400">
 													{stat.valor}
 												</p>
-												<p class="text-[10px] uppercase tracking-widest font-semibold
-												          text-slate-700 dark:text-slate-400">
+												<p class="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">
 													{stat.label}
 												</p>
 											</div>
@@ -439,8 +558,7 @@
 
 									<a href="/auth?mode=register"
 									   class="text-sm font-semibold no-underline transition-colors
-									          text-blue-800 dark:text-blue-400
-									          hover:text-blue-600 dark:hover:text-blue-300">
+									          text-blue-600 dark:text-blue-400 hover:text-blue-500">
 										Ver caso completo →
 									</a>
 								</div>
@@ -456,9 +574,7 @@
 							onclick={() => (currentCaseIndex = i)}
 							aria-label="Caso {i + 1}"
 							class="h-1.5 rounded-full transition-all duration-200
-							       {i === currentCaseIndex
-							         ? 'w-6 bg-blue-700 dark:bg-blue-500'
-							         : 'w-1.5 bg-slate-400 dark:bg-slate-700'}">
+							       {i === currentCaseIndex ? 'w-6 bg-blue-500' : 'w-1.5 bg-border'}">
 						</button>
 					{/each}
 				</div>
@@ -466,78 +582,59 @@
 		</section>
 
 		<!-- ================================================
-		     CTA FINAL
+		     CTA FINAL — fondo oscuro fijo en ambos modos
+		     (es un bloque de contraste intencional, como el terminal)
 		     ================================================ -->
-		<!-- CAMBIO CLAVE: light mode usa bg-blue-950 (más oscuro) para garantizar
-		     contraste con todo el texto blanco interior -->
-		<section class="relative py-28 px-6 overflow-hidden text-center
-		                bg-blue-950 dark:bg-slate-900
-		                border-t border-blue-900 dark:border-slate-800">
+		<section class="relative py-28 px-6 overflow-hidden text-center"
+		         style="background: linear-gradient(135deg, #0a1628 0%, #0f2140 50%, #0a1628 100%);">
 
 			<div class="cta-grid absolute inset-0 opacity-10 pointer-events-none"></div>
-			<div class="absolute inset-0 bg-gradient-to-b from-blue-900/40 to-blue-950/60 dark:from-blue-950/20 dark:to-transparent pointer-events-none"></div>
-			<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[280px] rounded-full blur-[120px] pointer-events-none
-			            bg-blue-700/10 dark:bg-blue-700/10"></div>
+			<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[260px] rounded-full blur-[120px] pointer-events-none"
+			     style="background: rgba(59,130,246,0.15)"></div>
 
 			<div class="relative z-10 max-w-2xl mx-auto">
 
-				<!-- Badge -->
-				<!-- CAMBIO: border-blue-700/60 en light para ser visible sobre fondo oscuro -->
 				<p class="inline-block px-4 py-1.5 rounded-full mb-6 text-xs font-bold uppercase tracking-widest
-				          border border-blue-700/60 dark:border-blue-700/50
-				          bg-white/10 dark:bg-blue-900/40
-				          text-blue-100 dark:text-blue-200">
+				          border border-blue-400/30 bg-white/10 text-blue-200">
 					Listo para empezar
 				</p>
 
-				<!-- Heading — siempre blanco (fondo oscuro en ambos modos) -->
 				<h2 class="font-serif text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-5 text-white">
 					¿Cuántas horas pierde<br />tu equipo hoy?
 				</h2>
 
-				<!-- Subtítulo -->
-				<p class="text-base leading-relaxed mb-10 max-w-md mx-auto text-blue-100 dark:text-slate-300">
+				<p class="text-base leading-relaxed mb-10 max-w-md mx-auto" style="color: rgba(191,219,254,0.8)">
 					Cada día sin automatización es tiempo y dinero que no recuperas.
 					Conversemos — diseñamos tu solución en 72 horas.
 				</p>
 
-				<!-- CTAs -->
 				<div class="flex flex-wrap gap-3 justify-center mb-7">
-					<!-- Botón primario: light = blanco sólido con texto oscuro, dark = azul -->
 					<a href="/auth?mode=register"
 					   class="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl no-underline font-bold text-sm
 					          bg-white text-blue-950 hover:bg-blue-50
-					          dark:bg-blue-700 dark:text-white dark:hover:bg-blue-600
-					          shadow-lg shadow-black/25 transition-all duration-200 hover:-translate-y-0.5">
+					          shadow-lg shadow-black/30 transition-all duration-200 hover:-translate-y-0.5">
 						Solicitar Demo Gratuita
 						<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
 							<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
 						</svg>
 					</a>
-					<!-- Botón secundario: CAMBIO — border-blue-400/50 visible sobre fondo oscuro en light -->
 					<a href="mailto:ventas@soportexperto.com"
 					   class="inline-flex items-center px-7 py-3.5 rounded-xl no-underline font-semibold text-sm
-					          border border-blue-400/50 dark:border-slate-600
-					          bg-white/10 dark:bg-slate-800
-					          text-white dark:text-slate-200
-					          hover:bg-white/20 dark:hover:bg-slate-700
+					          border border-white/20 bg-white/10 text-white hover:bg-white/20
 					          transition-colors duration-200">
 						ventas@soportexperto.com
 					</a>
 				</div>
 
-				<!-- Nota footer del CTA -->
-				<!-- CAMBIO: text-blue-200/70 en lugar de text-white/60 — más legible -->
-				<p class="text-xs tracking-wide mb-5 text-blue-200/70 dark:text-slate-500">
+				<p class="text-xs tracking-wide mb-5" style="color: rgba(147,197,253,0.5)">
 					Sin compromiso · Respuesta en menos de 24h · Implementación desde 2 semanas
 				</p>
 
-				<!-- Link SX -->
-				<!-- CAMBIO: text-blue-200/80 en lugar de text-white/70 — evita perderse en fondo claro -->
 				<a href="https://soportexperto.com" target="_blank" rel="noopener noreferrer"
-				   class="text-sm font-medium no-underline transition-colors
-				          text-blue-200/80 dark:text-slate-400
-				          hover:text-white dark:hover:text-slate-200">
+				   class="text-sm font-medium no-underline transition-colors"
+				   style="color: rgba(147,197,253,0.65)"
+				   onmouseenter={(e) => (e.currentTarget.style.color = 'white')}
+				   onmouseleave={(e) => (e.currentTarget.style.color = 'rgba(147,197,253,0.65)')}>
 					Conoce más sobre SoporteXperto →
 				</a>
 			</div>
@@ -548,31 +645,41 @@
 </div>
 
 <style>
-	/* Grid hero */
 	.hero-grid {
 		background-image:
-			linear-gradient(rgb(100 116 139 / 0.12) 1px, transparent 1px),
-			linear-gradient(90deg, rgb(100 116 139 / 0.12) 1px, transparent 1px);
+			linear-gradient(rgb(100 116 139 / 0.08) 1px, transparent 1px),
+			linear-gradient(90deg, rgb(100 116 139 / 0.08) 1px, transparent 1px);
 		background-size: 56px 56px;
 		-webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 0%, black 20%, transparent 100%);
 		mask-image: radial-gradient(ellipse 90% 90% at 50% 0%, black 20%, transparent 100%);
 	}
 
-	/* Grid CTA */
 	.cta-grid {
 		background-image:
-			linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px),
-			linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+			linear-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1px),
+			linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px);
 		background-size: 48px 48px;
 	}
 
-	/* Entrada cards servicios */
+	/* Blobs que se adaptan al tema */
+	.blob-blue {
+		background: oklch(0.7 0.15 230 / 0.15);
+	}
+	:global(.dark) .blob-blue {
+		background: oklch(0.5 0.2 230 / 0.2);
+	}
+	.blob-slate {
+		background: oklch(0.8 0.02 240 / 0.2);
+	}
+	:global(.dark) .blob-slate {
+		background: oklch(0.3 0.05 240 / 0.25);
+	}
+
 	@keyframes fadeUp {
 		from { opacity: 0; transform: translateY(12px); }
 		to   { opacity: 1; transform: translateY(0);    }
 	}
 
-	/* Transición de caso activo */
 	.caso-animate {
 		animation: slideIn 0.28s ease both;
 	}
@@ -581,9 +688,42 @@
 		to   { opacity: 1; transform: translateX(0);   }
 	}
 
-	/* SVGs de servicio */
 	div :global(svg) {
 		width: 20px;
 		height: 20px;
+	}
+
+	.code-ln {
+		display: inline-block;
+		width: 2ch;
+		margin-right: 20px;
+		user-select: none;
+		color: rgba(255,255,255,.18);
+		text-align: right;
+	}
+
+	.terminal-cursor {
+		display: inline-block;
+		width: 7px;
+		height: 14px;
+		vertical-align: text-bottom;
+		background: #60a5fa;
+		border-radius: 1px;
+		animation: blink 1.1s step-end infinite;
+	}
+
+	@keyframes blink {
+		0%, 100% { opacity: 1; }
+		50%       { opacity: 0; }
+	}
+
+	@keyframes floatA {
+		0%, 100% { transform: translateY(0px)    rotate(-1deg); }
+		50%       { transform: translateY(-8px)  rotate(0deg);  }
+	}
+
+	@keyframes floatB {
+		0%, 100% { transform: translateY(0px)    rotate(1deg); }
+		50%       { transform: translateY(-6px)  rotate(0deg); }
 	}
 </style>

@@ -241,7 +241,7 @@
                                 <div class="bg-card border border-border text-foreground px-4 py-3 rounded-2xl rounded-tl-none shadow-sm">
                                     <p class="text-sm leading-relaxed whitespace-pre-wrap">{msg.assistant_response}</p>
                                 </div>
-                                <p class="text-[10px] text-gray-400 mt-1 px-1">TEO</p>
+                                <p class="text-[10px] text-muted-foreground mt-1 px-1">TEO</p>
                             </div>
                         </div>
                     {/each}

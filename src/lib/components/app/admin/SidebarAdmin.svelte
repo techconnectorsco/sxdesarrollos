@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
-	// Detectar ruta activa
-	$: currentPath = $page.url.pathname;
+	let currentPath = $derived(page.url.pathname);
 
-	const menuItems = [
+	type MenuItem = { href: string; label: string; icon: string; exact?: boolean; badge?: boolean };
+
+	const menuItems: { section: string; items: MenuItem[] }[] = [
 		{
 			section: 'General',
 			items: [
@@ -14,7 +15,7 @@
 		{
 			section: 'Gestión',
 			items: [
-				{ href: '/admin/solicitudes', label: 'Solicitudes', icon: 'inbox', badge: true },
+				{ href: '/admin/solicitudes', label: 'Solicitudes', icon: 'inbox' },
 				{ href: '/admin/clientes', label: 'Clientes', icon: 'building' },
 				{ href: '/admin/robots', label: 'Robots / Automatizaciones', icon: 'bot' },
 				{ href: '/admin/proyectos', label: 'Proyectos Software', icon: 'code' },
@@ -46,9 +47,9 @@
 	};
 </script>
 
-<aside class="fixed left-6 top-24 h-[calc(100vh-7rem)] w-64 bg-white shadow-xl rounded-2xl z-40 flex flex-col border border-gray-100">
+<aside class="fixed left-6 top-24 h-[calc(100vh-7rem)] w-64 bg-card shadow-xl rounded-2xl z-40 flex flex-col border border-border">
 	<!-- Header -->
-	<div class="p-6 border-b border-gray-100">
+	<div class="p-6 border-b border-border">
 		<div class="flex items-center gap-3">
 			<div class="w-9 h-9 bg-gradient-to-br from-[#0f2140] to-[#1a6bb5] rounded-xl flex items-center justify-center">
 				<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,8 +58,8 @@
 				</svg>
 			</div>
 			<div>
-				<h2 class="text-base font-bold text-gray-800">Panel Admin</h2>
-				<p class="text-[11px] text-gray-400 font-medium">SX Platform</p>
+				<h2 class="text-base font-bold text-foreground">Panel Admin</h2>
+				<p class="text-[11px] text-muted-foreground font-medium">SX Platform</p>
 			</div>
 		</div>
 	</div>
@@ -67,7 +68,7 @@
 	<nav class="flex-1 overflow-y-auto py-4 px-3">
 		{#each menuItems as group}
 			<div class="mb-5">
-				<p class="px-4 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">{group.section}</p>
+				<p class="px-4 mb-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{group.section}</p>
 				<div class="space-y-1">
 					{#each group.items as item}
 						{@const active = isActive(item.href, item.exact ?? false)}
@@ -75,10 +76,10 @@
 							href={item.href}
 							class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200
 								{active
-									? 'bg-gradient-to-r from-cyan-50 to-blue-50 text-[#0f2140] shadow-sm border border-cyan-100'
-									: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
+									? 'bg-accent text-accent-foreground shadow-sm border border-border'
+									: 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'}"
 						>
-							<svg class="w-[18px] h-[18px] flex-shrink-0 {active ? 'text-cyan-600' : 'text-gray-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<svg class="w-[18px] h-[18px] flex-shrink-0 {active ? 'text-cyan-500' : 'text-muted-foreground'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icons[item.icon] || icons.dashboard}/>
 							</svg>
 							<span class="font-medium text-sm truncate">{item.label}</span>
@@ -93,10 +94,10 @@
 	</nav>
 
 	<!-- Footer -->
-	<div class="p-4 border-t border-gray-100">
+	<div class="p-4 border-t border-border">
 		<a
 			href="/dashboard"
-			class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-all"
+			class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-all"
 		>
 			<svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
