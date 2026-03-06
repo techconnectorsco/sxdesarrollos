@@ -1,0 +1,107 @@
+<script lang="ts">
+	import { page } from '$app/stores';
+
+	// Detectar ruta activa
+	$: currentPath = $page.url.pathname;
+
+	const menuItems = [
+		{
+			section: 'General',
+			items: [
+				{ href: '/admin', label: 'Panel Admin', icon: 'dashboard', exact: true },
+			]
+		},
+		{
+			section: 'Gestión',
+			items: [
+				{ href: '/admin/solicitudes', label: 'Solicitudes', icon: 'inbox', badge: true },
+				{ href: '/admin/clientes', label: 'Clientes', icon: 'building' },
+				{ href: '/admin/robots', label: 'Robots / Automatizaciones', icon: 'bot' },
+				{ href: '/admin/proyectos', label: 'Proyectos Software', icon: 'code' },
+				{ href: '/admin/casos-exito', label: 'Casos de Éxito', icon: 'trophy' },
+			]
+		},
+		{
+			section: 'Sistema',
+			items: [
+				{ href: '/admin/usuarios', label: 'Usuarios', icon: 'users' },
+			]
+		}
+	];
+
+	function isActive(href: string, exact = false): boolean {
+		if (exact) return currentPath === href;
+		return currentPath.startsWith(href);
+	}
+
+	// SVG icon paths
+	const icons: Record<string, string> = {
+		dashboard: 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z',
+		inbox: 'M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4',
+		building: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+		bot: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+		code: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
+		trophy: 'M5 3h14M5 3a2 2 0 00-2 2v2a5 5 0 004 4.9M5 3v4a5 5 0 004 4.9m10-8.9a2 2 0 012 2v2a5 5 0 01-4 4.9m0 0a5 5 0 01-6 0m6 0V17m-6-2.1V17m0 0h6m-6 0H9m3 0v4',
+		users: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z',
+	};
+</script>
+
+<aside class="fixed left-6 top-24 h-[calc(100vh-7rem)] w-64 bg-white shadow-xl rounded-2xl z-40 flex flex-col border border-gray-100">
+	<!-- Header -->
+	<div class="p-6 border-b border-gray-100">
+		<div class="flex items-center gap-3">
+			<div class="w-9 h-9 bg-gradient-to-br from-[#0f2140] to-[#1a6bb5] rounded-xl flex items-center justify-center">
+				<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+				</svg>
+			</div>
+			<div>
+				<h2 class="text-base font-bold text-gray-800">Panel Admin</h2>
+				<p class="text-[11px] text-gray-400 font-medium">SX Platform</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Navigation -->
+	<nav class="flex-1 overflow-y-auto py-4 px-3">
+		{#each menuItems as group}
+			<div class="mb-5">
+				<p class="px-4 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">{group.section}</p>
+				<div class="space-y-1">
+					{#each group.items as item}
+						{@const active = isActive(item.href, item.exact ?? false)}
+						<a
+							href={item.href}
+							class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200
+								{active
+									? 'bg-gradient-to-r from-cyan-50 to-blue-50 text-[#0f2140] shadow-sm border border-cyan-100'
+									: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
+						>
+							<svg class="w-[18px] h-[18px] flex-shrink-0 {active ? 'text-cyan-600' : 'text-gray-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icons[item.icon] || icons.dashboard}/>
+							</svg>
+							<span class="font-medium text-sm truncate">{item.label}</span>
+							{#if item.badge}
+								<span class="ml-auto w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+							{/if}
+						</a>
+					{/each}
+				</div>
+			</div>
+		{/each}
+	</nav>
+
+	<!-- Footer -->
+	<div class="p-4 border-t border-gray-100">
+		<a
+			href="/dashboard"
+			class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-all"
+		>
+			<svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+			</svg>
+			<span class="text-sm font-medium">Volver al Dashboard</span>
+		</a>
+	</div>
+</aside>
