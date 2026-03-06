@@ -96,7 +96,7 @@
 	<!-- Footer -->
 	<div class="p-4 border-t border-border">
 		<a
-			href="/dashboard"
+			href="/general"
 			class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-all"
 		>
 			<svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -21,7 +21,7 @@
 		onSignOut?: () => Promise<void>;
 	}>();
 
-	let basePath = '/dashboard';
+	let basePath = '/general';
 	let initials = $derived(
 		props.name
 			.split(' ')

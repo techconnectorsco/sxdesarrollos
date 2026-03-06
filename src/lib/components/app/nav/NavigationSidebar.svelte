@@ -17,7 +17,7 @@
 	let collapsed = $state(false);
 
 	const navItems = [
-		{ label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+		{ label: 'General', icon: LayoutDashboard, href: '/general' },
 		{ label: 'Aplicaciones', icon: Globe, href: '/apps' },
 		{ label: 'Clientes', icon: Users, href: '/clientes' },
 		{ label: 'Centro de Control', icon: Cpu, href: '/bots' },

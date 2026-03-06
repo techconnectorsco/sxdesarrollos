@@ -152,7 +152,7 @@
 
 				<!-- Botones -->
 				<div class="flex flex-wrap gap-3 mb-12">
-					<a href="/auth?mode=register"
+					<a href="/general"
 					   class="inline-flex items-center gap-2 px-6 py-3 rounded-xl no-underline font-semibold text-sm
 					          bg-blue-600 hover:bg-blue-500 text-white
 					          shadow-md shadow-blue-600/20
