@@ -7,8 +7,9 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 	const { safeGetSession } = locals;
 	const { session, user } = await safeGetSession();
 
+	// Sin sesión: acceso público, sin datos
 	if (!session || !user) {
-		throw error(401, 'No autenticado');
+		return json({ automatizaciones: [] });
 	}
 
 	const perfil = await getUserPerfil(user.id);

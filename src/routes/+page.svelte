@@ -392,17 +392,25 @@
 		     TRUST BAR
 		     ================================================ -->
 		<div class="border-y border-border bg-muted px-6 py-5 text-center">
-			<p class="text-[10px] uppercase tracking-[0.15em] font-semibold mb-3 text-muted-foreground">
-				Integramos con tus herramientas actuales
-			</p>
-			<div class="flex flex-wrap justify-center gap-2">
-				{#each ['Microsoft 365','Dynamics 365','Power Automate','Azure','SAP','Google Workspace'] as tool}
-					<span class="px-4 py-1.5 rounded-full text-xs font-medium border border-border bg-card text-foreground">
-						{tool}
-					</span>
-				{/each}
-			</div>
-		</div>
+    <p class="text-[10px] uppercase tracking-[0.15em] font-semibold mb-3 text-muted-foreground">
+        Integramos con tus herramientas actuales
+    </p>
+    <div class="flex flex-wrap justify-center gap-2">
+        {#each [
+            { name: 'Microsoft 365',    logo: '/microsoft.png' },
+            { name: 'Dynamics 365',     logo: '/dynamics.png'  },
+            { name: 'Power Automate',   logo: '/PA.png'        },
+            { name: 'Azure',            logo: '/azure.png'     },
+            { name: 'SAP',              logo: '/SAP.png'       },
+            { name: 'Google Workspace', logo: '/google.png'    }
+        ] as tool}
+            <span class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full text-xs font-medium border border-border bg-card text-foreground">
+                <img src={tool.logo} alt={tool.name} class="w-6 h-6 object-contain" />
+                {tool.name}
+            </span>
+        {/each}
+    </div>
+</div>
 
 		<!-- ================================================
 		     SERVICIOS

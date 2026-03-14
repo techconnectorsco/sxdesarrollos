@@ -94,7 +94,7 @@ export const authGuard: Handle = async ({ event, resolve }) => {
 	// 5. Proteger rutas bajo /(app) que requieren auth
 	//    (dashboard, apps, solicitar-acceso, perfil)
 	// ============================================
-	const rutasApp = ['/general', '/apps', '/solicitar-acceso', '/perfil', '/bots', '/clientes', '/logs'];
+	const rutasApp = ['/apps', '/solicitar-acceso', '/perfil', '/bots', '/clientes', '/logs'];
 	const requiereAuth = rutasApp.some(
 		(ruta) => pathname === ruta || pathname.startsWith(ruta + '/')
 	);
