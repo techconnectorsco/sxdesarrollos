@@ -233,7 +233,7 @@
 			la operación de tu empresa.
 		</p>
 		<a
-			href="mailto:ventas@soportexperto.com"
+			href="mailto:omar.hernandez@soportexperto.com"
 			class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold
 			       bg-blue-600 hover:bg-blue-500 text-white
 			       shadow-md shadow-blue-600/20 transition-all duration-200 hover:-translate-y-0.5"

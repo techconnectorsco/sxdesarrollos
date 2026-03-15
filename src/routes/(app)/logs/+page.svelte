@@ -1,209 +1,297 @@
 <script lang="ts">
-    // ─── Mock data (reemplazar con queries de Supabase) ───────────────────────
+	import type { PageData } from './$types';
 
-    type LogLevel = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'SYSTEM';
+	let { data }: { data: PageData } = $props();
 
-    const allLogs: {
-        id: number; ts: string; level: LogLevel;
-        bot: string; client: string; jobId: string; msg: string;
-    }[] = [
-        { id: 12, ts: '10:24:11', level: 'INFO',    bot: 'Bot_Contabilidad_v2', client: 'Empresa ABC',     jobId: 'JOB_9923', msg: 'INICIANDO ciclo de extracción — 142 registros en cola' },
-        { id: 11, ts: '10:24:09', level: 'INFO',    bot: 'Bot_Contabilidad_v2', client: 'Empresa ABC',     jobId: 'JOB_9923', msg: 'Autenticación SAP Cloud OK — sesión establecida' },
-        { id: 10, ts: '10:18:32', level: 'SUCCESS', bot: 'Bot_Facturacion_SAP', client: 'Empresa ABC',     jobId: 'JOB_9920', msg: 'Proceso completado: 38 facturas generadas y enviadas' },
-        { id:  9, ts: '10:18:28', level: 'INFO',    bot: 'Bot_Facturacion_SAP', client: 'Empresa ABC',     jobId: 'JOB_9920', msg: 'Validando esquema XML de facturas electrónicas...' },
-        { id:  8, ts: '10:18:15', level: 'INFO',    bot: 'Bot_Facturacion_SAP', client: 'Empresa ABC',     jobId: 'JOB_9920', msg: 'Conectando a endpoint SAP FI — host: sap-fi.empresaabc.local' },
-        { id:  7, ts: '09:55:41', level: 'SUCCESS', bot: 'Bot_Reportes_BI',     client: 'XYZ Corp',        jobId: 'JOB_9915', msg: 'Reporte mensual generado: 4.2 MB — exportado a Power BI workspace' },
-        { id:  6, ts: '09:55:30', level: 'INFO',    bot: 'Bot_Reportes_BI',     client: 'XYZ Corp',        jobId: 'JOB_9915', msg: 'Consolidando datos de ventas Q1 2024 — 14 hojas procesadas' },
-        { id:  5, ts: '09:32:17', level: 'ERROR',   bot: 'Bot_CRM_Sync',        client: 'XYZ Corp',        jobId: 'JOB_9910', msg: 'TIMEOUT: Sin respuesta del endpoint /api/v4/contacts en 30s' },
-        { id:  4, ts: '09:32:10', level: 'WARNING', bot: 'Bot_CRM_Sync',        client: 'XYZ Corp',        jobId: 'JOB_9910', msg: 'Reintento 3/3 — CRM API responde con latencia > 5000ms' },
-        { id:  3, ts: '09:31:58', level: 'WARNING', bot: 'Bot_CRM_Sync',        client: 'XYZ Corp',        jobId: 'JOB_9910', msg: 'Reintento 2/3 — conexión inestable detectada' },
-        { id:  2, ts: '08:45:55', level: 'SUCCESS', bot: 'Bot_RRHH_Nomina',     client: 'Tech Solutions',  jobId: 'JOB_9905', msg: 'Nómina Q1 procesada: 87 empleados — total $1,240,800.00 MXN' },
-        { id:  1, ts: '08:12:03', level: 'SUCCESS', bot: 'Bot_Inventario_v1',   client: 'Distribuidora MX',jobId: 'JOB_9900', msg: 'Stock actualizado: 1,240 SKUs — 12 alertas de mínimo emitidas' },
-        { id:  0, ts: '07:00:00', level: 'SYSTEM',  bot: 'SX-ENGINE',           client: '—',               jobId: 'SYS',      msg: 'SX RPA ENGINE v1.0.0 — TODOS LOS SERVICIOS INICIADOS CORRECTAMENTE' },
-    ];
+	let logs        = $derived(data.logs        ?? []);
+	let totalCount  = $derived(data.totalCount  ?? 0);
+	let stats       = $derived(data.stats       ?? { total: 0, exitosas: 0, errores: 0, pendientes: 0 });
+	let automations = $derived(data.automations ?? []);
 
-    const bots = [...new Set(allLogs.map(l => l.bot))];
+	// ── Filtros ───────────────────────────────────────────────────
+	let estadoFilter = $state<string>('ALL');
+	let autoFilter   = $state('ALL');
+	let search       = $state('');
 
-    // Estado reactivo
-    let levelFilter = $state<LogLevel | 'ALL'>('ALL');
-    let botFilter   = $state('ALL');
-    let search      = $state('');
+	let filteredLogs = $derived.by(() =>
+		logs.filter((l: any) => {
+			const matchEstado = estadoFilter === 'ALL' || normalizeEstado(l.estado) === estadoFilter;
+			const matchAuto   = autoFilter   === 'ALL' || l.autoNombre === autoFilter;
+			const matchSearch = search === '' ||
+				l.autoNombre.toLowerCase().includes(search.toLowerCase()) ||
+				l.clienteNombre.toLowerCase().includes(search.toLowerCase());
+			return matchEstado && matchAuto && matchSearch;
+		})
+	);
 
-    const filteredLogs = $derived(
-        allLogs.filter(l => {
-            const matchLevel = levelFilter === 'ALL' || l.level === levelFilter;
-            const matchBot   = botFilter   === 'ALL' || l.bot   === botFilter;
-            const matchText  = search === '' || l.msg.toLowerCase().includes(search.toLowerCase()) || l.bot.toLowerCase().includes(search.toLowerCase());
-            return matchLevel && matchBot && matchText;
-        })
-    );
+	// ── Normalizar estados ────────────────────────────────────────
+	function normalizeEstado(estado: string): string {
+		const e = estado.toLowerCase();
+		if (['exitoso','success','ok'].includes(e))           return 'SUCCESS';
+		if (['error','failed','fallo'].includes(e))           return 'ERROR';
+		if (['advertencia','warning','warn'].includes(e))     return 'WARNING';
+		if (['pendiente','running','en_proceso'].includes(e)) return 'RUNNING';
+		return 'INFO';
+	}
 
-    // Config visual por nivel
-    type LevelCfg = { label: string; text: string; badge: string; dot: string };
-    const levelCfg: Record<LogLevel, LevelCfg> = {
-        INFO:    { label: 'INFO',       text: 'text-slate-400',   badge: 'bg-slate-800 text-slate-300',    dot: 'bg-slate-500' },
-        SUCCESS: { label: 'SUCCESS',    text: 'text-emerald-400', badge: 'bg-emerald-900/60 text-emerald-400', dot: 'bg-emerald-500' },
-        WARNING: { label: 'WARNING',    text: 'text-amber-400',   badge: 'bg-amber-900/50 text-amber-400', dot: 'bg-amber-500' },
-        ERROR:   { label: 'ERROR',      text: 'text-red-400',     badge: 'bg-red-900/60 text-red-400',     dot: 'bg-red-500' },
-        SYSTEM:  { label: 'SYSTEM',     text: 'text-blue-400',    badge: 'bg-blue-900/60 text-blue-400',   dot: 'bg-blue-500' },
-    };
+	// ── Config visual ─────────────────────────────────────────────
+	type LevelCfg = { label: string; tooltip: string; text: string; badge: string; dot: string };
+	const levelCfg: Record<string, LevelCfg> = {
+		SUCCESS: {
+			label:   'EXITOSO',
+			tooltip: 'Proceso completado sin problemas. Todos los registros fueron procesados correctamente.',
+			text:    'text-emerald-400',
+			badge:   'bg-emerald-900/60 text-emerald-400',
+			dot:     'bg-emerald-500'
+		},
+		ERROR: {
+			label:   'ERROR',
+			tooltip: 'El proceso falló. Ocurrió un error inesperado que detuvo la ejecución.',
+			text:    'text-red-400',
+			badge:   'bg-red-900/60 text-red-400',
+			dot:     'bg-red-500'
+		},
+		WARNING: {
+			label:   'ADVERTENCIA',
+			tooltip: 'Proceso completado con advertencias. Algunos correos no pudieron ser enviados por dirección inválida u otro error de entrega.',
+			text:    'text-amber-400',
+			badge:   'bg-amber-900/50 text-amber-400',
+			dot:     'bg-amber-500'
+		},
+		RUNNING: {
+			label:   'EN CURSO',
+			tooltip: 'El proceso está actualmente en ejecución.',
+			text:    'text-blue-400',
+			badge:   'bg-blue-900/60 text-blue-400',
+			dot:     'bg-blue-500'
+		},
+		INFO: {
+			label:   'INFO',
+			tooltip: 'Estado informativo o no clasificado.',
+			text:    'text-slate-400',
+			badge:   'bg-slate-800 text-slate-300',
+			dot:     'bg-slate-500'
+		},
+	};
 
-    const filterTabs: { label: string; value: LogLevel | 'ALL'; count?: () => number }[] = [
-        { label: 'Todos',        value: 'ALL' },
-        { label: 'Info',         value: 'INFO' },
-        { label: 'Éxito',        value: 'SUCCESS' },
-        { label: 'Advertencia',  value: 'WARNING' },
-        { label: 'Error',        value: 'ERROR' },
-    ];
+	function getCfg(estado: string): LevelCfg {
+		return levelCfg[normalizeEstado(estado)] ?? levelCfg['INFO'];
+	}
 
-    const countByLevel = $derived({
-        ALL:     allLogs.length,
-        INFO:    allLogs.filter(l => l.level === 'INFO').length,
-        SUCCESS: allLogs.filter(l => l.level === 'SUCCESS').length,
-        WARNING: allLogs.filter(l => l.level === 'WARNING').length,
-        ERROR:   allLogs.filter(l => l.level === 'ERROR').length,
-    });
+	// ── Helpers ───────────────────────────────────────────────────
+	function fmtFecha(iso: string): string {
+		const d    = new Date(iso);
+		const hoy  = new Date();
+		const ayer = new Date(hoy); ayer.setDate(hoy.getDate() - 1);
+		const time = d.toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+		if (d.toDateString() === hoy.toDateString())  return time;
+		if (d.toDateString() === ayer.toDateString()) return `ayer ${time}`;
+		return d.toLocaleDateString('es-CR', { day: '2-digit', month: '2-digit' }) + ` ${time}`;
+	}
+
+	function abrevAuto(nombre: string): string {
+		if (nombre.length <= 32) return nombre;
+		return nombre.slice(0, 30) + '…';
+	}
+
+	const filterTabs = [
+		{ label: 'Todos',       value: 'ALL'     },
+		{ label: 'Exitosos',    value: 'SUCCESS' },
+		{ label: 'Errores',     value: 'ERROR'   },
+		{ label: 'Advertencia', value: 'WARNING' },
+		{ label: 'En curso',    value: 'RUNNING' },
+	];
+
+	function fmtNum(v: number): string {
+		return v >= 1000 ? `${(v / 1000).toFixed(1)}k` : String(v);
+	}
 </script>
 
-<div class="space-y-5 animate-fade-in">
+<div class="space-y-6 animate-fade-in">
 
-    <!-- ─── Encabezado ─────────────────────────────────────────────────────── -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <h1 class="text-3xl font-bold text-slate-900">Bitácora Global</h1>
-            <p class="text-slate-500 mt-1">Historial completo de ejecuciones y eventos del sistema SX.</p>
-        </div>
-        <button class="self-start sm:self-auto flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-            </svg>
-            Exportar logs
-        </button>
-    </div>
+	<!-- ── Encabezado ──────────────────────────────────────────── -->
+	<div>
+		<p class="text-xs font-bold uppercase tracking-[0.14em] mb-1 text-blue-600 dark:text-blue-400">
+			Sistema
+		</p>
+		<h1 class="text-3xl font-bold text-foreground">Bitácora de Ejecuciones</h1>
+		<p class="text-muted-foreground mt-1 text-sm">
+			Resumen de las 50 ejecuciones más recientes del sistema SX.
+		</p>
+	</div>
 
-    <!-- ─── Filtros ─────────────────────────────────────────────────────────── -->
-    <div class="flex flex-col gap-3">
-        <!-- Tabs de nivel -->
-        <div class="flex items-center gap-2 flex-wrap">
-            {#each filterTabs as tab}
-                {@const cnt = countByLevel[tab.value as keyof typeof countByLevel]}
-                <button
-                    onclick={() => levelFilter = tab.value}
-                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all {
-                        levelFilter === tab.value
-                            ? 'bg-slate-900 text-white border-slate-900'
-                            : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
-                    }"
-                >
-                    {tab.label}
-                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold {levelFilter === tab.value ? 'bg-white/20' : 'bg-slate-100 text-slate-500'}">
-                        {cnt}
-                    </span>
-                </button>
-            {/each}
-        </div>
+	<!-- ── Stats reales de toda la BD ──────────────────────────── -->
+	<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+		{#each [
+			{ label: 'Total histórico',  val: fmtNum(stats.total),      color: 'text-foreground'                        },
+			{ label: 'Exitosas',         val: fmtNum(stats.exitosas),   color: 'text-emerald-600 dark:text-emerald-400' },
+			{ label: 'Errores',          val: fmtNum(stats.errores),    color: 'text-red-600 dark:text-red-400'         },
+			{ label: 'En curso',         val: fmtNum(stats.pendientes), color: 'text-blue-600 dark:text-blue-400'       },
+		] as s}
+			<div class="bg-card border border-border rounded-xl px-4 py-3 text-center">
+				<p class="text-2xl font-extrabold {s.color}">{s.val}</p>
+				<p class="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground mt-0.5">{s.label}</p>
+			</div>
+		{/each}
+	</div>
 
-        <!-- Búsqueda + filtro por bot -->
-        <div class="flex flex-col sm:flex-row gap-3">
-            <div class="relative flex-1">
-                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-                <input
-                    type="text"
-                    placeholder="Buscar en logs..."
-                    bind:value={search}
-                    class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all"
-                />
-            </div>
-            <select
-                bind:value={botFilter}
-                class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all min-w-48"
-            >
-                <option value="ALL">Todos los bots</option>
-                {#each bots as b}
-                    <option value={b}>{b}</option>
-                {/each}
-            </select>
-        </div>
-    </div>
+	<!-- ── Filtros ─────────────────────────────────────────────── -->
+	<div class="flex flex-col gap-3">
+		<div class="flex items-center gap-2 flex-wrap">
+			{#each filterTabs as tab}
+				<button
+					onclick={() => (estadoFilter = tab.value)}
+					class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all duration-150
+					       {estadoFilter === tab.value
+					         ? 'bg-foreground text-background border-foreground'
+					         : 'bg-card text-muted-foreground border-border hover:border-blue-500/40 hover:text-foreground'}"
+				>
+					{tab.label}
+				</button>
+			{/each}
+		</div>
 
-    <!-- ─── Terminal de logs ────────────────────────────────────────────────── -->
-    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 overflow-hidden">
+		<div class="flex flex-col sm:flex-row gap-3">
+			<div class="relative flex-1">
+				<svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+				     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+					      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+				</svg>
+				<input
+					type="text"
+					placeholder="Buscar por proceso o empresa..."
+					bind:value={search}
+					class="w-full pl-10 pr-4 py-2.5 bg-card border border-border rounded-xl text-sm
+					       text-foreground placeholder:text-muted-foreground
+					       focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50
+					       transition-all"
+				/>
+			</div>
+			<select
+				bind:value={autoFilter}
+				class="px-4 py-2.5 bg-card border border-border rounded-xl text-sm text-foreground
+				       focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50
+				       transition-all min-w-52"
+			>
+				<option value="ALL">Todas las automatizaciones</option>
+				{#each automations as a}
+					<option value={a}>{a}</option>
+				{/each}
+			</select>
+		</div>
+	</div>
 
-        <!-- Barra del terminal -->
-        <div class="bg-slate-950 px-5 py-3 flex items-center justify-between border-b border-slate-800">
-            <div class="flex items-center gap-3">
-                <div class="flex gap-1.5">
-                    <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
-                </div>
-                <span class="text-slate-500 text-xs font-mono">sx_log_stream — {filteredLogs.length} entradas</span>
-            </div>
-            <div class="flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                <span class="text-[11px] text-emerald-500 font-mono font-semibold">LIVE</span>
-            </div>
-        </div>
+	<!-- ── Terminal ────────────────────────────────────────────── -->
+	<div class="rounded-2xl shadow-xl border border-slate-800 overflow-hidden" style="background:#0d1117">
 
-        <!-- Entradas de log -->
-        <div class="p-4 font-mono text-xs space-y-0.5 max-h-[520px] overflow-y-auto scrollbar-thin">
+		<!-- Barra title -->
+		<div class="flex items-center justify-between px-5 py-3 border-b border-slate-800"
+		     style="background:#161b22">
+			<div class="flex items-center gap-3">
+				<div class="flex gap-1.5">
+					<span class="w-3 h-3 rounded-full" style="background:#ff5f56"></span>
+					<span class="w-3 h-3 rounded-full" style="background:#ffbd2e"></span>
+					<span class="w-3 h-3 rounded-full" style="background:#27c93f"></span>
+				</div>
+				<span class="font-mono text-xs" style="color:rgba(255,255,255,.3)">
+					sx_execution_stream — últimas {filteredLogs.length} de {fmtNum(totalCount)} ejecuciones totales
+				</span>
+			</div>
+			<div class="flex items-center gap-1.5">
+				<span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+				<span class="font-mono text-[11px] font-semibold text-emerald-500">LIVE</span>
+			</div>
+		</div>
 
-            {#if filteredLogs.length === 0}
-                <div class="py-12 flex flex-col items-center justify-center text-slate-600">
-                    <svg class="w-8 h-8 mb-3 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                    <p class="text-slate-500">Sin entradas para los filtros seleccionados</p>
-                </div>
-            {:else}
-                {#each filteredLogs as log}
-                    {@const cfg = levelCfg[log.level]}
-                    <div class="flex items-start gap-3 px-3 py-1.5 rounded-lg hover:bg-slate-800/60 transition-colors group">
-                        <!-- Dot -->
-                        <span class="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5 {cfg.dot}"></span>
-                        <!-- Timestamp -->
-                        <span class="text-slate-500 shrink-0 tabular-nums w-16">{log.ts}</span>
-                        <!-- Level badge -->
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0 {cfg.badge} w-16 text-center">{cfg.label}</span>
-                        <!-- Bot -->
-                        <span class="text-slate-400 shrink-0 w-44 truncate hidden sm:block">{log.bot}</span>
-                        <!-- Message -->
-                        <span class="{cfg.text} flex-1 leading-relaxed">{log.msg}</span>
-                        <!-- Job ID -->
-                        <span class="text-slate-700 shrink-0 hidden lg:block tabular-nums group-hover:text-slate-500 transition-colors">{log.jobId}</span>
-                    </div>
-                {/each}
-                <!-- Cursor parpadeante al final -->
-                {#if levelFilter === 'ALL' && botFilter === 'ALL' && search === ''}
-                    <div class="flex items-center gap-3 px-3 py-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full shrink-0 bg-slate-700"></span>
-                        <span class="text-slate-600 w-16 tabular-nums">—</span>
-                        <span class="text-slate-700 w-16"></span>
-                        <span class="text-slate-700 hidden sm:block w-44"></span>
-                        <span class="text-slate-600">Esperando eventos del sistema</span>
-                        <span class="inline-block w-2 h-4 bg-slate-600 animate-pulse ml-1"></span>
-                    </div>
-                {/if}
-            {/if}
-        </div>
-    </div>
+		<!-- Cabecera columnas -->
+		<div class="flex items-center gap-3 px-4 py-2 border-b font-mono text-[10px] font-bold uppercase tracking-widest"
+		     style="background:#161b22; border-color:rgba(255,255,255,.04); color:rgba(255,255,255,.2)">
+			<span class="w-2 shrink-0"></span>
+			<span class="w-36 shrink-0">Fecha / Hora</span>
+			<span class="w-28 shrink-0">Estado</span>
+			<span class="w-36 shrink-0">Empresa</span>
+			<span class="flex-1">Automatización</span>
+			<span class="w-16 shrink-0 text-right">Duración</span>
+		</div>
+
+		<!-- Filas -->
+		<div class="font-mono text-xs">
+			{#if filteredLogs.length === 0}
+				<div class="py-16 flex flex-col items-center justify-center"
+				     style="color:rgba(255,255,255,.2)">
+					<p class="text-base mb-1">( sin resultados )</p>
+					<p class="text-xs" style="color:rgba(255,255,255,.12)">Prueba ajustando los filtros</p>
+				</div>
+			{:else}
+				{#each filteredLogs as log}
+					{@const cfg = getCfg(log.estado)}
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<div class="flex items-center gap-3 px-4 py-2.5 cursor-default"
+					     style="border-bottom:1px solid rgba(255,255,255,.03);"
+					     onmouseenter={(e) => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,.03)'}
+					     onmouseleave={(e) => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+					>
+						<span class="w-2 h-2 rounded-full shrink-0 {cfg.dot}"></span>
+
+						<span class="w-36 shrink-0 tabular-nums" style="color:rgba(255,255,255,.35)">
+							{fmtFecha(log.fechaInicio)}
+						</span>
+
+						<!-- Badge con tooltip -->
+						<span class="relative w-28 shrink-0 group/badge">
+							<span class="w-full px-2 py-0.5 rounded text-[10px] font-bold text-center block {cfg.badge}">
+								{cfg.label}
+							</span>
+							<span class="absolute bottom-full left-0 mb-2 w-56 px-3 py-2.5
+							             rounded-xl text-[11px] leading-relaxed font-sans font-normal
+							             pointer-events-none z-50
+							             opacity-0 group-hover/badge:opacity-100
+							             translate-y-1 group-hover/badge:translate-y-0
+							             transition-all duration-200 shadow-xl"
+							      style="background:#1e2d3d; color:rgba(255,255,255,.85); border:1px solid rgba(255,255,255,.1)">
+								{cfg.tooltip}
+								<span class="absolute top-full left-4 border-4 border-transparent"
+								      style="border-top-color:#1e2d3d"></span>
+							</span>
+						</span>
+
+						<span class="w-36 shrink-0 truncate" style="color:rgba(255,255,255,.45)">
+							{log.clienteNombre}
+						</span>
+
+						<span class="flex-1 truncate {cfg.text}">
+							{abrevAuto(log.autoNombre)}
+						</span>
+
+						<span class="w-16 shrink-0 text-right tabular-nums" style="color:rgba(255,255,255,.25)">
+							{log.duracion ?? '—'}
+						</span>
+					</div>
+				{/each}
+
+				<!-- Cursor parpadeante al final -->
+				{#if estadoFilter === 'ALL' && autoFilter === 'ALL' && search === ''}
+					<div class="flex items-center gap-3 px-4 py-2.5">
+						<span class="w-2 h-2 rounded-full shrink-0 bg-slate-700"></span>
+						<span class="w-36" style="color:rgba(255,255,255,.1)">—</span>
+						<span class="w-28"></span>
+						<span class="w-36"></span>
+						<span style="color:rgba(255,255,255,.18)">Esperando nuevas ejecuciones</span>
+						<span class="inline-block w-2 h-3.5 rounded-sm ml-1 animate-pulse"
+						      style="background:rgba(255,255,255,.18)"></span>
+					</div>
+				{/if}
+			{/if}
+		</div>
+	</div>
 
 </div>
 
 <style>
-    @keyframes fade-in {
-        from { opacity: 0; transform: translateY(12px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in { animation: fade-in 0.45s ease-out forwards; }
-
-    .scrollbar-thin {
-        scrollbar-width: thin;
-        scrollbar-color: #334155 #0f172a;
-    }
-    .scrollbar-thin::-webkit-scrollbar { width: 6px; }
-    .scrollbar-thin::-webkit-scrollbar-track { background: #0f172a; }
-    .scrollbar-thin::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+	@keyframes fade-in {
+		from { opacity: 0; transform: translateY(12px); }
+		to   { opacity: 1; transform: translateY(0); }
+	}
+	.animate-fade-in { animation: fade-in 0.45s ease-out forwards; }
 </style>

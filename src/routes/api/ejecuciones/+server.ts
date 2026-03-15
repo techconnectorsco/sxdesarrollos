@@ -7,29 +7,25 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 	const { safeGetSession } = locals;
 	const { session, user } = await safeGetSession();
 
-	// Sin sesión: acceso público, sin datos
 	if (!session || !user) {
 		return json({ ejecuciones: [] });
 	}
 
-	const perfil = await getUserPerfil(user.id);
+	const perfil   = await getUserPerfil(user.id);
 	const services = createServices(supabaseAdmin);
-	const clienteId = user.user_metadata?.cliente_id || null;
-	const esAdmin = perfil?.es_admin === true || user.user_metadata?.es_admin === true || user.email?.includes('admin');
-	const limit = parseInt(url.searchParams.get('limit') || '20');
+	const clienteId = perfil?.cliente_id || user.user_metadata?.cliente_id || null;
+	const esAdmin   = perfil?.es_admin === true || user.user_metadata?.es_admin === true || user.email?.includes('admin');
+	const limit     = parseInt(url.searchParams.get('limit') ?? '20');
 	const automatizacionId = url.searchParams.get('automatizacion_id');
 
 	try {
-		let ejecuciones = [];
+		let ejecuciones: any[] = [];
 
 		if (automatizacionId) {
-			// Obtener ejecuciones de una automatización específica
 			ejecuciones = await services.automatizaciones.getEjecuciones(automatizacionId, limit);
 		} else if (esAdmin) {
-			// Administradores ven todas las ejecuciones
 			ejecuciones = await services.automatizaciones.getAllEjecucionesRecientes(limit);
 		} else if (clienteId) {
-			// Usuarios regulares ven solo ejecuciones de su cliente
 			ejecuciones = await services.automatizaciones.getEjecucionesRecientes(clienteId, limit);
 		}
 
@@ -49,16 +45,16 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	const services = createServices(supabaseAdmin);
-	const body = await request.json();
+	const body     = await request.json();
 
 	try {
 		const ejecucion = await services.automatizaciones.crearEjecucion({
 			automatizacion_id: body.automatizacion_id,
-			fecha_inicio: body.fecha_inicio || new Date().toISOString(),
-			estado: body.estado,
-			metricas: body.metricas || null,
-			log_salida: body.log_salida || null,
-			observaciones: body.observaciones || null
+			fecha_inicio:      body.fecha_inicio || new Date().toISOString(),
+			estado:            body.estado,
+			metricas:          body.metricas      || null,
+			log_salida:        body.log_salida    || null,
+			observaciones:     body.observaciones || null
 		});
 
 		return json({ ejecucion }, { status: 201 });

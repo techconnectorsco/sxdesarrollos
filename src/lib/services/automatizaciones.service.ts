@@ -3,7 +3,7 @@
  * @description Servicio para interactuar con automatizaciones y ejecuciones
  */
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Automatizacion, Ejecucion, EstadoEjecucion } from '$lib/types/database';
+import type { Automatizacion, Ejecucion } from '$lib/types/database';
 
 export class AutomatizacionesService {
 	constructor(private supabase: SupabaseClient) {}
@@ -48,7 +48,6 @@ export class AutomatizacionesService {
 		if (error) throw error;
 		if (!data) return null;
 
-		// Obtener la última ejecución
 		const { data: ultimaEjecucion } = await this.supabase
 			.from('ejecuciones')
 			.select('*')
@@ -66,10 +65,7 @@ export class AutomatizacionesService {
 	/**
 	 * Obtener ejecuciones de una automatización
 	 */
-	async getEjecuciones(
-		automatizacionId: string,
-		limit: number = 50
-	): Promise<Ejecucion[]> {
+	async getEjecuciones(automatizacionId: string, limit: number = 50): Promise<Ejecucion[]> {
 		const { data, error } = await this.supabase
 			.from('ejecuciones')
 			.select('*, automatizacion:automatizaciones(*)')
@@ -139,7 +135,6 @@ export class AutomatizacionesService {
 		const botsActivos = automatizaciones.filter((a) => a.esta_activa).length;
 		const tasaExito = totalEjecuciones > 0 ? (exitosas / totalEjecuciones) * 100 : 0;
 
-		// Ejecuciones por día (últimos 7 días)
 		const hoy = new Date();
 		const hace7Dias = new Date(hoy.getTime() - 7 * 24 * 60 * 60 * 1000);
 		const ejecucionesSemana = ejecuciones.filter(
@@ -181,7 +176,6 @@ export class AutomatizacionesService {
 					table: 'ejecuciones'
 				},
 				async (payload) => {
-					// Obtener la automatización relacionada
 					const { data: automatizacion } = await this.supabase
 						.from('automatizaciones')
 						.select('*, cliente:clientes(*)')
@@ -189,7 +183,7 @@ export class AutomatizacionesService {
 						.single();
 
 					if (clienteId && automatizacion?.cliente_id !== clienteId) {
-						return; // Filtrar por cliente si es necesario
+						return;
 					}
 
 					const ejecucion: Ejecucion = {
@@ -211,7 +205,6 @@ export class AutomatizacionesService {
 
 	/**
 	 * Toggle estado activo de una automatización (robot)
-	 * Solo admin puede hacer esto
 	 */
 	async toggleRobot(automatizacionId: string, estaActiva: boolean): Promise<Automatizacion> {
 		const { data, error } = await this.supabase
@@ -225,4 +218,3 @@ export class AutomatizacionesService {
 		return data;
 	}
 }
-

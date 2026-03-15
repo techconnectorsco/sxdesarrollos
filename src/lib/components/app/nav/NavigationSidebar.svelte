@@ -10,7 +10,8 @@
 		ChevronRight,
 		LogOut,
 		ExternalLink,
-		Globe
+		Globe,
+		UsersRound
 	} from 'lucide-svelte';
 	import { siteConfig } from '$lib/config/site';
 
@@ -74,7 +75,18 @@
 				{/if}
 			</a>
 		{/each}
-
+			<div class="pt-6 px-3 mb-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+    {collapsed ? 'Eq' : 'Equipo'}
+</div>
+<a 
+    href="/equipo"
+    class="group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 {currentPath.startsWith('/equipo') ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold' : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'}"
+>
+    <UsersRound class="w-5 h-5 shrink-0 {currentPath.startsWith('/equipo') ? 'text-sidebar-primary' : 'text-muted-foreground group-hover:text-sidebar-accent-foreground'}" />
+    {#if !collapsed}
+        <span class="text-sm truncate">Nuestro Equipo</span>
+    {/if}
+</a>
 		<!-- <div class="pt-8 px-3 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
 			{collapsed ? 'Ext' : 'Herramientas'}
 		</div>
