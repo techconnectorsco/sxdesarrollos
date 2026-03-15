@@ -2,50 +2,48 @@
 	import MainNav from '$lib/components/app/nav/main-nav.svelte';
 	import Footer from '$lib/components/app/nav/footer.svelte';
 	import { onMount } from 'svelte';
+	import type { CasoExito } from '$lib/services/casos-exito.service';
 
 	let { data } = $props();
 
 	let currentCaseIndex = $state(0);
 	let visible = $state(false);
 
-	const casosExito = [
-		{
-			id: 1,
-			titulo: 'Automatización de Cuentas por Cobrar',
-			descripcion: 'Implementamos un robot RPA que gestiona automáticamente estados de cuenta, notificaciones de pago y seguimiento de deudores.',
-			industria: 'Finanzas',
-			icon: '💰',
-			stats: [
-				{ valor: '75%',   label: 'Reducción de tiempo' },
-				{ valor: '500+',  label: 'Documentos/mes'      },
-				{ valor: '99.8%', label: 'Precisión'           }
-			]
-		},
-		{
-			id: 2,
-			titulo: 'Procesamiento de Facturación Electrónica',
-			descripcion: 'Robot que procesa facturas electrónicas automáticamente, extrae datos clave y los valida contra sistemas contables.',
-			industria: 'Contabilidad',
-			icon: '🧾',
-			stats: [
-				{ valor: '2,000+', label: 'Facturas procesadas'  },
-				{ valor: '95%',    label: 'Reducción de errores' },
-				{ valor: '120h',   label: 'Horas ahorradas'      }
-			]
-		},
-		{
-			id: 3,
-			titulo: 'Automatización de Reportes y Alertas',
-			descripcion: 'Sistema inteligente que genera y envía reportes operativos y alertas en tiempo real sin intervención manual.',
-			industria: 'Operaciones',
-			icon: '📊',
-			stats: [
-				{ valor: '3,000+', label: 'Emails mensuales'   },
-				{ valor: '200+',   label: 'Reportes generados' },
-				{ valor: '24/7',   label: 'Disponibilidad'     }
-			]
-		}
-	];
+	// Mapeo de tipo/industria → icono emoji (sin necesitar columna extra en BD)
+const iconMap: Record<string, string> = {
+	'rpa':          '🤖',
+	'software':     '💻',
+	'powerbi':      '📊',
+	'integracion':  '🔗',
+	'analytics':    '📈',
+	'finanzas':     '💰',
+	'contabilidad': '🧾',
+	'operaciones':  '⚙️',
+	'web':          '🌐',
+};
+
+function getIcon(caso: CasoExito): string {
+	// Primero busca en metricas_publicas si el admin lo definió
+	if (caso.metricas_publicas?.icon) return caso.metricas_publicas.icon;
+	// Sino mapea por tipo o industria
+	const key = (caso.tipo_automatizacion ?? caso.industria ?? '').toLowerCase();
+	return iconMap[key] ?? '⚡';
+}
+
+// casosExito viene de data ahora
+let casosExito = $derived(data.casosExito ?? []);
+
+const logoHeightMap: Record<string, string> = {
+    'samesa':          'h-12',
+    'vedova-y-obando': 'h-14',
+    'ae-logistics':    'h-18',
+    'sito-cr':         'h-7',
+    'soportexperto':   'h-10',
+};
+
+function getLogoHeight(slug: string | undefined): string {
+    return logoHeightMap[slug ?? ''] ?? 'h-10';
+}
 
 	const servicios = [
 		{
@@ -491,57 +489,88 @@
 			</div>
 		</section>
 
-		<!-- ================================================
-		     CASOS DE ÉXITO
-		     ================================================ -->
-		<section id="casos" class="py-24 px-6">
-			<div class="max-w-6xl mx-auto">
+<!-- ================================================
+     CASOS DE ÉXITO
+     ================================================ -->
+<section id="casos" class="py-24 px-6">
+	<div class="max-w-6xl mx-auto">
 
-				<div class="text-center mb-14">
-					<p class="text-xs font-bold uppercase tracking-[0.14em] mb-3 text-blue-600 dark:text-blue-400">
-						Resultados reales
-					</p>
-					<h2 class="font-serif text-4xl font-bold tracking-tight text-foreground">
-						Casos de Éxito
-					</h2>
+		<div class="text-center mb-14">
+			<p class="text-xs font-bold uppercase tracking-[0.14em] mb-3 text-blue-600 dark:text-blue-400">
+				Resultados reales
+			</p>
+			<h2 class="font-serif text-4xl font-bold tracking-tight text-foreground">
+				Casos de Éxito
+			</h2>
+		</div>
+
+		{#if casosExito.length === 0}
+			<div class="text-center py-20 rounded-2xl border border-border bg-muted">
+				<p class="text-4xl mb-4">🚀</p>
+				<p class="text-sm font-semibold text-foreground mb-1">Próximamente</p>
+				<p class="text-xs text-muted-foreground">Estamos preparando nuestros casos de éxito.</p>
+			</div>
+		{:else}
+			<div class="flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-sm border border-border">
+
+				<!-- Tabs -->
+				<div class="md:w-72 flex-shrink-0 divide-y divide-border bg-muted">
+					{#each casosExito as caso, i}
+						<button
+							onclick={() => (currentCaseIndex = i)}
+							class="w-full flex items-start gap-3 px-5 py-5 text-left transition-colors duration-200
+							       border-l-2
+							       {i === currentCaseIndex
+							         ? 'border-blue-500 bg-card'
+							         : 'border-transparent hover:bg-card'}"
+						>
+							<span class="text-xl flex-shrink-0 mt-0.5">{getIcon(caso)}</span>
+							<div>
+								<p class="text-[10px] font-bold uppercase tracking-widest mb-1 text-blue-600 dark:text-blue-400">
+									{caso.industria ?? caso.tipo_automatizacion ?? 'Caso'}
+								</p>
+								<p class="text-xs font-semibold leading-snug
+								          {i === currentCaseIndex ? 'text-foreground' : 'text-muted-foreground'}">
+									{caso.titulo}
+								</p>
+							</div>
+						</button>
+					{/each}
 				</div>
 
-				<div class="flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-sm border border-border">
+				<!-- Panel del caso -->
+				<div class="flex-1 bg-card">
+					{#each casosExito as caso, i}
+						{#if i === currentCaseIndex}
+							<div class="caso-animate h-full">
 
-					<!-- Tabs -->
-					<div class="md:w-72 flex-shrink-0 divide-y divide-border bg-muted">
-						{#each casosExito as caso, i}
-							<button
-								onclick={() => (currentCaseIndex = i)}
-								class="w-full flex items-start gap-3 px-5 py-5 text-left transition-colors duration-200
-								       border-l-2
-								       {i === currentCaseIndex
-								         ? 'border-blue-500 bg-card'
-								         : 'border-transparent hover:bg-card'}"
-							>
-								<span class="text-xl flex-shrink-0 mt-0.5">{caso.icon}</span>
-								<div>
-									<p class="text-[10px] font-bold uppercase tracking-widest mb-1 text-blue-600 dark:text-blue-400">
-										{caso.industria}
-									</p>
-									<p class="text-xs font-semibold leading-snug
-									          {i === currentCaseIndex ? 'text-foreground' : 'text-muted-foreground'}">
-										{caso.titulo}
-									</p>
-								</div>
-							</button>
-						{/each}
-					</div>
+								{#if caso.imagen_url}
+									<div class="w-full h-48 overflow-hidden">
+										<img src={caso.imagen_url} alt={caso.titulo} class="w-full h-full object-cover" />
+									</div>
+								{/if}
 
-					<!-- Panel del caso -->
-					<div class="flex-1 p-8 md:p-12 bg-card">
-						{#each casosExito as caso, i}
-							{#if i === currentCaseIndex}
-								<div class="caso-animate">
-									<span class="inline-block px-3 py-1 rounded-full mb-4 text-[10px] font-bold uppercase tracking-widest
-									            border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400">
-										{caso.industria}
-									</span>
+								<div class="p-8 md:p-12">
+
+									<!-- Fila superior: badge izquierda, cliente derecha -->
+									<div class="flex items-center justify-between mb-4">
+										<span class="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest
+										            border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400">
+											{caso.industria ?? caso.tipo_automatizacion ?? 'Automatización'}
+										</span>
+
+										{#if caso.mostrar_cliente && caso.clientes}
+    <div class="flex items-center gap-2.5">
+        {#if caso.clientes.logo_url}
+            <img
+                src={caso.clientes.logo_url}
+                alt={caso.clientes.nombre}
+                class="w-auto object-contain {getLogoHeight(caso.clientes.slug)}"
+            />
+        {/if}
+    </div>
+{/if}
+									</div>
 
 									<h3 class="font-serif text-2xl md:text-3xl font-bold tracking-tight mb-3 text-foreground">
 										{caso.titulo}
@@ -551,43 +580,48 @@
 										{caso.descripcion}
 									</p>
 
-									<div class="flex flex-wrap gap-4 mb-8">
-										{#each caso.stats as stat}
-											<div class="flex-1 min-w-[90px] px-5 py-4 rounded-xl border border-border bg-muted">
-												<p class="text-2xl font-extrabold leading-none mb-1 text-blue-600 dark:text-blue-400">
-													{stat.valor}
-												</p>
-												<p class="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">
-													{stat.label}
-												</p>
-											</div>
-										{/each}
-									</div>
+									{#if caso.metricas_publicas?.stats?.length}
+										<div class="flex flex-wrap gap-4 mb-8">
+											{#each caso.metricas_publicas.stats as stat}
+												<div class="flex-1 min-w-[90px] px-5 py-4 rounded-xl border border-border bg-muted">
+													<p class="text-2xl font-extrabold leading-none mb-1 text-blue-600 dark:text-blue-400">
+														{stat.valor}
+													</p>
+													<p class="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">
+														{stat.label}
+													</p>
+												</div>
+											{/each}
+										</div>
+									{/if}
 
 									<a href="/auth?mode=register"
 									   class="text-sm font-semibold no-underline transition-colors
 									          text-blue-600 dark:text-blue-400 hover:text-blue-500">
-										Ver caso completo →
+										Hablar con un experto →
 									</a>
 								</div>
-							{/if}
-						{/each}
-					</div>
-				</div>
-
-				<!-- Dots mobile -->
-				<div class="flex justify-center gap-2 mt-5 md:hidden">
-					{#each casosExito as _, i}
-						<button
-							onclick={() => (currentCaseIndex = i)}
-							aria-label="Caso {i + 1}"
-							class="h-1.5 rounded-full transition-all duration-200
-							       {i === currentCaseIndex ? 'w-6 bg-blue-500' : 'w-1.5 bg-border'}">
-						</button>
+							</div>
+						{/if}
 					{/each}
 				</div>
 			</div>
-		</section>
+
+			<!-- Dots mobile -->
+			<div class="flex justify-center gap-2 mt-5 md:hidden">
+				{#each casosExito as _, i}
+					<button
+						onclick={() => (currentCaseIndex = i)}
+						aria-label="Caso {i + 1}"
+						class="h-1.5 rounded-full transition-all duration-200
+						       {i === currentCaseIndex ? 'w-6 bg-blue-500' : 'w-1.5 bg-border'}">
+					</button>
+				{/each}
+			</div>
+		{/if}
+
+	</div>
+</section>
 
 		<!-- ================================================
 		     CTA FINAL — fondo oscuro fijo en ambos modos

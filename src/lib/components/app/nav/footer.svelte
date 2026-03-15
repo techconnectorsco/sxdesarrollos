@@ -22,13 +22,13 @@
 		<!-- Right: Contact -->
         <div class="text-center md:text-right text-xs text-gray-400 space-y-1">
             <p>
-                <a href="mailto:transformacion@soportexperto.com" class="hover:underline">
-                    transformacion@soportexperto.com 
+                <a href="mailto:omar.hernandez@soportexperto.com" class="hover:underline">
+                    omar.hernandez@soportexperto.com
                 </a>
             </p>
             <p>
-                <a href="tel:+50686978542" class="hover:underline">
-                    +506 8697 8542
+                <a href="tel:+50670925562" class="hover:underline">
+                    +506 7092 5562
                 </a>
             </p>
         </div>
@@ -39,7 +39,7 @@
 		<!-- Social Icons -->
 		<div class="flex justify-center space-x-6">
 			<!-- Instagram -->
-			<a href="https://www.instagram.com/sito.cr/#" target="_blank" aria-label="Instagram"
+			<a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"
 				class="hover:text-pink-400 transition-all hover:scale-110">
 				<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor"
 					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -70,7 +70,7 @@
 			</a>
 
 			<!-- WhatsApp placeholder -->
-			<a href="https://wa.me/" target="_blank" aria-label="WhatsApp"
+			<a href="https://wa.me/50670925562" target="_blank" aria-label="WhatsApp"
 				class="hover:text-green-400 transition-all hover:scale-110">
 				<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor"
 					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

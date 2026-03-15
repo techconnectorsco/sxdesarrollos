@@ -11,10 +11,14 @@ export const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
  * Obtiene el perfil de un usuario desde la tabla perfiles.
  * Fuente de verdad para es_admin y esta_baneado.
  */
-export async function getUserPerfil(userId: string): Promise<{ es_admin: boolean; esta_baneado: boolean } | null> {
+export async function getUserPerfil(userId: string): Promise<{ 
+	es_admin: boolean; 
+	esta_baneado: boolean;
+	cliente_id: string | null;
+} | null> {
 	const { data } = await supabaseAdmin
 		.from('perfiles')
-		.select('es_admin, esta_baneado')
+		.select('es_admin, esta_baneado, cliente_id')
 		.eq('id', userId)
 		.single();
 	return data ?? null;

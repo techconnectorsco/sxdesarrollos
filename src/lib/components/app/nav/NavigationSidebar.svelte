@@ -20,7 +20,7 @@
 		{ label: 'General', icon: LayoutDashboard, href: '/general' },
 		{ label: 'Aplicaciones', icon: Globe, href: '/apps' },
 		{ label: 'Clientes', icon: Users, href: '/clientes' },
-		{ label: 'Centro de Control', icon: Cpu, href: '/bots' },
+		//{ label: 'Centro de Control', icon: Cpu, href: '/bots' },
 		{ label: 'Bitácora', icon: FileText, href: '/logs' },
 	];
 
@@ -75,7 +75,7 @@
 			</a>
 		{/each}
 
-		<div class="pt-8 px-3 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+		<!-- <div class="pt-8 px-3 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
 			{collapsed ? 'Ext' : 'Herramientas'}
 		</div>
 		{#each secondaryItems as item}
@@ -88,7 +88,7 @@
 					<span class="text-sm truncate">{item.label}</span>
 				{/if}
 			</a>
-		{/each}
+		{/each} -->
 	</nav>
 
 	<!-- Footer -->
