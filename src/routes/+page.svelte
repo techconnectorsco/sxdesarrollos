@@ -95,7 +95,7 @@ function getLogoHeight(slug: string | undefined): string {
 </script>
 
 <div class="flex min-h-screen flex-col">
-	<MainNav session={data.session} user={data.user} perfil={data.perfilNav} />
+	<MainNav session={data.session} user={data.user} />
 
 	<main class="flex-1 pt-[72px]">
 
