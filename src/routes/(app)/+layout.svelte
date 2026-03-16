@@ -20,7 +20,7 @@
 		<MainNav session={data.session} user={data.user} perfil={data.perfilNav} />
 
 		{#if !isAdmin}
-			<main id="content" class="pt-20 px-4 sm:px-8 pb-12 w-full max-w-7xl mx-auto">
+			<main id="content" class="pt-16 lg:pt-20 px-4 sm:px-6 lg:px-8 pb-12 w-full max-w-7xl mx-auto">
 				<div class="py-4">
 					<Breadcrumb />
 				</div>

@@ -186,26 +186,26 @@
 	<div class="rounded-2xl shadow-xl border border-slate-800 overflow-hidden" style="background:#0d1117">
 
 		<!-- Barra title -->
-		<div class="flex items-center justify-between px-5 py-3 border-b border-slate-800"
+		<div class="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-slate-800"
 		     style="background:#161b22">
-			<div class="flex items-center gap-3">
-				<div class="flex gap-1.5">
+			<div class="flex items-center gap-3 min-w-0">
+				<div class="flex gap-1.5 shrink-0">
 					<span class="w-3 h-3 rounded-full" style="background:#ff5f56"></span>
 					<span class="w-3 h-3 rounded-full" style="background:#ffbd2e"></span>
 					<span class="w-3 h-3 rounded-full" style="background:#27c93f"></span>
 				</div>
-				<span class="font-mono text-xs" style="color:rgba(255,255,255,.3)">
-					sx_execution_stream — últimas {filteredLogs.length} de {fmtNum(totalCount)} ejecuciones totales
+				<span class="font-mono text-[10px] sm:text-xs truncate" style="color:rgba(255,255,255,.3)">
+					<span class="hidden sm:inline">sx_execution_stream — </span>últimas {filteredLogs.length} de {fmtNum(totalCount)} ejecuciones
 				</span>
 			</div>
-			<div class="flex items-center gap-1.5">
+			<div class="flex items-center gap-1.5 shrink-0">
 				<span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
 				<span class="font-mono text-[11px] font-semibold text-emerald-500">LIVE</span>
 			</div>
 		</div>
 
-		<!-- Cabecera columnas -->
-		<div class="flex items-center gap-3 px-4 py-2 border-b font-mono text-[10px] font-bold uppercase tracking-widest"
+		<!-- Cabecera columnas: solo en md+ -->
+		<div class="hidden md:flex items-center gap-3 px-4 py-2 border-b font-mono text-[10px] font-bold uppercase tracking-widest"
 		     style="background:#161b22; border-color:rgba(255,255,255,.04); color:rgba(255,255,255,.2)">
 			<span class="w-2 shrink-0"></span>
 			<span class="w-36 shrink-0">Fecha / Hora</span>
@@ -227,46 +227,76 @@
 				{#each filteredLogs as log}
 					{@const cfg = getCfg(log.estado)}
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
-					<div class="flex items-center gap-3 px-4 py-2.5 cursor-default"
+					<div class="cursor-default"
 					     style="border-bottom:1px solid rgba(255,255,255,.03);"
 					     onmouseenter={(e) => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,.03)'}
 					     onmouseleave={(e) => (e.currentTarget as HTMLElement).style.background = 'transparent'}
 					>
-						<span class="w-2 h-2 rounded-full shrink-0 {cfg.dot}"></span>
+						<!-- ── Layout mobile (< md) ── -->
+						<div class="md:hidden flex items-start gap-2.5 px-4 py-3">
+							<span class="w-2 h-2 rounded-full shrink-0 mt-1 {cfg.dot}"></span>
+							<div class="flex-1 min-w-0">
+								<!-- Fila 1: badge + empresa + duración -->
+								<div class="flex items-center gap-2 mb-1">
+									<span class="px-2 py-0.5 rounded text-[10px] font-bold shrink-0 {cfg.badge}">
+										{cfg.label}
+									</span>
+									<span class="truncate text-[11px]" style="color:rgba(255,255,255,.45)">
+										{log.clienteNombre}
+									</span>
+									<span class="ml-auto tabular-nums text-[10px] shrink-0" style="color:rgba(255,255,255,.25)">
+										{log.duracion ?? '—'}
+									</span>
+								</div>
+								<!-- Fila 2: nombre automatización -->
+								<div class="truncate {cfg.text}" style="font-size:11px">
+									{abrevAuto(log.autoNombre)}
+								</div>
+								<!-- Fila 3: fecha -->
+								<div class="mt-0.5 tabular-nums text-[10px]" style="color:rgba(255,255,255,.25)">
+									{fmtFecha(log.fechaInicio)}
+								</div>
+							</div>
+						</div>
 
-						<span class="w-36 shrink-0 tabular-nums" style="color:rgba(255,255,255,.35)">
-							{fmtFecha(log.fechaInicio)}
-						</span>
+						<!-- ── Layout desktop (md+) ── -->
+						<div class="hidden md:flex items-center gap-3 px-4 py-2.5">
+							<span class="w-2 h-2 rounded-full shrink-0 {cfg.dot}"></span>
 
-						<!-- Badge con tooltip -->
-						<span class="relative w-28 shrink-0 group/badge">
-							<span class="w-full px-2 py-0.5 rounded text-[10px] font-bold text-center block {cfg.badge}">
-								{cfg.label}
+							<span class="w-36 shrink-0 tabular-nums" style="color:rgba(255,255,255,.35)">
+								{fmtFecha(log.fechaInicio)}
 							</span>
-							<span class="absolute bottom-full left-0 mb-2 w-56 px-3 py-2.5
-							             rounded-xl text-[11px] leading-relaxed font-sans font-normal
-							             pointer-events-none z-50
-							             opacity-0 group-hover/badge:opacity-100
-							             translate-y-1 group-hover/badge:translate-y-0
-							             transition-all duration-200 shadow-xl"
-							      style="background:#1e2d3d; color:rgba(255,255,255,.85); border:1px solid rgba(255,255,255,.1)">
-								{cfg.tooltip}
-								<span class="absolute top-full left-4 border-4 border-transparent"
-								      style="border-top-color:#1e2d3d"></span>
+
+							<!-- Badge con tooltip -->
+							<span class="relative w-28 shrink-0 group/badge">
+								<span class="w-full px-2 py-0.5 rounded text-[10px] font-bold text-center block {cfg.badge}">
+									{cfg.label}
+								</span>
+								<span class="absolute bottom-full left-0 mb-2 w-56 px-3 py-2.5
+								             rounded-xl text-[11px] leading-relaxed font-sans font-normal
+								             pointer-events-none z-50
+								             opacity-0 group-hover/badge:opacity-100
+								             translate-y-1 group-hover/badge:translate-y-0
+								             transition-all duration-200 shadow-xl"
+								      style="background:#1e2d3d; color:rgba(255,255,255,.85); border:1px solid rgba(255,255,255,.1)">
+									{cfg.tooltip}
+									<span class="absolute top-full left-4 border-4 border-transparent"
+									      style="border-top-color:#1e2d3d"></span>
+								</span>
 							</span>
-						</span>
 
-						<span class="w-36 shrink-0 truncate" style="color:rgba(255,255,255,.45)">
-							{log.clienteNombre}
-						</span>
+							<span class="w-36 shrink-0 truncate" style="color:rgba(255,255,255,.45)">
+								{log.clienteNombre}
+							</span>
 
-						<span class="flex-1 truncate {cfg.text}">
-							{abrevAuto(log.autoNombre)}
-						</span>
+							<span class="flex-1 truncate {cfg.text}">
+								{abrevAuto(log.autoNombre)}
+							</span>
 
-						<span class="w-16 shrink-0 text-right tabular-nums" style="color:rgba(255,255,255,.25)">
-							{log.duracion ?? '—'}
-						</span>
+							<span class="w-16 shrink-0 text-right tabular-nums" style="color:rgba(255,255,255,.25)">
+								{log.duracion ?? '—'}
+							</span>
+						</div>
 					</div>
 				{/each}
 
@@ -274,9 +304,9 @@
 				{#if estadoFilter === 'ALL' && autoFilter === 'ALL' && search === ''}
 					<div class="flex items-center gap-3 px-4 py-2.5">
 						<span class="w-2 h-2 rounded-full shrink-0 bg-slate-700"></span>
-						<span class="w-36" style="color:rgba(255,255,255,.1)">—</span>
-						<span class="w-28"></span>
-						<span class="w-36"></span>
+						<span class="hidden md:inline w-36" style="color:rgba(255,255,255,.1)">—</span>
+						<span class="hidden md:inline w-28"></span>
+						<span class="hidden md:inline w-36"></span>
 						<span style="color:rgba(255,255,255,.18)">Esperando nuevas ejecuciones</span>
 						<span class="inline-block w-2 h-3.5 rounded-sm ml-1 animate-pulse"
 						      style="background:rgba(255,255,255,.18)"></span>

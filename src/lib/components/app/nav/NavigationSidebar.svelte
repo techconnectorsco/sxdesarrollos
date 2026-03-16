@@ -1,19 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { 
+	import {
 		LayoutDashboard,
 		Users,
-		Cpu,
 		FileText,
-		Settings,
 		ChevronLeft,
 		ChevronRight,
-		LogOut,
-		ExternalLink,
 		Globe,
-		UsersRound
+		UsersRound,
+		X
 	} from 'lucide-svelte';
-	import { siteConfig } from '$lib/config/site';
+	import { sidebar } from '$lib/stores/sidebar.svelte';
 
 	let collapsed = $state(false);
 
@@ -25,45 +22,71 @@
 		{ label: 'Bitácora', icon: FileText, href: '/logs' },
 	];
 
-	const secondaryItems = [
-		{ label: 'Configuración', icon: Settings, href: '/admin/ajustes' },
-	];
-
 	function toggleSidebar() {
 		collapsed = !collapsed;
 	}
 
+	function closeMobile() {
+		sidebar.open = false;
+	}
+
     let currentPath = $derived(page.url.pathname);
+
+	// Close mobile sidebar on route change
+	$effect(() => {
+		currentPath;
+		sidebar.open = false;
+	});
 </script>
 
-<aside 
-	class="fixed left-0 top-0 h-screen bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300 z-50 flex flex-col shadow-2xl {collapsed ? 'w-20' : 'w-64'}"
+<!-- Mobile backdrop overlay -->
+{#if sidebar.open}
+	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+	<div
+		class="fixed inset-0 bg-black/50 z-40 lg:hidden"
+		onclick={closeMobile}
+	></div>
+{/if}
+
+<aside
+	class="fixed left-0 top-0 h-screen bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300 z-50 flex flex-col shadow-2xl
+		{collapsed ? 'w-16 lg:w-20' : 'w-64'}
+		{sidebar.open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}"
 >
 	<!-- Header / Logo -->
-	<div class="h-20 flex items-center px-6 border-b border-sidebar-border">
-		<div class="flex items-center gap-3 overflow-hidden">
-			<div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shrink-0 shadow-lg shadow-blue-500/20">
+	<div class="h-16 lg:h-20 flex items-center px-4 lg:px-6 border-b border-sidebar-border">
+		<div class="flex items-center gap-3 overflow-hidden flex-1">
+			<div class="w-7 h-7 lg:w-8 lg:h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shrink-0 shadow-lg shadow-blue-500/20 text-xs lg:text-sm">
 				SX
 			</div>
 			{#if !collapsed}
-				<span class="font-bold text-xl text-white tracking-tight animate-fade-in truncate">
+				<span class="font-bold text-lg lg:text-xl text-white tracking-tight animate-fade-in truncate">
 					Productivity
 				</span>
 			{/if}
 		</div>
+		<!-- Close button: only visible on mobile -->
+		<button
+			onclick={closeMobile}
+			class="lg:hidden p-1.5 rounded-lg hover:bg-sidebar-accent transition-colors text-sidebar-foreground/60 hover:text-sidebar-foreground shrink-0"
+			aria-label="Cerrar menú"
+		>
+			<X class="w-4 h-4" />
+		</button>
 	</div>
 
 	<!-- Navigation -->
-	<nav class="flex-1 py-6 px-3 space-y-1 overflow-y-auto">
+	<nav class="flex-1 py-4 lg:py-6 px-3 space-y-1 overflow-y-auto">
 		<div class="px-3 mb-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 			{collapsed ? 'Main' : 'Gestión Principal'}
 		</div>
 		{#each navItems as item}
-			<a 
+			{@const NavIcon = item.icon}
+			<a
 				href={item.href}
 				class="group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 {currentPath.startsWith(item.href) ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold' : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'}"
 			>
-				<svelte:component this={item.icon} class="w-5 h-5 shrink-0 {currentPath.startsWith(item.href) ? 'text-sidebar-primary' : 'text-muted-foreground group-hover:text-sidebar-accent-foreground'}" />
+				<NavIcon class="w-5 h-5 shrink-0 {currentPath.startsWith(item.href) ? 'text-sidebar-primary' : 'text-muted-foreground group-hover:text-sidebar-accent-foreground'}" />
 				{#if !collapsed}
 					<span class="text-sm truncate">{item.label}</span>
 				{/if}
@@ -78,7 +101,7 @@
 			<div class="pt-6 px-3 mb-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
     {collapsed ? 'Eq' : 'Equipo'}
 </div>
-<a 
+<a
     href="/equipo"
     class="group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 {currentPath.startsWith('/equipo') ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold' : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'}"
 >
@@ -91,7 +114,7 @@
 			{collapsed ? 'Ext' : 'Herramientas'}
 		</div>
 		{#each secondaryItems as item}
-			<a 
+			<a
 				href={item.href}
 				class="group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 {currentPath.startsWith(item.href) ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold' : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'}"
 			>
@@ -105,9 +128,10 @@
 
 	<!-- Footer -->
 	<div class="p-4 border-t border-sidebar-border bg-sidebar/50 backdrop-blur-sm">
-		<button 
+		<!-- Toggle collapse: only on desktop -->
+		<button
 			onclick={toggleSidebar}
-			class="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-sidebar-accent hover:bg-sidebar-accent/80 transition-colors text-sidebar-accent-foreground hover:text-sidebar-accent-foreground text-xs font-medium"
+			class="hidden lg:flex w-full items-center justify-center gap-2 py-2 rounded-lg bg-sidebar-accent hover:bg-sidebar-accent/80 transition-colors text-sidebar-accent-foreground hover:text-sidebar-accent-foreground text-xs font-medium"
 		>
 			{#if collapsed}
 				<ChevronRight class="w-4 h-4" />
@@ -116,9 +140,9 @@
 				<span>Colapsar</span>
 			{/if}
 		</button>
-		
+
 		{#if !collapsed}
-			<div class="mt-4 flex items-center gap-3 px-2">
+			<div class="mt-0 lg:mt-4 flex items-center gap-3 px-2">
 				<div class="w-8 h-8 rounded-full bg-sidebar-accent border border-sidebar-border flex items-center justify-center text-xs">
 					SX
 				</div>

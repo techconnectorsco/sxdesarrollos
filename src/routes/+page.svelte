@@ -102,7 +102,7 @@ function getLogoHeight(slug: string | undefined): string {
 		<!-- ================================================
 		     HERO
 		     ================================================ -->
-		<section class="relative min-h-[88vh] flex items-center px-6 py-20 overflow-hidden">
+		<section class="relative min-h-[88vh] flex items-center px-4 sm:px-6 py-16 sm:py-20 overflow-hidden">
 
 			<div class="hero-grid absolute inset-0 pointer-events-none"></div>
 
@@ -111,7 +111,7 @@ function getLogoHeight(slug: string | undefined): string {
 			<div class="blob-slate absolute bottom-0 right-0 w-[360px] h-[360px] rounded-full blur-[100px] pointer-events-none"></div>
 
 			<div
-				class="relative z-10 max-w-2xl transition-all duration-700 ease-out"
+				class="relative z-10 w-full max-w-2xl transition-all duration-700 ease-out"
 				class:opacity-100={visible} class:translate-y-0={visible}
 				class:opacity-0={!visible}  class:translate-y-5={!visible}
 			>
@@ -120,27 +120,27 @@ function getLogoHeight(slug: string | undefined): string {
 					href="https://soportexperto.com"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full no-underline
+					class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 mb-6 sm:mb-8 rounded-full no-underline
 					       border border-blue-300/60 dark:border-blue-500/30
 					       bg-blue-500/10
 					       hover:bg-blue-500/20
 					       transition-colors duration-200"
 				>
-					<span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-					<span class="text-xs text-muted-foreground">Una iniciativa de</span>
+					<span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shrink-0"></span>
+					<span class="text-xs text-muted-foreground hidden xs:inline">Una iniciativa de</span>
 					<span class="text-xs font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400">SoporteXperto</span>
-					<svg class="w-3 h-3 text-blue-500 opacity-80" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8">
+					<svg class="w-3 h-3 text-blue-500 opacity-80 shrink-0" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M2.5 9.5l7-7M3.5 2.5h6v6"/>
 					</svg>
 				</a>
 
-				<h1 class="font-serif text-5xl md:text-6xl font-bold leading-[1.07] tracking-tight mb-5 text-foreground">
+				<h1 class="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.07] tracking-tight mb-4 sm:mb-5 text-foreground">
 					Automatización<br />
 					<em class="not-italic text-blue-600 dark:text-blue-400">que genera valor</em>
 				</h1>
 
-				<div class="mb-9 pl-4 border-l-2 border-blue-500">
-					<p class="text-base leading-relaxed text-muted-foreground">
+				<div class="mb-7 sm:mb-9 pl-4 border-l-2 border-blue-500">
+					<p class="text-sm sm:text-base leading-relaxed text-muted-foreground">
 						Somos la
 						<strong class="font-semibold text-foreground">Oficina de Transformación Digital</strong>
 						de SoporteXperto — el equipo especializado en automatizar procesos empresariales para que tu organización
@@ -149,9 +149,9 @@ function getLogoHeight(slug: string | undefined): string {
 				</div>
 
 				<!-- Botones -->
-				<div class="flex flex-wrap gap-3 mb-12">
+				<div class="flex flex-wrap gap-3 mb-8 sm:mb-12">
 					<a href="/general"
-					   class="inline-flex items-center gap-2 px-6 py-3 rounded-xl no-underline font-semibold text-sm
+					   class="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl no-underline font-semibold text-sm
 					          bg-blue-600 hover:bg-blue-500 text-white
 					          shadow-md shadow-blue-600/20
 					          transition-all duration-200 hover:-translate-y-0.5">
@@ -161,7 +161,7 @@ function getLogoHeight(slug: string | undefined): string {
 						</svg>
 					</a>
 					<a href="#casos"
-					   class="inline-flex items-center px-6 py-3 rounded-xl no-underline font-semibold text-sm
+					   class="inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl no-underline font-semibold text-sm
 					          border border-border text-foreground
 					          hover:bg-muted
 					          transition-colors duration-200">
@@ -169,17 +169,20 @@ function getLogoHeight(slug: string | undefined): string {
 					</a>
 				</div>
 
-				<!-- Stats bar -->
-				<div class="inline-flex divide-x divide-border rounded-xl overflow-hidden border border-border bg-card shadow-sm">
+				<!-- Stats bar: grid 2x2 en mobile, fila en sm+ -->
+				<div class="grid grid-cols-2 sm:grid-cols-4 rounded-xl overflow-hidden border border-border bg-card shadow-sm w-full sm:w-auto sm:inline-grid">
 					{#each [
 						{ v: '24+',   l: 'Procesos activos' },
 						{ v: '15+',   l: 'Clientes en CR'   },
 						{ v: '12k+',  l: 'Horas ahorradas'  },
 						{ v: '99.8%', l: 'Tasa de éxito'    }
-					] as s}
-						<div class="flex flex-col px-5 py-3.5 gap-1">
-							<span class="text-xl font-extrabold leading-none text-blue-600 dark:text-blue-400">{s.v}</span>
-							<span class="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">{s.l}</span>
+					] as s, i}
+						<div class="flex flex-col px-4 sm:px-5 py-3 sm:py-3.5 gap-1
+							{i % 2 === 0 ? 'border-r border-border' : ''}
+							{i < 2 ? 'border-b sm:border-b-0 border-border' : ''}
+							sm:not-last:border-r">
+							<span class="text-lg sm:text-xl font-extrabold leading-none text-blue-600 dark:text-blue-400">{s.v}</span>
+							<span class="text-[9px] sm:text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">{s.l}</span>
 						</div>
 					{/each}
 				</div>

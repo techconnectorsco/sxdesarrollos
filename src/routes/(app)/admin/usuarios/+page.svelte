@@ -252,8 +252,8 @@
 					<div class="border-b border-border last:border-b-0">
 						<!-- Fila principal del usuario -->
 						<div class="p-6 hover:bg-muted transition-colors">
-							<div class="flex items-center justify-between gap-4">
-								<div class="flex items-center gap-4 flex-1">
+							<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+								<div class="flex items-center gap-4 flex-1 min-w-0">
 									<!-- Avatar -->
 									<div class="w-14 h-14 rounded-full overflow-hidden bg-linear-to-br from-blue-400 to-blue-600 flex items-center justify-center shrink-0">
 										{#if usuario.url_imagen}

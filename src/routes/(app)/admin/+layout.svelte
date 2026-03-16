@@ -6,7 +6,7 @@
 
 <div class="min-h-screen bg-background flex">
 	<SidebarAdmin />
-	<main class="flex-1 pl-80 pr-8 pt-24 pb-8">
+	<main class="flex-1 px-4 sm:px-6 pt-20 pb-8 lg:pl-80 lg:pr-8 lg:pt-24">
 		{@render children()}
 	</main>
 </div>
