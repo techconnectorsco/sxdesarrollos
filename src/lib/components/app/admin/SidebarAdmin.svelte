@@ -1,4 +1,5 @@
 <script lang="ts">
+//D:\Users\Usuario\Desktop\SX-Desarrollos\src\lib\components\app\admin\SidebarAdmin.svelte
 	import { page } from '$app/state';
 	import { adminSidebar } from '$lib/stores/sidebar.svelte';
 
@@ -141,7 +142,7 @@
 			<svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
 			</svg>
-			<span class="text-sm font-medium">Volver al Dashboard</span>
+			<span class="text-sm font-medium">Volver al Home</span>
 		</a>
 	</div>
 </aside>

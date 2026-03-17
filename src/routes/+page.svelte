@@ -39,6 +39,7 @@ const logoHeightMap: Record<string, string> = {
     'ae-logistics':    'h-18',
     'sito-cr':         'h-7',
     'soportexperto':   'h-10',
+	'techconnectors':	'h-16',
 };
 
 function getLogoHeight(slug: string | undefined): string {
