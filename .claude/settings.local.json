@@ -4,7 +4,15 @@
       "Bash(head -100 \"d:/Users/Usuario/Desktop/SX-Desarrollos/src/routes/\\(app\\)/admin/usuarios/+page.svelte\")",
       "Bash(head -100 \"d:/Users/Usuario/Desktop/SX-Desarrollos/src/routes/\\(app\\)/clientes/+page.svelte\")",
       "Bash(head -200 \"d:/Users/Usuario/Desktop/SX-Desarrollos/src/routes/\\(app\\)/clientes/+page.svelte\")",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(npm install *)",
+      "Bash(npx svelte-check *)",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"require\\('pdfkit'\\); console.log\\('pdfkit OK'\\)\")",
+      "Bash(npx svelte-kit *)"
+    ],
+    "additionalDirectories": [
+      "d:\\Users\\Usuario\\Desktop\\SX-Desarrollos\\src\\routes\\api\\cxc"
     ]
   }
 }

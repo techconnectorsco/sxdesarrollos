@@ -61,12 +61,14 @@
 		"@turf/area": "^7.3.1",
 		"@turf/center": "^7.3.1",
 		"@turf/helpers": "^7.3.1",
+		"@types/pdfkit": "^0.17.5",
 		"@vercel/analytics": "^1.6.1",
 		"@vercel/speed-insights": "^1.3.1",
 		"axios": "^1.13.2",
 		"lucide-svelte": "^0.555.0",
 		"mapbox-gl": "^3.16.0",
 		"mode-watcher": "^1.1.0",
-		"openai": "^6.15.0"
+		"openai": "^6.15.0",
+		"pdfkit": "^0.18.0"
 	}
 }
