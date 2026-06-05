@@ -166,9 +166,9 @@
 	}
 
 	const badge: Record<ClienteSAP['tipo'], string> = {
-		padre: 'bg-indigo-50 text-indigo-700 ring-indigo-200',
-		hijo: 'bg-amber-50 text-amber-700 ring-amber-200',
-		individual: 'bg-slate-100 text-slate-600 ring-slate-200'
+		padre: 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 ring-indigo-200 dark:ring-indigo-800',
+		hijo: 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 ring-amber-200 dark:ring-amber-800',
+		individual: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 ring-slate-200 dark:ring-slate-700'
 	};
 
 	const envioHabilitado = $derived(
@@ -181,15 +181,15 @@
 <div class="mx-auto max-w-5xl px-4 py-8">
 	<header class="mb-8 text-center">
 		<img src="/QU.png" alt="Químicas Unidas" class="mx-auto mb-4 h-16 w-auto" />
-		<p class="text-xs font-semibold uppercase tracking-widest text-indigo-600">Químicas Unidas</p>
-		<h1 class="mt-1 text-2xl font-bold text-slate-900">Estados de Cuenta (CXC)</h1>
-		<p class="mt-1 text-sm text-slate-500">
+		<p class="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Químicas Unidas</p>
+		<h1 class="mt-1 text-2xl font-bold text-foreground">Estados de Cuenta (CXC)</h1>
+		<p class="mt-1 text-sm text-muted-foreground">
 			Ejecuta el envío de estados de cuenta y consulta la actual de un cliente con saldo pendiente.
 		</p>
 	</header>
 
 	{#if errorCarga}
-		<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+		<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/40 dark:text-red-400">
 			<p class="font-medium">{errorCarga}</p>
 			<button
 				class="mt-2 rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
@@ -201,25 +201,25 @@
 	{/if}
 
 	<!-- ════════════ SOLICITUD DE ENVÍO ════════════ -->
-	<section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-		<h2 class="text-base font-semibold text-slate-800">Solicitud de envío</h2>
+	<section class="rounded-xl border border-border bg-card p-6 shadow-sm">
+		<h2 class="text-base font-semibold text-foreground">Solicitud de envío</h2>
 
 		<!-- Método -->
 		<div class="mt-4">
-			<label for="metodo" class="mb-1 block text-xs font-medium text-slate-600">Método</label>
+			<label for="metodo" class="mb-1 block text-xs font-medium text-muted-foreground">Método</label>
 			<select
 				id="metodo"
 				bind:value={metodo}
-				class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+				class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
 			>
 				<option value="cliente">Enviar al cliente</option>
 				<option value="revision">Enviar a revisión (crédito)</option>
 			</select>
-			<p class="mt-1.5 text-xs text-slate-500">{ayudaMetodo}</p>
+			<p class="mt-1.5 text-xs text-muted-foreground">{ayudaMetodo}</p>
 
 			{#if metodo === 'revision'}
 				<div class="mt-3">
-					<label for="correoRevision" class="mb-1 block text-xs font-medium text-slate-600">
+					<label for="correoRevision" class="mb-1 block text-xs font-medium text-muted-foreground">
 						Correo destino
 					</label>
 					<input
@@ -227,9 +227,9 @@
 						type="email"
 						placeholder="correo@empresa.com"
 						bind:value={correoRevision}
-						class="w-full rounded-lg border border-indigo-200 bg-indigo-50/40 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+						class="w-full rounded-lg border border-indigo-200 dark:border-indigo-700 bg-indigo-50/40 dark:bg-indigo-950/20 px-3 py-2 text-sm text-foreground outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
 					/>
-					<p class="mt-1 text-xs text-slate-400">
+					<p class="mt-1 text-xs text-muted-foreground">
 						El PDF llegará únicamente a este correo. Podés cambiarlo antes de enviar.
 					</p>
 				</div>
@@ -244,22 +244,22 @@
 					onclick={() => (alcance = 'cliente')}
 					class="rounded-lg border px-4 py-3 text-left transition
                         {alcance === 'cliente'
-						? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500'
-						: 'border-slate-200 hover:border-slate-300'}"
+						? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 ring-1 ring-indigo-500'
+						: 'border-border hover:border-muted-foreground/40'}"
 				>
-					<span class="block text-sm font-medium text-slate-900">Clientes específicos</span>
-					<span class="mt-0.5 block text-xs text-slate-500">Elegí uno o varios</span>
+					<span class="block text-sm font-medium text-foreground">Clientes específicos</span>
+					<span class="mt-0.5 block text-xs text-muted-foreground">Elegí uno o varios</span>
 				</button>
 				<button
 					type="button"
 					onclick={() => (alcance = 'completo')}
 					class="rounded-lg border px-4 py-3 text-left transition
                         {alcance === 'completo'
-						? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500'
-						: 'border-slate-200 hover:border-slate-300'}"
+						? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 ring-1 ring-indigo-500'
+						: 'border-border hover:border-muted-foreground/40'}"
 				>
-					<span class="block text-sm font-medium text-slate-900">Cartera completa</span>
-					<span class="mt-0.5 block text-xs text-slate-500">Solo clientes con envío automático</span
+					<span class="block text-sm font-medium text-foreground">Cartera completa</span>
+					<span class="mt-0.5 block text-xs text-muted-foreground">Solo clientes con envío automático</span
 					>
 				</button>
 			</div>
@@ -268,8 +268,8 @@
 		<!-- Selector de clientes -->
 		{#if alcanceEfectivo === 'cliente'}
 			<div class="relative mt-5">
-				<label for="buscar" class="mb-1 block text-xs font-medium text-slate-600">
-					Clientes {#if !cargando}<span class="text-slate-400">({total} cuentas con saldo)</span
+				<label for="buscar" class="mb-1 block text-xs font-medium text-muted-foreground">
+					Clientes {#if !cargando}<span class="text-muted-foreground/60">({total} cuentas con saldo)</span
 						>{/if}
 				</label>
 				<input
@@ -281,22 +281,22 @@
 					oninput={() => (mostrarSugerencias = true)}
 					onfocus={() => (mostrarSugerencias = true)}
 					disabled={cargando}
-					class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:bg-slate-50"
+					class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:bg-muted"
 				/>
 
 				{#if mostrarSugerencias && sugerencias.length > 0}
 					<ul
-						class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+						class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-border bg-popover shadow-lg"
 					>
 						{#each sugerencias as c (c.cardCode)}
 							<li>
 								<button
-									class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm hover:bg-slate-50"
+									class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm hover:bg-accent"
 									onclick={() => agregar(c)}
 								>
 									<span class="min-w-0">
-										<span class="font-mono text-xs text-slate-500">{c.cardCode}</span>
-										<span class="ml-2 truncate text-slate-800">{c.cardName}</span>
+										<span class="font-mono text-xs text-muted-foreground">{c.cardCode}</span>
+										<span class="ml-2 truncate text-foreground">{c.cardName}</span>
 									</span>
 									<span
 										class="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium uppercase ring-1 ring-inset {badge[
@@ -317,15 +317,15 @@
 				<div class="mt-3 flex flex-wrap gap-2">
 					{#each seleccionados as c (c.cardCode)}
 						<span
-							class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 py-1 pl-2.5 pr-1.5 text-xs text-slate-700"
+							class="inline-flex items-center gap-1.5 rounded-full bg-muted py-1 pl-2.5 pr-1.5 text-xs text-foreground"
 						>
-							<span class="font-mono text-slate-500">{c.cardCode}</span>
+							<span class="font-mono text-muted-foreground">{c.cardCode}</span>
 							<span class="max-w-[16rem] truncate">{c.cardName}</span>
 							{#if c.tipo === 'padre'}
-								<span class="text-indigo-600">+{hijasPorPadre.get(c.cardCode) ?? 0} suc.</span>
+								<span class="text-indigo-600 dark:text-indigo-400">+{hijasPorPadre.get(c.cardCode) ?? 0} suc.</span>
 							{/if}
 							<button
-								class="ml-0.5 grid h-4 w-4 place-items-center rounded-full text-slate-400 hover:bg-slate-200 hover:text-slate-700"
+								class="ml-0.5 grid h-4 w-4 place-items-center rounded-full text-muted-foreground hover:bg-muted-foreground/20 hover:text-foreground"
 								onclick={() => quitar(c.cardCode)}
 								aria-label="Quitar"
 							>
@@ -336,18 +336,18 @@
 				</div>
 			{/if}
 
-			<p class="mt-3 text-xs text-slate-400">
+			<p class="mt-3 text-xs text-muted-foreground">
 				Las cuentas padre consolidan sus sucursales en un solo estado de cuenta. Un cliente sin
 				saldo en SAP no se envía.
 			</p>
 		{:else}
-			<p class="mt-5 rounded-lg bg-slate-50 px-4 py-3 text-xs text-slate-500">
+			<p class="mt-5 rounded-lg bg-muted px-4 py-3 text-xs text-muted-foreground">
 				Procesa toda la cartera con saldo y respeta el envío automático configurado por cliente.
 			</p>
 		{/if}
 
 		<!-- Acción -->
-		<div class="mt-6 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-5">
+		<div class="mt-6 flex flex-wrap items-center gap-3 border-t border-border pt-5">
 			<button
 				type="button"
 				onclick={ejecutar}
@@ -357,7 +357,7 @@
 				{ejecutando ? 'Enviando…' : metodo === 'revision' ? 'Enviar a revisión' : 'Ejecutar CXC'}
 			</button>
 			{#if alcanceEfectivo === 'cliente' && seleccionados.length > 0}
-				<span class="text-xs text-slate-500">{seleccionados.length} cliente(s) seleccionado(s)</span
+				<span class="text-xs text-muted-foreground">{seleccionados.length} cliente(s) seleccionado(s)</span
 				>
 			{/if}
 		</div>
@@ -365,8 +365,8 @@
 		{#if resultado}
 			<div
 				class="mt-4 rounded-lg px-4 py-3 text-sm {resultado.ok
-					? 'bg-green-50 text-green-700'
-					: 'bg-amber-50 text-amber-800'}"
+					? 'bg-green-50 text-green-700 dark:bg-green-950/40 dark:text-green-400'
+					: 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-400'}"
 			>
 				{resultado.texto}
 			</div>
@@ -374,9 +374,9 @@
 	</section>
 
 	<!-- ════════════ CONSULTA / AUDITORÍA ════════════ -->
-	<section class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-		<h2 class="text-base font-semibold text-slate-800">Auditoría de Cliente</h2>
-		<p class="mt-1 text-sm text-slate-500">
+	<section class="mt-8 rounded-xl border border-border bg-card p-6 shadow-sm">
+		<h2 class="text-base font-semibold text-foreground">Auditoría de Cliente</h2>
+		<p class="mt-1 text-sm text-muted-foreground">
 			Vista unificada de documentos y saldos consolidados idéntica al PDF final.
 		</p>
 
@@ -392,20 +392,20 @@
 						auditSel = null;
 					}}
 					onfocus={() => (auditSugerencias = true)}
-					class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+					class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
 				/>
 				{#if auditSugerencias && !auditSel && auditFiltrados.length > 0}
 					<ul
-						class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+						class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-border bg-popover shadow-lg"
 					>
 						{#each auditFiltrados as c (c.cardCode)}
 							<li>
 								<button
-									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-slate-50"
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent"
 									onclick={() => elegirAudit(c)}
 								>
-									<span class="font-mono text-xs text-slate-500">{c.cardCode}</span>
-									<span class="truncate text-slate-800">{c.cardName}</span>
+									<span class="font-mono text-xs text-muted-foreground">{c.cardCode}</span>
+									<span class="truncate text-foreground">{c.cardName}</span>
 								</button>
 							</li>
 						{/each}
@@ -416,22 +416,22 @@
 				type="button"
 				onclick={consultar}
 				disabled={auditCargando}
-				class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+				class="rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-50"
 			>
 				{auditCargando ? 'Consultando…' : 'Consultar'}
 			</button>
 		</div>
 
 		{#if auditError}
-			<div class="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">{auditError}</div>
+			<div class="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-400">{auditError}</div>
 		{/if}
 
 		{#if auditData}
 			<!-- ── Tarjetas de Resumen (Estilo Dashboard) ── -->
 			<div class="mt-6">
 				<div class="flex items-baseline justify-between mb-3">
-					<h3 class="text-lg font-bold text-slate-800">
-						<span class="font-mono text-slate-500 text-base font-medium mr-1"
+					<h3 class="text-lg font-bold text-foreground">
+						<span class="font-mono text-muted-foreground text-base font-medium mr-1"
 							>{auditData.cliente.cardCode}</span
 						>
 						{auditData.cliente.cardName}
@@ -440,35 +440,35 @@
 
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
 					<!-- Tarjeta 1: Saldo -->
-					<div class="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-						<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">
+					<div class="rounded-xl border border-border bg-muted/50 p-4">
+						<p class="text-xs font-medium text-muted-foreground uppercase tracking-wider">
 							Saldo Global en SAP
 						</p>
 						<p
 							class="mt-1 text-2xl font-bold {auditData.cliente.saldoActual < 0
 								? 'text-amber-600'
-								: 'text-slate-900'}"
+								: 'text-foreground'}"
 						>
 							{fmt(auditData.cliente.saldoActual, 'CRC')}
 						</p>
 					</div>
 
 					<!-- Tarjeta 2: Correos -->
-					<div class="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-						<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Destinatarios</p>
+					<div class="rounded-xl border border-border bg-muted/50 p-4">
+						<p class="text-xs font-medium text-muted-foreground uppercase tracking-wider">Destinatarios</p>
 						<div class="mt-2 space-y-1">
 							<p
-								class="text-sm text-slate-800 truncate"
+								class="text-sm text-foreground truncate"
 								title={auditData.cliente.correoCxc || 'No configurado'}
 							>
-								<span class="text-xs text-slate-400 mr-1">CXC:</span>
+								<span class="text-xs text-muted-foreground mr-1">CXC:</span>
 								{auditData.cliente.correoCxc || '—'}
 							</p>
 							<p
-								class="text-sm text-slate-800 truncate"
+								class="text-sm text-foreground truncate"
 								title={auditData.cliente.correoPrincipal || 'No configurado'}
 							>
-								<span class="text-xs text-slate-400 mr-1">Gral:</span>
+								<span class="text-xs text-muted-foreground mr-1">Gral:</span>
 								{auditData.cliente.correoPrincipal || '—'}
 							</p>
 						</div>
@@ -476,20 +476,20 @@
 
 					<!-- Tarjeta 3: Estatus Envío -->
 					<div
-						class="rounded-xl border border-slate-200 bg-slate-50/50 p-4 flex flex-col justify-center items-start"
+						class="rounded-xl border border-border bg-muted/50 p-4 flex flex-col justify-center items-start"
 					>
-						<p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">
+						<p class="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
 							Envío Automático
 						</p>
 						<span
 							class="rounded-full px-3 py-1 text-xs font-semibold {envioHabilitado
-								? 'bg-green-100 text-green-700'
-								: 'bg-slate-200 text-slate-600'}"
+								? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400'
+								: 'bg-muted text-muted-foreground'}"
 						>
 							{envioHabilitado ? 'Habilitado' : 'Deshabilitado'}
 						</span>
 						{#if !envioHabilitado}
-							<p class="mt-2 text-[10px] text-slate-400 leading-tight">
+							<p class="mt-2 text-[10px] text-muted-foreground leading-tight">
 								El RPA ignorará a este cliente en ejecuciones masivas.
 							</p>
 						{/if}
@@ -498,7 +498,7 @@
 
 				{#if auditData.cliente.saldoActual === 0 && (auditData.documentos.usd.length > 0 || auditData.documentos.crc.length > 0)}
 					<div
-						class="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 border border-amber-200"
+						class="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-800"
 					>
 						<strong>Nota:</strong> Este cliente tiene el saldo general en cero, pero posee documentos
 						abiertos (probablemente facturas que se matan con notas de crédito no aplicadas). El envío
@@ -508,12 +508,12 @@
 			</div>
 
 			<!-- ════════════ TABLA CON SCROLL (MAX-H) Y STICKY HEADER ════════════ -->
-			<div class="mt-8 rounded-xl border border-slate-200 shadow-sm bg-white overflow-hidden">
+			<div class="mt-8 rounded-xl border border-border shadow-sm bg-card overflow-hidden">
 				<!-- Contenedor con altura máxima y scroll -->
 				<div class="overflow-x-auto overflow-y-auto max-h-[500px] relative custom-scrollbar">
 					<table class="w-full text-sm min-w-[900px] text-left">
 						<thead
-							class="bg-slate-100 text-[11px] font-bold uppercase text-slate-600 sticky top-0 z-10 shadow-sm"
+							class="bg-muted text-[11px] font-bold uppercase text-muted-foreground sticky top-0 z-10 shadow-sm"
 						>
 							<tr>
 								<th class="px-4 py-3 text-center whitespace-nowrap">No de Doc</th>
@@ -526,37 +526,37 @@
 								<th class="px-4 py-3 text-center whitespace-nowrap">Estatus</th>
 							</tr>
 						</thead>
-						<tbody class="divide-y divide-slate-100">
+						<tbody class="divide-y divide-border">
 							<!-- SECCIÓN DÓLARES -->
 							{#if auditData.documentos.usd.length > 0}
 								{#each auditData.documentos.usd as doc}
-									<tr class="hover:bg-indigo-50/40 transition-colors">
-										<td class="px-4 py-2.5 text-center font-mono text-xs text-slate-600"
+									<tr class="hover:bg-indigo-50/40 dark:hover:bg-indigo-950/20 transition-colors">
+										<td class="px-4 py-2.5 text-center font-mono text-xs text-muted-foreground"
 											>{doc.consecutivo}</td
 										>
-										<td class="px-4 py-2.5 text-center font-mono text-xs text-slate-500"
+										<td class="px-4 py-2.5 text-center font-mono text-xs text-muted-foreground"
 											>{doc.ordenCompra}</td
 										>
-										<td class="px-4 py-2.5 text-center text-slate-600">{doc.fecha}</td>
-										<td class="px-4 py-2.5 text-center text-slate-600">{doc.fechaVence}</td>
-										<td class="px-4 py-2.5 text-center text-slate-600">{doc.tipoDoc}</td>
+										<td class="px-4 py-2.5 text-center text-muted-foreground">{doc.fecha}</td>
+										<td class="px-4 py-2.5 text-center text-muted-foreground">{doc.fechaVence}</td>
+										<td class="px-4 py-2.5 text-center text-muted-foreground">{doc.tipoDoc}</td>
 										<td
-											class="px-4 py-2.5 text-xs text-slate-600 max-w-[14rem] truncate"
+											class="px-4 py-2.5 text-xs text-muted-foreground max-w-56 truncate"
 											title={doc.descripcion}>{doc.descripcion}</td
 										>
 										<td
 											class="px-4 py-2.5 text-right font-medium {doc.saldo < 0
 												? 'text-amber-600'
-												: 'text-slate-800'}">{fmt(doc.saldo, 'USD')}</td
+												: 'text-foreground'}">{fmt(doc.saldo, 'USD')}</td
 										>
 										<td class="px-4 py-2.5 text-center">
 											<span
 												class="inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-medium {doc.estatus ===
 												'Vencido'
-													? 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/10'
+													? 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/10 dark:bg-red-950/40 dark:text-red-400 dark:ring-red-800/40'
 													: doc.estatus === 'A favor'
-														? 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20'
-														: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'}"
+														? 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20 dark:bg-amber-950/40 dark:text-amber-400 dark:ring-amber-800/40'
+														: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-950/40 dark:text-green-400 dark:ring-green-800/40'}"
 											>
 												{doc.estatus}
 											</span>
@@ -579,33 +579,33 @@
 							<!-- SECCIÓN COLONES -->
 							{#if auditData.documentos.crc.length > 0}
 								{#each auditData.documentos.crc as doc}
-									<tr class="hover:bg-indigo-50/40 transition-colors">
-										<td class="px-4 py-2.5 text-center font-mono text-xs text-slate-600"
+									<tr class="hover:bg-indigo-50/40 dark:hover:bg-indigo-950/20 transition-colors">
+										<td class="px-4 py-2.5 text-center font-mono text-xs text-muted-foreground"
 											>{doc.consecutivo}</td
 										>
-										<td class="px-4 py-2.5 text-center font-mono text-xs text-slate-500"
+										<td class="px-4 py-2.5 text-center font-mono text-xs text-muted-foreground"
 											>{doc.ordenCompra}</td
 										>
-										<td class="px-4 py-2.5 text-center text-slate-600">{doc.fecha}</td>
-										<td class="px-4 py-2.5 text-center text-slate-600">{doc.fechaVence}</td>
-										<td class="px-4 py-2.5 text-center text-slate-600">{doc.tipoDoc}</td>
+										<td class="px-4 py-2.5 text-center text-muted-foreground">{doc.fecha}</td>
+										<td class="px-4 py-2.5 text-center text-muted-foreground">{doc.fechaVence}</td>
+										<td class="px-4 py-2.5 text-center text-muted-foreground">{doc.tipoDoc}</td>
 										<td
-											class="px-4 py-2.5 text-xs text-slate-600 max-w-[14rem] truncate"
+											class="px-4 py-2.5 text-xs text-muted-foreground max-w-56 truncate"
 											title={doc.descripcion}>{doc.descripcion}</td
 										>
 										<td
 											class="px-4 py-2.5 text-right font-medium {doc.saldo < 0
 												? 'text-amber-600'
-												: 'text-slate-800'}">{fmt(doc.saldo, 'CRC')}</td
+												: 'text-foreground'}">{fmt(doc.saldo, 'CRC')}</td
 										>
 										<td class="px-4 py-2.5 text-center">
 											<span
 												class="inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-medium {doc.estatus ===
 												'Vencido'
-													? 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/10'
+													? 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/10 dark:bg-red-950/40 dark:text-red-400 dark:ring-red-800/40'
 													: doc.estatus === 'A favor'
-														? 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20'
-														: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'}"
+														? 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20 dark:bg-amber-950/40 dark:text-amber-400 dark:ring-amber-800/40'
+														: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-950/40 dark:text-green-400 dark:ring-green-800/40'}"
 											>
 												{doc.estatus}
 											</span>
@@ -627,7 +627,7 @@
 
 							{#if auditData.documentos.usd.length === 0 && auditData.documentos.crc.length === 0}
 								<tr>
-									<td colspan="8" class="py-12 text-center text-slate-400">
+									<td colspan="8" class="py-12 text-center text-muted-foreground">
 										No hay documentos pendientes para este cliente.
 									</td>
 								</tr>
@@ -643,53 +643,53 @@
 					{#each [{ m: 'USD', title: 'Dólares', data: auditData.rangos.usd }, { m: 'CRC', title: 'Colones', data: auditData.rangos.crc }] as rango}
 						{#if rango.data.totalVencido > 0}
 							<div
-								class="w-full max-w-sm rounded-xl border border-slate-200 shadow-sm overflow-hidden text-sm"
+								class="w-full max-w-sm rounded-xl border border-border shadow-sm overflow-hidden text-sm"
 							>
 								<div
-									class="bg-indigo-50/80 px-4 py-3 text-center font-bold text-indigo-900 border-b border-indigo-100"
+									class="bg-indigo-50/80 dark:bg-indigo-950/50 px-4 py-3 text-center font-bold text-indigo-900 dark:text-indigo-300 border-b border-indigo-100 dark:border-indigo-900"
 								>
 									Facturas Vencidas en {rango.title}
 								</div>
-								<div class="bg-white">
-									<div class="flex justify-between border-b border-slate-100 px-5 py-2.5">
-										<span class="font-medium text-slate-600">Total 0-30</span>
-										<span class="text-slate-900"
+								<div class="bg-card">
+									<div class="flex justify-between border-b border-border px-5 py-2.5">
+										<span class="font-medium text-muted-foreground">Total 0-30</span>
+										<span class="text-foreground"
 											>{rango.data['0_30'] > 0
 												? fmt(rango.data['0_30'], rango.m as any)
 												: '—'}</span
 										>
 									</div>
 									<div
-										class="flex justify-between border-b border-slate-100 px-5 py-2.5 bg-slate-50/50"
+										class="flex justify-between border-b border-border px-5 py-2.5 bg-muted/30"
 									>
-										<span class="font-medium text-slate-600">Total 31-60</span>
-										<span class="text-slate-900"
+										<span class="font-medium text-muted-foreground">Total 31-60</span>
+										<span class="text-foreground"
 											>{rango.data['31_60'] > 0
 												? fmt(rango.data['31_60'], rango.m as any)
 												: '—'}</span
 										>
 									</div>
-									<div class="flex justify-between border-b border-slate-100 px-5 py-2.5">
-										<span class="font-medium text-slate-600">Total 61-90</span>
-										<span class="text-slate-900"
+									<div class="flex justify-between border-b border-border px-5 py-2.5">
+										<span class="font-medium text-muted-foreground">Total 61-90</span>
+										<span class="text-foreground"
 											>{rango.data['61_90'] > 0
 												? fmt(rango.data['61_90'], rango.m as any)
 												: '—'}</span
 										>
 									</div>
 									<div
-										class="flex justify-between border-b border-slate-100 px-5 py-2.5 bg-slate-50/50"
+										class="flex justify-between border-b border-border px-5 py-2.5 bg-muted/30"
 									>
-										<span class="font-medium text-slate-600">Total 91-120</span>
-										<span class="text-slate-900"
+										<span class="font-medium text-muted-foreground">Total 91-120</span>
+										<span class="text-foreground"
 											>{rango.data['91_120'] > 0
 												? fmt(rango.data['91_120'], rango.m as any)
 												: '—'}</span
 										>
 									</div>
-									<div class="flex justify-between border-b border-slate-100 px-5 py-2.5">
-										<span class="font-medium text-slate-600">Total 120+</span>
-										<span class="text-slate-900"
+									<div class="flex justify-between border-b border-border px-5 py-2.5">
+										<span class="font-medium text-muted-foreground">Total 120+</span>
+										<span class="text-foreground"
 											>{rango.data['mas_120'] > 0
 												? fmt(rango.data['mas_120'], rango.m as any)
 												: '—'}</span
@@ -726,5 +726,14 @@
 	}
 	.custom-scrollbar::-webkit-scrollbar-thumb:hover {
 		background: #94a3b8;
+	}
+	:global(.dark) .custom-scrollbar::-webkit-scrollbar-track {
+		background: #1e293b;
+	}
+	:global(.dark) .custom-scrollbar::-webkit-scrollbar-thumb {
+		background: #475569;
+	}
+	:global(.dark) .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+		background: #64748b;
 	}
 </style>
