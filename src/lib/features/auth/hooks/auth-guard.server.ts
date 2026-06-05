@@ -91,7 +91,40 @@ export const authGuard: Handle = async ({ event, resolve }) => {
 	}
 
 	// ============================================
-	// 5. Proteger rutas bajo /(app) que requieren auth
+	// 5. Proteger rutas de Químicas Unidas (UI + API)
+	//    Solo accesible con es_qu === true o es_admin
+	// ============================================
+	const esRutaQU =
+		pathname.startsWith('/quimicas_unidas') ||
+		pathname.startsWith('/quimicas_unidas/api');
+
+	if (esRutaQU) {
+		if (!session) {
+			// API: 401. UI: redirigir al login
+			if (pathname.startsWith('/quimicas_unidas/api')) {
+				throw error(401, 'No autorizado');
+			}
+			throw redirect(303, `${AUTH_PATHS.LOGIN}&redirect=${encodeURIComponent(pathname)}`);
+		}
+
+		const { data: perfil } = await event.locals.supabase
+			.from('perfiles')
+			.select('es_admin, es_qu')
+			.eq('id', user!.id)
+			.maybeSingle();
+
+		const tieneAcceso = perfil?.es_admin === true || perfil?.es_qu === true;
+
+		if (!tieneAcceso) {
+			if (pathname.startsWith('/quimicas_unidas/api')) {
+				throw error(403, 'Acceso denegado');
+			}
+			throw redirect(303, '/');
+		}
+	}
+
+	// ============================================
+	// 6. Proteger rutas bajo /(app) que requieren auth
 	//    (dashboard, apps, solicitar-acceso, perfil)
 	// ============================================
 	const rutasApp = ['/solicitar-acceso', '/perfil', '/bots'];
@@ -104,7 +137,7 @@ export const authGuard: Handle = async ({ event, resolve }) => {
 	}
 
 	// ============================================
-	// 6. Redirigir usuarios autenticados fuera de /auth
+	// 7. Redirigir usuarios autenticados fuera de /auth
 	// ============================================
 	if (session && pathname === '/auth') {
 		throw redirect(303, AUTH_REDIRECT_PATHS.SUCCESS.LOGIN);

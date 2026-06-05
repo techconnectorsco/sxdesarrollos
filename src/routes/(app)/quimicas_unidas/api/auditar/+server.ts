@@ -4,7 +4,10 @@ import { auditarCliente } from '$lib/quimicas_unidas/sap';
 
 // GET /quimicas_unidas/api/auditar?cardCode=C1061
 // Consulta directa al Service Layer (read-only) para ver qué pasa con un cliente.
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url, locals }) => {
+	const { session } = await locals.safeGetSession();
+	if (!session) throw error(401, 'No autorizado');
+
 	const cardCode = url.searchParams.get('cardCode')?.trim();
 	if (!cardCode) throw error(400, "Falta el parámetro 'cardCode'");
 

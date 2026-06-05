@@ -4,10 +4,9 @@ import { obtenerClientes } from '$lib/quimicas_unidas/sap';
 
 // GET /quimicas_unidas/api/clientes
 // Devuelve { total, clientes[], padres[] } desde el Service Layer.
-export const GET: RequestHandler = async (/* { locals } */) => {
-	// TODO (cuando lo integremos a la auth del proyecto host):
-	//   const { session } = await locals.safeGetSession();
-	//   if (!session) throw error(401, 'No autorizado');
+export const GET: RequestHandler = async ({ locals }) => {
+	const { session } = await locals.safeGetSession();
+	if (!session) throw error(401, 'No autorizado');
 
 	try {
 		const data = await obtenerClientes();

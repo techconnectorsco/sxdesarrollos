@@ -2,65 +2,86 @@ import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import type { OrdenEjecucion } from '$lib/quimicas_unidas/types';
 
-// URL de tu túnel de Cloudflare hacia el VPS
+// URL del túnel Cloudflare hacia el VPS
 const VPS_API_URL = process.env.VPS_API_URL || 'https://rpa.tu-dominio.com';
 
-export const POST: RequestHandler = async ({ request }) => {
-    const body = (await request.json().catch(() => null)) as OrdenEjecucion | null;
-    if (!body) throw error(400, 'Body inválido');
+export const POST: RequestHandler = async ({ request, locals }) => {
+	// ── Auth ──
+	const { session, user } = await locals.safeGetSession();
+	if (!session || !user) throw error(401, 'No autorizado');
 
-    const { metodo, alcance } = body;
+	const body = (await request.json().catch(() => null)) as OrdenEjecucion | null;
+	if (!body) throw error(400, 'Body inválido');
 
-    if (metodo !== 'cliente' && metodo !== 'revision') {
-        throw error(400, "metodo inválido: usá 'cliente' o 'revision'");
-    }
-    if (alcance !== 'completo' && alcance !== 'cliente') {
-        throw error(400, "alcance inválido: usá 'completo' o 'cliente'");
-    }
-    if (metodo === 'revision' && alcance === 'completo') {
-        throw error(400, 'El método de revisión solo aplica a clientes específicos');
-    }
+	const { metodo, alcance } = body;
 
-    const codigos = Array.isArray(body.cardCodes)
-        ? body.cardCodes.map((c) => c.trim().toUpperCase()).filter(Boolean)
-        : [];
-        
-    if (alcance === 'cliente' && codigos.length === 0) {
-        throw error(400, 'Seleccioná al menos un cliente');
-    }
+	if (metodo !== 'cliente' && metodo !== 'revision') {
+		throw error(400, "metodo inválido: usá 'cliente' o 'revision'");
+	}
+	if (alcance !== 'completo' && alcance !== 'cliente') {
+		throw error(400, "alcance inválido: usá 'completo' o 'cliente'");
+	}
+	if (metodo === 'revision' && alcance === 'completo') {
+		throw error(400, 'El método de revisión solo aplica a clientes específicos');
+	}
 
-    // ── TRADUCCIÓN DEL PAYLOAD PARA LA API EN PYTHON ──
-    const payloadPython = {
-        clientes: alcance === 'cliente' ? codigos : [],
-        solo_prueba: metodo === 'revision',
-        ejecutar_todos: alcance === 'completo',
-        correo_destino: metodo === 'revision' 
-  ? (body.correoRevision?.trim() || 'credito@qu.cr') : null
-    };
-    
-    try {
-        const res = await fetch(`${VPS_API_URL}/api/ejecutar-cxc`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payloadPython)
-        });
+	const codigos = Array.isArray(body.cardCodes)
+		? body.cardCodes.map((c) => c.trim().toUpperCase()).filter(Boolean)
+		: [];
 
-        if (!res.ok) {
-            throw new Error(`El VPS respondió con estado: ${res.status}`);
-        }
+	if (alcance === 'cliente' && codigos.length === 0) {
+		throw error(400, 'Seleccioná al menos un cliente');
+	}
 
-        const data = await res.json();
-        
-        return json({
-            ok: true,
-            mensaje: data.mensaje,
-            job_id: data.job_id
-        });
+	// ── Payload para la API Python ──
+	const payloadPython = {
+		clientes: alcance === 'cliente' ? codigos : [],
+		solo_prueba: metodo === 'revision',
+		ejecutar_todos: alcance === 'completo',
+		correo_destino:
+			metodo === 'revision' ? (body.correoRevision?.trim() || 'credito@qu.cr') : null
+	};
 
-    } catch (e) {
-        console.error('[quimicas_unidas] Error conectando al RPA en el VPS:', e);
-        throw error(502, 'No se pudo comunicar con el servidor de automatización.');
-    }
+	// ── Registro base para auditoría (se completa al final) ──
+	const registroBase = {
+		user_id: user.id,
+		metodo,
+		alcance,
+		card_codes: codigos.length > 0 ? codigos : null,
+		correo_rev: metodo === 'revision' ? payloadPython.correo_destino : null
+	};
+
+	try {
+		const res = await fetch(`${VPS_API_URL}/api/ejecutar-cxc`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(payloadPython)
+		});
+
+		if (!res.ok) {
+			throw new Error(`El VPS respondió con estado: ${res.status}`);
+		}
+
+		const data = await res.json();
+
+		// ── Guardar ejecución exitosa ──
+		await locals.supabase.from('quimicas_unidas_ejecuciones').insert({
+			...registroBase,
+			resultado: true,
+			mensaje: data.mensaje ?? 'Orden enviada'
+		});
+
+		return json({ ok: true, mensaje: data.mensaje, job_id: data.job_id });
+	} catch (e) {
+		console.error('[quimicas_unidas] Error conectando al RPA en el VPS:', e);
+
+		// ── Guardar ejecución fallida ──
+		await locals.supabase.from('quimicas_unidas_ejecuciones').insert({
+			...registroBase,
+			resultado: false,
+			mensaje: e instanceof Error ? e.message : 'Error desconocido'
+		});
+
+		throw error(502, 'No se pudo comunicar con el servidor de automatización.');
+	}
 };
