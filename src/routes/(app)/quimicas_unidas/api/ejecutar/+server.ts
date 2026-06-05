@@ -34,9 +34,10 @@ export const POST: RequestHandler = async ({ request }) => {
         clientes: alcance === 'cliente' ? codigos : [],
         solo_prueba: metodo === 'revision',
         ejecutar_todos: alcance === 'completo',
-        correo_prueba: metodo === 'revision' ? 'credito@qu.cr' : null
+        correo_destino: metodo === 'revision' 
+  ? (body.correoRevision?.trim() || 'credito@qu.cr') : null
     };
-
+    
     try {
         const res = await fetch(`${VPS_API_URL}/api/ejecutar-cxc`, {
             method: 'POST',

@@ -42,10 +42,13 @@
 	let ejecutando = $state(false);
 	let resultado = $state<{ ok: boolean; texto: string } | null>(null);
 
+	// Correo destino para el modo revisión (editable, default crédito)
+	let correoRevision = $state('credito@qu.cr');
+
 	const ayudaMetodo = $derived(
 		metodo === 'cliente'
 			? 'El estado de cuenta se envía directo a los correos del cliente registrados en SAP.'
-			: 'El estado de cuenta llega solo a crédito (credito@qu.cr) para revisión. El cliente no lo recibe.'
+			: 'El estado de cuenta llegará al correo indicado abajo. El cliente no lo recibe.'
 	);
 
 	// ── Consulta / auditoría ──
@@ -108,7 +111,8 @@
 				body: JSON.stringify({
 					metodo,
 					alcance: alcanceEfectivo,
-					cardCodes: alcanceEfectivo === 'cliente' ? seleccionados.map((c) => c.cardCode) : []
+					cardCodes: alcanceEfectivo === 'cliente' ? seleccionados.map((c) => c.cardCode) : [],
+					correoRevision: metodo === 'revision' ? correoRevision.trim() : undefined
 				})
 			});
 			const data = await res.json();
@@ -175,11 +179,12 @@
 </script>
 
 <div class="mx-auto max-w-5xl px-4 py-8">
-	<header class="mb-8">
+	<header class="mb-8 text-center">
+		<img src="/QU.png" alt="Químicas Unidas" class="mx-auto mb-4 h-16 w-auto" />
 		<p class="text-xs font-semibold uppercase tracking-widest text-indigo-600">Químicas Unidas</p>
 		<h1 class="mt-1 text-2xl font-bold text-slate-900">Estados de Cuenta (CXC)</h1>
 		<p class="mt-1 text-sm text-slate-500">
-			Solicitá el envío de estados de cuenta y consultá la situación de un cliente.
+			Ejecuta el envío de estados de cuenta y consulta la actual de un cliente con saldo pendiente.
 		</p>
 	</header>
 
@@ -211,6 +216,24 @@
 				<option value="revision">Enviar a revisión (crédito)</option>
 			</select>
 			<p class="mt-1.5 text-xs text-slate-500">{ayudaMetodo}</p>
+
+			{#if metodo === 'revision'}
+				<div class="mt-3">
+					<label for="correoRevision" class="mb-1 block text-xs font-medium text-slate-600">
+						Correo destino
+					</label>
+					<input
+						id="correoRevision"
+						type="email"
+						placeholder="correo@empresa.com"
+						bind:value={correoRevision}
+						class="w-full rounded-lg border border-indigo-200 bg-indigo-50/40 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+					/>
+					<p class="mt-1 text-xs text-slate-400">
+						El PDF llegará únicamente a este correo. Podés cambiarlo antes de enviar.
+					</p>
+				</div>
+			{/if}
 		</div>
 
 		<!-- Alcance (solo para envío al cliente) -->

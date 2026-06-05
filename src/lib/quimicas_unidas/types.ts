@@ -36,6 +36,8 @@ export interface OrdenEjecucion {
     alcance: AlcanceEjecucion;
     /** Vacío cuando alcance === 'completo'. */
     cardCodes: string[];
+    /** Solo cuando metodo === 'revision'. Fallback a credito@qu.cr si vacío. */
+    correoRevision?: string;
 }
 
 // ── Auditoría / consulta de cliente (Unificada como el PDF) ──
