@@ -38,6 +38,8 @@ export interface OrdenEjecucion {
     cardCodes: string[];
     /** Solo cuando metodo === 'revision'. Fallback a credito@qu.cr si vacío. */
     correoRevision?: string;
+    /** Correo donde la API Python enviará los logs del procesamiento. */
+    correoLogs?: string;
 }
 
 // ── Auditoría / consulta de cliente (Unificada como el PDF) ──

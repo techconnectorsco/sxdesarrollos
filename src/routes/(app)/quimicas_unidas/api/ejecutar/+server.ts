@@ -39,7 +39,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		solo_prueba: metodo === 'revision',
 		ejecutar_todos: alcance === 'completo',
 		correo_destino:
-			metodo === 'revision' ? (body.correoRevision?.trim() || 'credito@qu.cr') : null
+			metodo === 'revision' ? (body.correoRevision?.trim() || 'credito@qu.cr') : null,
+		correo_logs: body.correoLogs?.trim() || null
 	};
 
 	// ── Registro base para auditoría (se completa al final) ──

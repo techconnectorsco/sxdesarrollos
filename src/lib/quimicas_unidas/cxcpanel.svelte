@@ -45,6 +45,9 @@
 	// Correo destino para el modo revisión (editable, default crédito)
 	let correoRevision = $state('credito@qu.cr');
 
+	// Correo donde la API Python enviará los logs del procesamiento
+	let correoLogs = $state('credito@qu.cr');
+
 	const ayudaMetodo = $derived(
 		metodo === 'cliente'
 			? 'El estado de cuenta se envía directo a los correos del cliente registrados en SAP.'
@@ -112,7 +115,8 @@
 					metodo,
 					alcance: alcanceEfectivo,
 					cardCodes: alcanceEfectivo === 'cliente' ? seleccionados.map((c) => c.cardCode) : [],
-					correoRevision: metodo === 'revision' ? correoRevision.trim() : undefined
+					correoRevision: metodo === 'revision' ? correoRevision.trim() : undefined,
+					correoLogs: correoLogs.trim() || undefined
 				})
 			});
 			const data = await res.json();
@@ -166,9 +170,11 @@
 	}
 
 	const badge: Record<ClienteSAP['tipo'], string> = {
-		padre: 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 ring-indigo-200 dark:ring-indigo-800',
+		padre:
+			'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 ring-indigo-200 dark:ring-indigo-800',
 		hijo: 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 ring-amber-200 dark:ring-amber-800',
-		individual: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 ring-slate-200 dark:ring-slate-700'
+		individual:
+			'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 ring-slate-200 dark:ring-slate-700'
 	};
 
 	const envioHabilitado = $derived(
@@ -181,7 +187,9 @@
 <div class="mx-auto max-w-5xl px-4 py-8">
 	<header class="mb-8 text-center">
 		<img src="/QU.png" alt="Químicas Unidas" class="mx-auto mb-4 h-16 w-auto" />
-		<p class="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Químicas Unidas</p>
+		<p class="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+			Químicas Unidas
+		</p>
 		<h1 class="mt-1 text-2xl font-bold text-foreground">Estados de Cuenta (CXC)</h1>
 		<p class="mt-1 text-sm text-muted-foreground">
 			Ejecuta el envío de estados de cuenta y consulta la actual de un cliente con saldo pendiente.
@@ -189,7 +197,9 @@
 	</header>
 
 	{#if errorCarga}
-		<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/40 dark:text-red-400">
+		<div
+			class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/40 dark:text-red-400"
+		>
 			<p class="font-medium">{errorCarga}</p>
 			<button
 				class="mt-2 rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
@@ -206,7 +216,8 @@
 
 		<!-- Método -->
 		<div class="mt-4">
-			<label for="metodo" class="mb-1 block text-xs font-medium text-muted-foreground">Método</label>
+			<label for="metodo" class="mb-1 block text-xs font-medium text-muted-foreground">Método</label
+			>
 			<select
 				id="metodo"
 				bind:value={metodo}
@@ -234,6 +245,23 @@
 					</p>
 				</div>
 			{/if}
+
+			<!-- Correo de logs (siempre visible) -->
+			<div class="mt-3">
+				<label for="correoLogs" class="mb-1 block text-xs font-medium text-muted-foreground">
+					Correo de logs del procesamiento
+				</label>
+				<input
+					id="correoLogs"
+					type="email"
+					placeholder="logs@empresa.com"
+					bind:value={correoLogs}
+					class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+				/>
+				<p class="mt-1 text-xs text-muted-foreground">
+					La API enviará el reporte de procesamiento a este correo.
+				</p>
+			</div>
 		</div>
 
 		<!-- Alcance (solo para envío al cliente) -->
@@ -259,7 +287,8 @@
 						: 'border-border hover:border-muted-foreground/40'}"
 				>
 					<span class="block text-sm font-medium text-foreground">Cartera completa</span>
-					<span class="mt-0.5 block text-xs text-muted-foreground">Solo clientes con envío automático</span
+					<span class="mt-0.5 block text-xs text-muted-foreground"
+						>Solo clientes con envío automático</span
 					>
 				</button>
 			</div>
@@ -269,7 +298,8 @@
 		{#if alcanceEfectivo === 'cliente'}
 			<div class="relative mt-5">
 				<label for="buscar" class="mb-1 block text-xs font-medium text-muted-foreground">
-					Clientes {#if !cargando}<span class="text-muted-foreground/60">({total} cuentas con saldo)</span
+					Clientes {#if !cargando}<span class="text-muted-foreground/60"
+							>({total} cuentas con saldo)</span
 						>{/if}
 				</label>
 				<input
@@ -322,7 +352,9 @@
 							<span class="font-mono text-muted-foreground">{c.cardCode}</span>
 							<span class="max-w-[16rem] truncate">{c.cardName}</span>
 							{#if c.tipo === 'padre'}
-								<span class="text-indigo-600 dark:text-indigo-400">+{hijasPorPadre.get(c.cardCode) ?? 0} suc.</span>
+								<span class="text-indigo-600 dark:text-indigo-400"
+									>+{hijasPorPadre.get(c.cardCode) ?? 0} suc.</span
+								>
 							{/if}
 							<button
 								class="ml-0.5 grid h-4 w-4 place-items-center rounded-full text-muted-foreground hover:bg-muted-foreground/20 hover:text-foreground"
@@ -354,10 +386,15 @@
 				disabled={ejecutando || cargando}
 				class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
 			>
-				{ejecutando ? 'Enviando…' : metodo === 'revision' ? 'Enviar a revisión' : 'Ejecutar CXC'}
+				{ejecutando
+					? 'Enviando…'
+					: metodo === 'revision'
+						? 'Enviar a revisión'
+						: 'Ejecutar Estados de Cuentas CxC'}
 			</button>
 			{#if alcanceEfectivo === 'cliente' && seleccionados.length > 0}
-				<span class="text-xs text-muted-foreground">{seleccionados.length} cliente(s) seleccionado(s)</span
+				<span class="text-xs text-muted-foreground"
+					>{seleccionados.length} cliente(s) seleccionado(s)</span
 				>
 			{/if}
 		</div>
@@ -423,7 +460,11 @@
 		</div>
 
 		{#if auditError}
-			<div class="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-400">{auditError}</div>
+			<div
+				class="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-400"
+			>
+				{auditError}
+			</div>
 		{/if}
 
 		{#if auditData}
@@ -455,7 +496,9 @@
 
 					<!-- Tarjeta 2: Correos -->
 					<div class="rounded-xl border border-border bg-muted/50 p-4">
-						<p class="text-xs font-medium text-muted-foreground uppercase tracking-wider">Destinatarios</p>
+						<p class="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+							Destinatarios
+						</p>
 						<div class="mt-2 space-y-1">
 							<p
 								class="text-sm text-foreground truncate"
@@ -659,9 +702,7 @@
 												: '—'}</span
 										>
 									</div>
-									<div
-										class="flex justify-between border-b border-border px-5 py-2.5 bg-muted/30"
-									>
+									<div class="flex justify-between border-b border-border px-5 py-2.5 bg-muted/30">
 										<span class="font-medium text-muted-foreground">Total 31-60</span>
 										<span class="text-foreground"
 											>{rango.data['31_60'] > 0
@@ -677,9 +718,7 @@
 												: '—'}</span
 										>
 									</div>
-									<div
-										class="flex justify-between border-b border-border px-5 py-2.5 bg-muted/30"
-									>
+									<div class="flex justify-between border-b border-border px-5 py-2.5 bg-muted/30">
 										<span class="font-medium text-muted-foreground">Total 91-120</span>
 										<span class="text-foreground"
 											>{rango.data['91_120'] > 0
