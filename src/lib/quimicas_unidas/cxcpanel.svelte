@@ -387,8 +387,8 @@
 							</label>
 							<input
 								id="correoRevision"
-								type="email"
-								placeholder="correo@empresa.com"
+								type="text"
+								placeholder="correo1@qu.cr, correo2@qu.cr"
 								bind:value={correoRevision}
 								class="w-full rounded-lg border bg-background px-3 py-2 text-sm text-foreground outline-none transition-all"
 								style="border-color: var(--brand-primary-border); background-color: var(--brand-primary-light);"
@@ -407,8 +407,8 @@
 						</label>
 						<input
 							id="correoLogs"
-							type="email"
-							placeholder="logs@empresa.com"
+							type="text"
+							placeholder="logs1@qu.cr; logs2@qu.cr"
 							bind:value={correoLogs}
 							class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none transition-all"
 							onfocus={focusIn}

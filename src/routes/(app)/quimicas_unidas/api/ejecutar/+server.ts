@@ -51,7 +51,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         metodo,
         alcance,
         card_codes: codigos.length > 0 ? codigos : null,
-        correo_rev: metodo === 'revision' ? payloadPython.correo_destino : null
+        correo_rev: metodo === 'revision' ? payloadPython.correo_destino : null,
+        correo_logs: payloadPython.correo_logs
     };
 
     try {
