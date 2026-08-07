@@ -3,16 +3,13 @@
 	import { onMount } from 'svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { ModeWatcher } from 'mode-watcher';
+	import ChatWidget from '$lib/widget/ChatWidget.svelte'; // ← 1. IMPORT
 	import '../app.css';
 
-	// SVELTE 5: Usamos $props para recibir la data y el slot (children)
 	let { data, children } = $props();
-
-	// Extraemos supabase and session de data
 	let { supabase, session } = $derived(data);
 
 	onMount(() => {
-		// Escuchar cambios en la autenticación
 		const {
 			data: { subscription }
 		} = supabase.auth.onAuthStateChange((event, newSession) => {
@@ -32,3 +29,13 @@
 </div>
 
 <Toaster richColors duration={4000} />
+
+<!-- 2. WIDGET -->
+<ChatWidget
+	apiBase="https://unlikable-fondly-scheme.ngrok-free.dev"
+	logoPath="/widget/logo.png"
+	title="SoporteXperto"
+	subtitle="Asistente virtual"
+	accentColor="#2563eb"
+	position="bottom-right"
+/>
