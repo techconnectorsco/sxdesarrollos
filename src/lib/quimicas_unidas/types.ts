@@ -89,3 +89,26 @@ export interface AuditoriaCliente {
         crc: RangosVencimiento;
     };
 }
+
+
+// ── Agentes / Giras ──
+
+export interface AgenteSAP {
+	codigo: number;
+	nombre: string;
+	correo: string;
+}
+
+export interface ListaAgentesResponse {
+	total: number;
+	agentes: AgenteSAP[];
+}
+
+export type MetodoEnvioGira = 'agente' | 'revision';
+
+export interface OrdenEjecucionGira {
+	agenteCodigo: string;
+	metodo: MetodoEnvioGira;
+	/** Solo cuando metodo === 'revision'. Fallback a credito@qu.cr si vacío. */
+	correoRevision?: string;
+}

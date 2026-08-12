@@ -11,7 +11,9 @@ import type {
     DocUnificado,
     ListaClientesResponse,
     RangosVencimiento,
-    EstadoCuenta
+    EstadoCuenta,
+    AgenteSAP,
+    ListaAgentesResponse
 } from './types';
 
 // Mismas variables que la automatización Python.
@@ -211,6 +213,32 @@ export async function obtenerClientes(): Promise<ListaClientesResponse> {
             "$select=CardCode,CardName,FatherCard,FatherType&$filter=CardType eq 'cCustomer' and CurrentAccountBalance ne 0&$orderby=CardCode"
         )) as RawBP[];
         return agrupar(crudo);
+    } finally {
+        await logout(cookie);
+    }
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lista de agentes (con correo asignado = activos para Giras)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function obtenerAgentes(): Promise<ListaAgentesResponse> {
+    const cookie = await login();
+    try {
+        const crudo = await getPaginado(
+            cookie,
+            'SalesPersons',
+            '$select=SalesEmployeeCode,SalesEmployeeName,Email&$orderby=SalesEmployeeName'
+        );
+        const agentes: AgenteSAP[] = crudo
+            .filter((v: any) => v.SalesEmployeeCode !== -1 && v.Email && String(v.Email).includes('@'))
+            .map((v: any) => ({
+                codigo: v.SalesEmployeeCode,
+                nombre: v.SalesEmployeeName ?? 'No asignado',
+                correo: v.Email
+            }));
+        return { total: agentes.length, agentes };
     } finally {
         await logout(cookie);
     }

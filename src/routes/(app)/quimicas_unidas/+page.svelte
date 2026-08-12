@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CxcPanel from '$lib/quimicas_unidas/cxcpanel.svelte';
 	import GraficosQu from '$lib/quimicas_unidas/graficos_qu.svelte';
+	import GiraPanel from '$lib/quimicas_unidas/girapanel.svelte';
 
 	// ── Para usar otra marca: cambiá solo esta línea de import ──────────────
 	// import { acmeCorpBrand } from '$lib/brand/acme-corp';
@@ -10,7 +11,6 @@
 	const brand = quimicasUnidasBrand;
 
 	// ────────────────────────────────────────────────────────────────────────
-
 </script>
 
 <CxcPanel {brand} />
@@ -26,6 +26,7 @@
 </div>
 
 <GraficosQu {brand} />
+<GiraPanel {brand} />
 
 <!-- ══ PIE DE MARCA ═══════════════════════════════════════════════════════ -->
 <div
@@ -37,8 +38,10 @@
 	"
 >
 	<div class="mx-auto max-w-5xl px-4 pb-8 pt-2">
-		<div class="cxc-footer flex flex-col items-center justify-between gap-2 rounded-xl border px-5 py-4 sm:flex-row"
-			style="border-color: var(--bp-border); background-color: var(--bp-light);">
+		<div
+			class="cxc-footer flex flex-col items-center justify-between gap-2 rounded-xl border px-5 py-4 sm:flex-row"
+			style="border-color: var(--bp-border); background-color: var(--bp-light);"
+		>
 			<div class="flex items-center gap-3">
 				{#if brand.logoUrl}
 					<img src={brand.logoUrl} alt={brand.nombreCliente} class="h-5 w-auto opacity-60" />
