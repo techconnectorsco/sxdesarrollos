@@ -7,6 +7,7 @@
 		MetodoEnvio
 	} from '$lib/quimicas_unidas/types';
 	import type { BrandConfig } from '$lib/brand/types';
+	import GiraPanel from '$lib/quimicas_unidas/girapanel.svelte';
 
 	let {
 		apiBase = '/quimicas_unidas/api',
@@ -207,6 +208,7 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	style="
 		--brand-primary:        {brand.css.primary};
@@ -575,6 +577,8 @@
 				{/if}
 			</div>
 		</section>
+
+		<GiraPanel {apiBase} {brand} />
 
 		<!-- AUDITORÍA -->
 		<section class="mt-8 rounded-xl border border-border bg-card shadow-sm">

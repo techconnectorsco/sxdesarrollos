@@ -1,7 +1,6 @@
 <script lang="ts">
 	import CxcPanel from '$lib/quimicas_unidas/cxcpanel.svelte';
 	import GraficosQu from '$lib/quimicas_unidas/graficos_qu.svelte';
-	import GiraPanel from '$lib/quimicas_unidas/girapanel.svelte';
 
 	// ── Para usar otra marca: cambiá solo esta línea de import ──────────────
 	// import { acmeCorpBrand } from '$lib/brand/acme-corp';
@@ -26,7 +25,6 @@
 </div>
 
 <GraficosQu {brand} />
-<GiraPanel {brand} />
 
 <!-- ══ PIE DE MARCA ═══════════════════════════════════════════════════════ -->
 <div

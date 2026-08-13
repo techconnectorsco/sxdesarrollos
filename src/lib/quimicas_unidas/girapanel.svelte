@@ -22,6 +22,7 @@
 
 	let confirmando = $state(false);
 	let enviando = $state(false);
+	let enviado = $state(false);
 	let resultado = $state<{ ok: boolean; texto: string } | null>(null);
 
 	const ayudaMetodo = $derived(
@@ -34,6 +35,8 @@
 		abierto = true;
 		resultado = null;
 		confirmando = false;
+		enviado = false;
+		seleccionado = null;
 		if (!cargados) await cargarAgentes();
 	}
 
@@ -93,8 +96,11 @@
 			const data = await res.json();
 			resultado = {
 				ok: res.ok,
-				texto: data.mensaje ?? (res.ok ? 'Gira enviada.' : 'No se pudo enviar la gira.')
+				texto: res.ok
+					? `${data.mensaje ?? 'Gira enviada.'} El procesamiento puede tardar unos 10 minutos — llega por correo cuando esté listo.`
+					: (data.mensaje ?? 'No se pudo enviar la gira.')
 			};
+			if (res.ok) enviado = true;
 		} catch (e) {
 			resultado = { ok: false, texto: 'Error de red al enviar la gira.' };
 			console.error(e);
@@ -115,31 +121,37 @@
 		--brand-primary-ring:   {brand.css.primaryRing};
 	"
 >
-	<!-- ══ BOTÓN FLOTANTE ═══════════════════════════════════════════════════ -->
-	<button
-		type="button"
-		onclick={abrir}
-		class="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105"
-		style="background-color: var(--brand-primary);"
-	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			class="h-5 w-5"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-		>
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				d="M3 13l3-8h9l3 6h3v6h-2m-14 0H3v-4m0 0h13m-13 0l2-4"
-			/>
-			<circle cx="7.5" cy="17.5" r="1.5" />
-			<circle cx="16.5" cy="17.5" r="1.5" />
-		</svg>
-		Gira de Agentes
-	</button>
+	<!-- ══ SECCIÓN GIRA DE AGENTES ═════════════════════════════════════════ -->
+	<section class="mt-8 rounded-xl border border-border bg-card shadow-sm">
+		<div class="flex items-center gap-3 border-b border-border px-6 py-4">
+			<div class="h-5 w-1 rounded-full" style="background-color: var(--brand-primary)"></div>
+			<div>
+				<h2 class="text-base font-semibold text-foreground">Gira de Agentes</h2>
+				<p class="mt-0.5 text-xs text-muted-foreground">
+					Generá y enviá manualmente la gira de un agente puntual, sin esperar al envío automático
+					de los martes.
+				</p>
+			</div>
+		</div>
+
+		<div class="p-6">
+			<button
+				type="button"
+				onclick={abrir}
+				class="rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-all"
+				style="background-color: var(--brand-primary);"
+				onmouseenter={(e) => {
+					(e.currentTarget as HTMLButtonElement).style.backgroundColor =
+						'var(--brand-primary-hover)';
+				}}
+				onmouseleave={(e) => {
+					(e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--brand-primary)';
+				}}
+			>
+				Enviar gira manual
+			</button>
+		</div>
+	</section>
 
 	<!-- ══ MODAL ════════════════════════════════════════════════════════════ -->
 	{#if abierto}
@@ -179,6 +191,17 @@
 						</div>
 					{:else if cargando}
 						<p class="text-sm text-muted-foreground">Cargando agentes desde SAP…</p>
+					{:else if enviado}
+						<div class="rounded-lg bg-green-600 px-4 py-3 text-sm font-medium text-white">
+							{resultado?.texto}
+						</div>
+						<button
+							type="button"
+							onclick={cerrar}
+							class="mt-5 w-full rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-all hover:bg-accent"
+						>
+							Cerrar
+						</button>
 					{:else if !confirmando}
 						<label for="agente" class="mb-1 block text-xs font-medium text-muted-foreground">
 							Agente ({agentes.length} con correo asignado)
@@ -221,8 +244,8 @@
 										type="text"
 										placeholder="credito@qu.cr"
 										bind:value={correoRevision}
-										class="w-full rounded-lg border bg-background px-3 py-2 text-sm text-foreground outline-none transition-all"
-										style="border-color: var(--brand-primary-border); background-color: var(--brand-primary-light);"
+										class="w-full rounded-lg border bg-background px-3 py-2 text-sm outline-none transition-all"
+										style="border-color: var(--brand-primary-border); background-color: var(--brand-primary-light); color: var(--brand-primary-text);"
 									/>
 								</div>
 							{/if}
@@ -274,12 +297,8 @@
 						</div>
 					{/if}
 
-					{#if resultado}
-						<div
-							class="mt-4 rounded-lg px-4 py-3 text-sm {resultado.ok
-								? 'bg-green-50 text-green-700 dark:bg-green-950/40 dark:text-green-400'
-								: 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-400'}"
-						>
+					{#if resultado && !enviado}
+						<div class="mt-4 rounded-lg bg-amber-600 px-4 py-3 text-sm font-medium text-white">
 							{resultado.texto}
 						</div>
 					{/if}
