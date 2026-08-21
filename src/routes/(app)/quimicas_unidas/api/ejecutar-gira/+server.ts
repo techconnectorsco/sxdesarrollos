@@ -15,8 +15,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		throw error(400, "metodo inválido: usá 'agente' o 'revision'");
 	}
 
-	const agenteCodigo = body.agenteCodigo?.toString().trim();
-	if (!agenteCodigo) throw error(400, 'Seleccioná un agente');
+	// null = todos los agentes con correo asignado (opción "Todos los agentes")
+	const agenteCodigo = body.agenteCodigo ? body.agenteCodigo.toString().trim() : null;
 
 	if (metodo === 'revision' && !body.correoRevision?.trim()) {
 		throw error(400, "El método de revisión requiere un 'correoRevision'");
@@ -34,8 +34,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const registroBase = {
 		user_id: user.id,
 		metodo: metodo === 'revision' ? 'gira_revision' : 'gira',
-		alcance: 'agente',
-		card_codes: [agenteCodigo],
+		alcance: agenteCodigo ? 'agente' : 'completo',
+		card_codes: agenteCodigo ? [agenteCodigo] : null,
 		correo_rev: metodo === 'revision' ? payloadPython.correo_destino : null
 	};
 

@@ -17,6 +17,7 @@
 	let agentes = $state<AgenteSAP[]>([]);
 
 	let seleccionado = $state<AgenteSAP | null>(null);
+	let alcance = $state<'agente' | 'completo'>('agente');
 	let metodo = $state<MetodoEnvioGira>('agente');
 	let correoRevision = $state(brand.correoRevisionDefault);
 
@@ -27,8 +28,12 @@
 
 	const ayudaMetodo = $derived(
 		metodo === 'agente'
-			? 'La gira se envía directo al correo del agente registrado en SAP.'
-			: 'La gira llega al correo indicado abajo (por ejemplo, para reimprimirla en oficina). El agente no la recibe.'
+			? alcance === 'completo'
+				? 'Cada agente recibe su gira directo a su correo en SAP — igual que la corrida automática.'
+				: 'La gira se envía directo al correo del agente registrado en SAP.'
+			: alcance === 'completo'
+				? 'Llega un PDF por cada agente al correo indicado abajo, para revisar antes del envío real. Ningún agente las recibe.'
+				: 'La gira llega al correo indicado abajo (por ejemplo, para reimprimirla en oficina). El agente no la recibe.'
 	);
 
 	async function abrir() {
@@ -37,6 +42,7 @@
 		confirmando = false;
 		enviado = false;
 		seleccionado = null;
+		alcance = 'agente';
 		if (!cargados) await cargarAgentes();
 	}
 
@@ -68,7 +74,7 @@
 	}
 
 	function puedeContinuar() {
-		if (!seleccionado) return false;
+		if (alcance === 'agente' && !seleccionado) return false;
 		if (metodo === 'revision' && !correoRevision.trim()) return false;
 		return true;
 	}
@@ -79,12 +85,12 @@
 	}
 
 	async function enviarGira() {
-		if (!seleccionado) return;
+		if (alcance === 'agente' && !seleccionado) return;
 		enviando = true;
 		resultado = null;
 		try {
 			const body: OrdenEjecucionGira = {
-				agenteCodigo: String(seleccionado.codigo),
+				agenteCodigo: alcance === 'completo' ? null : String(seleccionado!.codigo),
 				metodo,
 				correoRevision: metodo === 'revision' ? correoRevision.trim() : undefined
 			};
@@ -155,8 +161,6 @@
 
 	<!-- ══ MODAL ════════════════════════════════════════════════════════════ -->
 	{#if abierto}
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
 			class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
 			onclick={(e) => {
@@ -203,19 +207,55 @@
 							Cerrar
 						</button>
 					{:else if !confirmando}
-						<label for="agente" class="mb-1 block text-xs font-medium text-muted-foreground">
-							Agente ({agentes.length} con correo asignado)
-						</label>
-						<select
-							id="agente"
-							class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none transition-all"
-							onchange={elegirAgente}
-						>
-							<option value="">Seleccioná un agente…</option>
-							{#each agentes as a (a.codigo)}
-								<option value={a.codigo}>{a.nombre} — {a.correo}</option>
-							{/each}
-						</select>
+						<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+							<button
+								type="button"
+								onclick={() => (alcance = 'agente')}
+								class="rounded-lg border px-4 py-3 text-left transition"
+								style={alcance === 'agente'
+									? `border-color: var(--brand-primary); background-color: var(--brand-primary-light); box-shadow: 0 0 0 1px var(--brand-primary);`
+									: 'border-color: var(--color-border);'}
+							>
+								<span class="block text-sm font-medium text-foreground">Agente específico</span>
+								<span class="mt-0.5 block text-xs text-muted-foreground">Elegí uno de la lista</span
+								>
+							</button>
+							<button
+								type="button"
+								onclick={() => (alcance = 'completo')}
+								class="rounded-lg border px-4 py-3 text-left transition"
+								style={alcance === 'completo'
+									? `border-color: var(--brand-primary); background-color: var(--brand-primary-light); box-shadow: 0 0 0 1px var(--brand-primary);`
+									: 'border-color: var(--color-border);'}
+							>
+								<span class="block text-sm font-medium text-foreground">Todos los agentes</span>
+								<span class="mt-0.5 block text-xs text-muted-foreground"
+									>Igual que la corrida automática</span
+								>
+							</button>
+						</div>
+
+						{#if alcance === 'agente'}
+							<div class="mt-4">
+								<label for="agente" class="mb-1 block text-xs font-medium text-muted-foreground">
+									Agente ({agentes.length} con correo asignado)
+								</label>
+								<select
+									id="agente"
+									class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none transition-all"
+									onchange={elegirAgente}
+								>
+									<option value="">Seleccioná un agente…</option>
+									{#each agentes as a (a.codigo)}
+										<option value={a.codigo}>{a.nombre} — {a.correo}</option>
+									{/each}
+								</select>
+							</div>
+						{:else}
+							<p class="mt-4 text-xs text-muted-foreground">
+								Se van a procesar los {agentes.length} agentes con correo asignado.
+							</p>
+						{/if}
 
 						<div class="mt-4">
 							<label for="metodo-gira" class="mb-1 block text-xs font-medium text-muted-foreground">
@@ -226,7 +266,7 @@
 								bind:value={metodo}
 								class="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none transition-all"
 							>
-								<option value="agente">Enviar al agente</option>
+								<option value="agente">Enviar directo</option>
 								<option value="revision">Enviar a revisión (oficina)</option>
 							</select>
 							<p class="mt-1.5 text-xs text-muted-foreground">{ayudaMetodo}</p>
@@ -261,7 +301,23 @@
 							Continuar
 						</button>
 					{:else}
-						{#if metodo === 'agente'}
+						{#if alcance === 'completo'}
+							{#if metodo === 'agente'}
+								<p class="text-sm text-foreground">
+									¿Confirmás el envío de la gira a
+									<span class="font-semibold">TODOS los agentes</span>
+									con correo asignado ({agentes.length})? Es la misma corrida que el proceso
+									automático de los martes, directo al correo de cada agente en SAP.
+								</p>
+							{:else}
+								<p class="text-sm text-foreground">
+									¿Confirmás el envío de <span class="font-semibold">todas las giras</span>
+									({agentes.length} agentes) a revisión (<span class="font-mono text-xs"
+										>{correoRevision}</span
+									>)? Vas a recibir un PDF por cada agente — ninguno de ellos las recibe.
+								</p>
+							{/if}
+						{:else if metodo === 'agente'}
 							<p class="text-sm text-foreground">
 								¿Confirmás el envío de la gira a
 								<span class="font-semibold">{seleccionado?.nombre}</span>
