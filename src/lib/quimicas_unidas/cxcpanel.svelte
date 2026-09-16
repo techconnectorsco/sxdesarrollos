@@ -363,21 +363,21 @@
 
 		<Tabs.Root value="dashboard" class="qu-tabs">
 			<Tabs.List
-				class="mb-6 flex w-fit flex-wrap gap-1 rounded-xl border border-border bg-muted p-1"
+				class="mb-6 flex h-auto w-full gap-1 rounded-xl border border-border bg-muted p-1"
 			>
-				<Tabs.Trigger value="dashboard" class="flex items-center gap-1.5">
+				<Tabs.Trigger value="dashboard" class="flex items-center gap-1.5 px-5 py-2 text-sm font-semibold">
 					<LayoutDashboardIcon class="h-4 w-4" />
 					Dashboard de RPAs
 				</Tabs.Trigger>
-				<Tabs.Trigger value="envio" class="flex items-center gap-1.5">
+				<Tabs.Trigger value="envio" class="flex items-center gap-1.5 px-5 py-2 text-sm font-semibold">
 					<SendIcon class="h-4 w-4" />
-					Solicitud de envío
+					Solicitud de Envío
 				</Tabs.Trigger>
-				<Tabs.Trigger value="auditoria" class="flex items-center gap-1.5">
+				<Tabs.Trigger value="auditoria" class="flex items-center gap-1.5 px-5 py-2 text-sm font-semibold">
 					<ClipboardCheckIcon class="h-4 w-4" />
 					Auditoría de Cliente
 				</Tabs.Trigger>
-				<Tabs.Trigger value="gira" class="flex items-center gap-1.5">
+				<Tabs.Trigger value="gira" class="flex items-center gap-1.5 px-5 py-2 text-sm font-semibold">
 					<UsersRoundIcon class="h-4 w-4" />
 					Gira de Agentes
 				</Tabs.Trigger>
@@ -392,7 +392,7 @@
 		<section class="rounded-xl border border-border bg-card shadow-sm">
 			<div class="flex items-center gap-3 border-b border-border px-6 py-4">
 				<div class="h-5 w-1 rounded-full" style="background-color: var(--brand-primary)"></div>
-				<h2 class="text-base font-semibold text-foreground">Solicitud de envío</h2>
+				<h2 class="text-base font-semibold text-foreground">Solicitud de Envío</h2>
 			</div>
 
 			<div class="p-6">
