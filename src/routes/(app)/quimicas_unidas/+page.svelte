@@ -1,6 +1,5 @@
 <script lang="ts">
 	import CxcPanel from '$lib/quimicas_unidas/cxcpanel.svelte';
-	import GraficosQu from '$lib/quimicas_unidas/graficos_qu.svelte';
 
 	// ── Para usar otra marca: cambiá solo esta línea de import ──────────────
 	// import { acmeCorpBrand } from '$lib/brand/acme-corp';
@@ -13,18 +12,6 @@
 </script>
 
 <CxcPanel {brand} />
-
-<div class="mx-auto max-w-5xl px-4 py-2">
-	<div class="flex items-center gap-3">
-		<div class="h-px flex-1 bg-border"></div>
-		<span class="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
-			Dashboard de RPAs
-		</span>
-		<div class="h-px flex-1 bg-border"></div>
-	</div>
-</div>
-
-<GraficosQu {brand} />
 
 <!-- ══ PIE DE MARCA ═══════════════════════════════════════════════════════ -->
 <div

@@ -91,6 +91,11 @@
 	let selCxc     = $state('');
 	let selGiras   = $state('');
 
+	let pageSizeCxc   = $state(10);
+	let pageCxc       = $state(1);
+	let pageSizeGiras = $state(10);
+	let pageGiras     = $state(1);
+
 	// ── Derived ────────────────────────────────────────────────────────────
 	const mCxcSel = $derived(
 		((ejecCxc.find((e) => e.id === selCxc) ?? ejecCxc[0])?.metricas as MetricasCxc | null) ?? null
@@ -98,6 +103,18 @@
 	const mGirasSel = $derived(
 		((ejecGiras.find((e) => e.id === selGiras) ?? ejecGiras[0])
 			?.metricas as MetricasGiras | null) ?? null
+	);
+
+	const totalPagesCxc = $derived(Math.max(1, Math.ceil(ejecCxc.length / pageSizeCxc)));
+	const pageCxcSafe   = $derived(Math.min(Math.max(1, pageCxc), totalPagesCxc));
+	const pagedCxc      = $derived(
+		ejecCxc.slice((pageCxcSafe - 1) * pageSizeCxc, pageCxcSafe * pageSizeCxc)
+	);
+
+	const totalPagesGiras = $derived(Math.max(1, Math.ceil(ejecGiras.length / pageSizeGiras)));
+	const pageGirasSafe   = $derived(Math.min(Math.max(1, pageGiras), totalPagesGiras));
+	const pagedGiras      = $derived(
+		ejecGiras.slice((pageGirasSafe - 1) * pageSizeGiras, pageGirasSafe * pageSizeGiras)
 	);
 
 	// ── Helpers ────────────────────────────────────────────────────────────
@@ -337,6 +354,52 @@
 	}">{estado}</span>
 {/snippet}
 
+{#snippet paginador(
+	page: number,
+	totalPages: number,
+	pageSize: number,
+	total: number,
+	onPrev: () => void,
+	onNext: () => void,
+	onPageSize: (n: number) => void
+)}
+	<div class="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm">
+		<div class="flex items-center gap-2 text-muted-foreground">
+			<span>Mostrar</span>
+			<input
+				type="number"
+				min="1"
+				value={pageSize}
+				oninput={(e) =>
+					onPageSize(Math.max(1, Number((e.currentTarget as HTMLInputElement).value) || 1))}
+				class="w-16 rounded-lg border border-border bg-background px-2 py-1 text-center text-foreground outline-none transition-all"
+				onfocus={focusIn}
+				onblur={focusOut}
+			/>
+			<span>por página · {total} en total</span>
+		</div>
+		<div class="flex items-center gap-2">
+			<button
+				type="button"
+				onclick={onPrev}
+				disabled={page <= 1}
+				class="rounded-lg border border-border px-3 py-1.5 text-muted-foreground transition hover:bg-accent hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+			>
+				‹ Anterior
+			</button>
+			<span class="text-muted-foreground">Página {page} de {totalPages}</span>
+			<button
+				type="button"
+				onclick={onNext}
+				disabled={page >= totalPages}
+				class="rounded-lg border border-border px-3 py-1.5 text-muted-foreground transition hover:bg-accent hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+			>
+				Siguiente ›
+			</button>
+		</div>
+	</div>
+{/snippet}
+
 {#snippet chartCard(title: string)}
 	<div class="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
 		<div class="flex items-center gap-2 border-b px-4 py-3" style="border-color: var(--brand-primary-border); background-color: var(--brand-primary-light);">
@@ -350,7 +413,7 @@
 {/snippet}
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
-<div class="mx-auto max-w-5xl px-4 py-8"
+<div class="py-2"
 	style="
 		--brand-primary:        {brand.css.primary};
 		--brand-primary-hover:  {brand.css.primaryHover};
@@ -530,7 +593,7 @@
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-border">
-								{#each ejecCxc as e}
+								{#each pagedCxc as e}
 									{@const m = e.metricas as MetricasCxc}
 									<tr class="transition-colors"
 										onmouseenter={(ev) => { (ev.currentTarget as HTMLElement).style.backgroundColor = 'var(--brand-primary-light)'; }}
@@ -547,6 +610,18 @@
 							</tbody>
 						</table>
 					</div>
+					{@render paginador(
+						pageCxcSafe,
+						totalPagesCxc,
+						pageSizeCxc,
+						ejecCxc.length,
+						() => (pageCxc = pageCxcSafe - 1),
+						() => (pageCxc = pageCxcSafe + 1),
+						(n) => {
+							pageSizeCxc = n;
+							pageCxc = 1;
+						}
+					)}
 				{/if}
 			{/if}
 		{/if}
@@ -663,7 +738,7 @@
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-border">
-								{#each ejecGiras as e}
+								{#each pagedGiras as e}
 									{@const m = e.metricas as MetricasGiras}
 									<tr class="transition-colors"
 										onmouseenter={(ev) => { (ev.currentTarget as HTMLElement).style.backgroundColor = 'var(--brand-primary-light)'; }}
@@ -680,6 +755,18 @@
 							</tbody>
 						</table>
 					</div>
+					{@render paginador(
+						pageGirasSafe,
+						totalPagesGiras,
+						pageSizeGiras,
+						ejecGiras.length,
+						() => (pageGiras = pageGirasSafe - 1),
+						() => (pageGiras = pageGirasSafe + 1),
+						(n) => {
+							pageSizeGiras = n;
+							pageGiras = 1;
+						}
+					)}
 				{/if}
 			{/if}
 		{/if}

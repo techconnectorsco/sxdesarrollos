@@ -128,7 +128,7 @@
 	"
 >
 	<!-- ══ SECCIÓN GIRA DE AGENTES ═════════════════════════════════════════ -->
-	<section class="mt-8 rounded-xl border border-border bg-card shadow-sm">
+	<section class="rounded-xl border border-border bg-card shadow-sm">
 		<div class="flex items-center gap-3 border-b border-border px-6 py-4">
 			<div class="h-5 w-1 rounded-full" style="background-color: var(--brand-primary)"></div>
 			<div>

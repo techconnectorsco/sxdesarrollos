@@ -8,6 +8,12 @@
 	} from '$lib/quimicas_unidas/types';
 	import type { BrandConfig } from '$lib/brand/types';
 	import GiraPanel from '$lib/quimicas_unidas/girapanel.svelte';
+	import GraficosQu from '$lib/quimicas_unidas/graficos_qu.svelte';
+	import * as Tabs from '$lib/components/ui/tabs/index.js';
+	import LayoutDashboardIcon from '@lucide/svelte/icons/layout-dashboard';
+	import SendIcon from '@lucide/svelte/icons/send';
+	import ClipboardCheckIcon from '@lucide/svelte/icons/clipboard-check';
+	import UsersRoundIcon from '@lucide/svelte/icons/users-round';
 
 	let {
 		apiBase = '/quimicas_unidas/api',
@@ -355,6 +361,33 @@
 			</div>
 		{/if}
 
+		<Tabs.Root value="dashboard" class="qu-tabs">
+			<Tabs.List
+				class="mb-6 flex w-fit flex-wrap gap-1 rounded-xl border border-border bg-muted p-1"
+			>
+				<Tabs.Trigger value="dashboard" class="flex items-center gap-1.5">
+					<LayoutDashboardIcon class="h-4 w-4" />
+					Dashboard de RPAs
+				</Tabs.Trigger>
+				<Tabs.Trigger value="envio" class="flex items-center gap-1.5">
+					<SendIcon class="h-4 w-4" />
+					Solicitud de envío
+				</Tabs.Trigger>
+				<Tabs.Trigger value="auditoria" class="flex items-center gap-1.5">
+					<ClipboardCheckIcon class="h-4 w-4" />
+					Auditoría de Cliente
+				</Tabs.Trigger>
+				<Tabs.Trigger value="gira" class="flex items-center gap-1.5">
+					<UsersRoundIcon class="h-4 w-4" />
+					Gira de Agentes
+				</Tabs.Trigger>
+			</Tabs.List>
+
+			<Tabs.Content value="dashboard">
+				<GraficosQu {brand} />
+			</Tabs.Content>
+
+			<Tabs.Content value="envio">
 		<!-- SOLICITUD DE ENVÍO -->
 		<section class="rounded-xl border border-border bg-card shadow-sm">
 			<div class="flex items-center gap-3 border-b border-border px-6 py-4">
@@ -577,11 +610,11 @@
 				{/if}
 			</div>
 		</section>
+			</Tabs.Content>
 
-		<GiraPanel {apiBase} {brand} />
-
+			<Tabs.Content value="auditoria">
 		<!-- AUDITORÍA -->
-		<section class="mt-8 rounded-xl border border-border bg-card shadow-sm">
+		<section class="rounded-xl border border-border bg-card shadow-sm">
 			<div class="flex items-center gap-3 border-b border-border px-6 py-4">
 				<div class="h-5 w-1 rounded-full" style="background-color: var(--brand-primary)"></div>
 				<div>
@@ -1032,6 +1065,12 @@
 				{/if}
 			</div>
 		</section>
+			</Tabs.Content>
+
+			<Tabs.Content value="gira">
+				<GiraPanel {apiBase} {brand} />
+			</Tabs.Content>
+		</Tabs.Root>
 	</div>
 </div>
 
@@ -1060,6 +1099,12 @@
 	}
 	:global(.dark) .cxc-hero-stat {
 		color: rgba(255, 255, 255, 0.6) !important;
+	}
+
+	:global(.qu-tabs [data-slot='tabs-trigger'][data-state='active']) {
+		background-color: var(--brand-primary) !important;
+		color: white !important;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 	}
 
 	.custom-scrollbar::-webkit-scrollbar {
