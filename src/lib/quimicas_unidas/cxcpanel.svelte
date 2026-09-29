@@ -8,6 +8,7 @@
 	} from '$lib/quimicas_unidas/types';
 	import type { BrandConfig } from '$lib/brand/types';
 	import GiraPanel from '$lib/quimicas_unidas/girapanel.svelte';
+	import GiraZonaPanel from '$lib/quimicas_unidas/girazonapanel.svelte';
 	import GraficosQu from '$lib/quimicas_unidas/graficos_qu.svelte';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import LayoutDashboardIcon from '@lucide/svelte/icons/layout-dashboard';
@@ -1069,6 +1070,7 @@
 
 			<Tabs.Content value="gira">
 				<GiraPanel {apiBase} {brand} />
+				<GiraZonaPanel {apiBase} {brand} />
 			</Tabs.Content>
 		</Tabs.Root>
 	</div>

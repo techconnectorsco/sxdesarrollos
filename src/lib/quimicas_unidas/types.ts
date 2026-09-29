@@ -112,3 +112,83 @@ export interface OrdenEjecucionGira {
 	/** Solo cuando metodo === 'revision'. Fallback a credito@qu.cr si vacío. */
 	correoRevision?: string;
 }
+
+// ── Giras por Zona ──
+
+export interface ZonaSAP {
+	/** Code de U_GIRAS, ya normalizado (sin ceros a la izquierda). */
+	codigo: string;
+	nombre: string;
+}
+
+export interface ClienteZona {
+	cardCode: string;
+	cardName: string;
+	telefono: string;
+	zonaCode: string;
+	zonaNombre: string;
+	vendedorCode: number;
+	/** CardCode del padre si es sucursal. Necesario para distinguir homónimos. */
+	fatherCard: string | null;
+}
+
+export interface ArbolAgenteZona {
+	agente: AgenteSAP;
+	zonas: {
+		zona: ZonaSAP;
+		clientes: ClienteZona[];
+	}[];
+	/** En la práctica siempre vacío: los 193 clientes de los 3 agentes activos tienen zona. */
+	sinZona: ClienteZona[];
+}
+
+export interface OrdenGiraZona {
+	agenteCodigo: string;
+	cardCodes: string[];
+	metodo: MetodoEnvioGira;
+	/** Solo cuando metodo === 'revision'. */
+	correoRevision?: string;
+	/** Nombre de zona para el encabezado del PDF. Se omite si la selección es mixta. */
+	zonaNombre?: string;
+}
+
+/** Lo que devuelve `ejecutar_gira_selectiva` del lado Python. */
+export interface ResultadoGiraZona {
+	ok: boolean;
+	/** Cuántos clientes pidió el usuario. */
+	solicitados: number;
+	/** Cuántos llegaron al PDF. */
+	procesados: number;
+	/** Sin documentos abiertos, inexistentes, o ruteados a otro vendedor. */
+	omitidos: string[];
+	/**
+	 * Los mismos omitidos, separados por motivo. Opcional: una API del VPS
+	 * anterior al 28/09/2026 no lo manda, y ahí se cae al listado plano.
+	 */
+	omitidos_detalle?: {
+		/** Sin ningún documento abierto en SAP: nada que cobrar. */
+		sin_documentos: string[];
+		/** Tienen documentos, pero rutean a otro vendedor (BPAddresses.U_CODV). */
+		otro_vendedor: string[];
+		/** El código no existe en SAP. */
+		inexistentes: string[];
+	};
+	pdf: string | null;
+	mensaje: string;
+}
+
+export type EstadoJobGiraZona =
+	| 'en_cola'
+	| 'procesando'
+	| 'terminado'
+	| 'con_avisos'
+	| 'error'
+	/** El job_id no existe: la API se reinició y el estado vive en memoria. */
+	| 'desconocido';
+
+export interface EstadoGiraZonaResponse {
+	estado: EstadoJobGiraZona;
+	resultado: ResultadoGiraZona | null;
+	/** Solo cuando estado === 'desconocido'. */
+	mensaje?: string;
+}

@@ -13,7 +13,10 @@ import type {
     RangosVencimiento,
     EstadoCuenta,
     AgenteSAP,
-    ListaAgentesResponse
+    ListaAgentesResponse,
+    ZonaSAP,
+    ClienteZona,
+    ArbolAgenteZona
 } from './types';
 
 // Mismas variables que la automatización Python.
@@ -429,6 +432,105 @@ export async function auditarCliente(cardCodeRaw: string): Promise<AuditoriaClie
                 crc: calcularRangos(crc)
             }
         };
+    } finally {
+        await logout(cookie);
+    }
+}
+
+// ── Giras por Zona ────────────────────────────────────────────────────────
+
+/**
+ * Normaliza un código de zona quitando ceros a la izquierda.
+ * En SAP hay clientes con U_ZGIRA = "06" mientras U_GIRAS guarda "6"; sin esto
+ * la interfaz mostraría dos zonas distintas para la misma zona real.
+ */
+function normalizarCodigoZona(valor: unknown): string {
+    const s = String(valor ?? '').trim();
+    if (!s) return '';
+    return /^\d+$/.test(s) ? String(Number(s)) : s;
+}
+
+/**
+ * Árbol de zonas y clientes de un agente, para la gira selectiva.
+ *
+ * El filtro de clientes replica exactamente el de obtener_clientes_con_saldo()
+ * del RPA (agentes.py). El "or FatherCard ne null" NO es opcional: el saldo de
+ * una sucursal se consolida en su cuenta padre, así que la sucursal siempre
+ * reporta CurrentAccountBalance = 0 aunque tenga decenas de facturas abiertas.
+ * Sin esa cláusula se pierden 599 documentos de 50 sucursales, incluyendo toda
+ * la cuenta EL COLONO — el cliente más grande de la cartera.
+ */
+export async function obtenerArbolAgente(codigoAgente: number): Promise<ArbolAgenteZona> {
+    const cookie = await login();
+    try {
+        // 1. Zonas, indexadas por código normalizado
+        const zonasRaw = await getPaginado(cookie, 'U_GIRAS', '$orderby=Code');
+        const mapaZonas = new Map<string, string>();
+        for (const z of zonasRaw) {
+            mapaZonas.set(normalizarCodigoZona(z.Code), z.Name ?? `Zona ${z.Code}`);
+        }
+
+        // 2. Datos del agente
+        const encontrados = await getPaginado(
+            cookie,
+            'SalesPersons',
+            `$filter=SalesEmployeeCode eq ${codigoAgente}` +
+                `&$select=SalesEmployeeCode,SalesEmployeeName,Email`
+        );
+        if (!encontrados.length) throw new Error(`Agente ${codigoAgente} no encontrado`);
+        const ag = encontrados[0];
+        const agente: AgenteSAP = {
+            codigo: ag.SalesEmployeeCode,
+            nombre: ag.SalesEmployeeName ?? 'No asignado',
+            correo: ag.Email
+        };
+
+        // 3. Clientes del agente (ver nota sobre FatherCard arriba).
+        //    Acotado por SalesPersonCode, así que no aplica el riesgo de timeout
+        //    que sí tiene obtenerClientes(): son ~60-75 filas por agente.
+        const clientes = await getPaginado(
+            cookie,
+            'BusinessPartners',
+            `$filter=CardType eq 'cCustomer'` +
+                ` and (CurrentAccountBalance ne 0 or FatherCard ne null)` +
+                ` and SalesPersonCode eq ${codigoAgente}` +
+                `&$select=CardCode,CardName,U_ZGIRA,SalesPersonCode,Phone1,Phone2,Cellular,FatherCard`
+        );
+
+        // 4. Agrupar por zona
+        const porZona = new Map<string, ClienteZona[]>();
+        const sinZona: ClienteZona[] = [];
+
+        for (const c of clientes) {
+            const zonaCode = normalizarCodigoZona(c.U_ZGIRA);
+            const cli: ClienteZona = {
+                cardCode: c.CardCode,
+                cardName: c.CardName ?? '',
+                telefono: c.Phone1 || c.Phone2 || c.Cellular || '',
+                zonaCode,
+                zonaNombre: zonaCode
+                    ? (mapaZonas.get(zonaCode) ?? `Zona ${zonaCode}`)
+                    : 'Sin zona asignada',
+                vendedorCode: c.SalesPersonCode,
+                fatherCard: c.FatherCard ?? null
+            };
+
+            if (!zonaCode) {
+                sinZona.push(cli);
+            } else {
+                if (!porZona.has(zonaCode)) porZona.set(zonaCode, []);
+                porZona.get(zonaCode)!.push(cli);
+            }
+        }
+
+        const zonas = Array.from(porZona.entries())
+            .map(([code, clis]) => ({
+                zona: { codigo: code, nombre: mapaZonas.get(code) ?? `Zona ${code}` } as ZonaSAP,
+                clientes: clis.sort((a, b) => a.cardName.localeCompare(b.cardName))
+            }))
+            .sort((a, b) => b.clientes.length - a.clientes.length);
+
+        return { agente, zonas, sinZona };
     } finally {
         await logout(cookie);
     }
