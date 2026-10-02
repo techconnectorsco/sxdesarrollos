@@ -121,6 +121,9 @@ export interface ZonaSAP {
 	nombre: string;
 }
 
+/** Por qué un cliente no aporta nada al PDF de este agente. */
+export type MotivoNoElegible = 'sin_documentos' | 'otro_vendedor';
+
 export interface ClienteZona {
 	cardCode: string;
 	cardName: string;
@@ -130,16 +133,51 @@ export interface ClienteZona {
 	vendedorCode: number;
 	/** CardCode del padre si es sucursal. Necesario para distinguir homónimos. */
 	fatherCard: string | null;
+
+	/**
+	 * Si el cliente aportaría algo al PDF de este agente.
+	 *
+	 * Lo decide el VPS con el MISMO criterio del PDF: el ruteo por U_CODV de la
+	 * dirección del documento. Antes este árbol se armaba por SalesPersonCode de
+	 * la ficha, que es otro universo, y por eso dejaba marcar clientes que nunca
+	 * salían en el reporte.
+	 */
+	elegible: boolean;
+	/** Documentos abiertos ruteados a este agente. Exacto. */
+	docs: number;
+	/** Saldo en colones. APROXIMADO: ver `montosAproximados` del árbol. */
+	crc: number;
+	/** Saldo en dólares. APROXIMADO. */
+	usd: number;
+	/** Solo en los no elegibles. */
+	motivo?: MotivoNoElegible;
+	/** Con motivo 'otro_vendedor': quién se lleva los documentos. */
+	vendedorNombre?: string | null;
+}
+
+export interface ZonaConClientes {
+	zona: ZonaSAP;
+	clientes: ClienteZona[];
+	totalElegibles: number;
+	totalNoElegibles: number;
 }
 
 export interface ArbolAgenteZona {
 	agente: AgenteSAP;
-	zonas: {
-		zona: ZonaSAP;
-		clientes: ClienteZona[];
-	}[];
-	/** En la práctica siempre vacío: los 193 clientes de los 3 agentes activos tienen zona. */
+	/** Vienen ordenadas por cantidad de elegibles, de mayor a menor. */
+	zonas: ZonaConClientes[];
+	/** En la práctica siempre vacío: se midió y los agentes activos tienen zona. */
 	sinZona: ClienteZona[];
+	totalElegibles: number;
+	totalNoElegibles: number;
+	/**
+	 * Siempre true: los montos salen de /SQLQueries, cuya precisión depende de la
+	 * sesión y redondea a 6 cifras significativas. El error es de céntimos sobre
+	 * millones y el PDF sigue siendo el documento autoritativo, así que la
+	 * pantalla los muestra marcados como aproximados. La ELEGIBILIDAD no se
+	 * decide por monto sino por ruteo y conteo de documentos, que son exactos.
+	 */
+	montosAproximados?: boolean;
 }
 
 export interface OrdenGiraZona {
@@ -172,6 +210,16 @@ export interface ResultadoGiraZona {
 		otro_vendedor: string[];
 		/** El código no existe en SAP. */
 		inexistentes: string[];
+		/**
+		 * SAP falló mientras se los consultaba: NO se sabe qué deben.
+		 *
+		 * Es distinto de `sin_documentos` y la diferencia importa. El
+		 * 01/10/2026 estos clientes se reportaban como "no hay nada que
+		 * cobrar", y entre los cinco tenían 68 documentos abiertos: el
+		 * Service Layer estaba caído y el error salía disfrazado de hecho del
+		 * negocio. Un VPS anterior al 01/10/2026 no manda esta clave.
+		 */
+		no_evaluables?: string[];
 	};
 	pdf: string | null;
 	mensaje: string;

@@ -7,7 +7,8 @@
 		EstadoGiraZonaResponse,
 		MetodoEnvioGira,
 		OrdenGiraZona,
-		ResultadoGiraZona
+		ResultadoGiraZona,
+		ZonaConClientes
 	} from '$lib/quimicas_unidas/types';
 	import type { BrandConfig } from '$lib/brand/types';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
@@ -33,6 +34,20 @@
 
 	// ── Selección ──
 	let seleccion = $state<Record<string, boolean>>({});
+
+	/**
+	 * Mostrar o no los clientes que no aportan nada al PDF de este agente.
+	 *
+	 * APAGADO por defecto, que es el punto del cambio: antes el árbol ofrecía
+	 * clientes que nunca salían en el reporte, y se podía armar una gira entera
+	 * de clientes sin nada pendiente y recibir un PDF vacío. Ahora solo se ve lo
+	 * que de verdad aporta.
+	 *
+	 * Pero no desaparecen del todo: con el switch encendido vuelven, en gris y
+	 * con el motivo, para que nadie se quede con la duda de "¿y dónde está el
+	 * cliente X, que yo sé que existe?".
+	 */
+	let verSinCarga = $state(false);
 	let zonasAbiertas = $state<Record<string, boolean>>({});
 	let busquedaZona = $state<Record<string, string>>({});
 
@@ -62,8 +77,15 @@
 
 	const seleccionados = $derived(Object.keys(seleccion).filter((c) => seleccion[c]));
 
-	const totalClientes = $derived(
-		arbol ? arbol.zonas.reduce((n, z) => n + z.clientes.length, 0) + arbol.sinZona.length : 0
+	/** Los que de verdad aportan al PDF. Es el número que importa. */
+	const totalElegibles = $derived(arbol?.totalElegibles ?? 0);
+
+	/** Los que el árbol viejo ofrecía y no aportan nada. */
+	const totalSinCarga = $derived(arbol?.totalNoElegibles ?? 0);
+
+	/** Cuántas zonas tienen al menos un cliente visible con lo que está mostrándose. */
+	const zonasVisibles = $derived(
+		arbol ? arbol.zonas.filter((z) => visiblesDeZona(z).length).length : 0
 	);
 
 	/** cardCode → nombre de zona, para deducir la zona de la selección. */
@@ -125,7 +147,8 @@
 			return [
 				{
 					titulo: 'Sin documentos pendientes, o ruteados a otro vendedor',
-					codigos: detalle.omitidos
+					codigos: detalle.omitidos,
+					aviso: false
 				}
 			];
 		}
@@ -133,13 +156,30 @@
 		return [
 			{
 				titulo: 'Sin ningún documento abierto en SAP: no hay nada que cobrar',
-				codigos: d.sin_documentos
+				codigos: d.sin_documentos,
+				aviso: false
 			},
 			{
 				titulo: 'Con documentos abiertos, pero ruteados a otro vendedor',
-				codigos: d.otro_vendedor
+				codigos: d.otro_vendedor,
+				aviso: false
 			},
-			{ titulo: 'Sin ficha en SAP: el código no existe', codigos: d.inexistentes }
+			{
+				titulo: 'Sin ficha en SAP: el código no existe',
+				codigos: d.inexistentes,
+				aviso: false
+			},
+			{
+				// Este grupo NO es un resultado del negocio: es una falla.
+				// Antes caían en "no hay nada que cobrar" y la pantalla
+				// afirmaba algo falso — el 01/10/2026 pasó con cinco clientes
+				// que entre todos tenían 68 documentos abiertos.
+				titulo:
+					'SAP no respondió al consultarlos: NO se sabe qué deben. ' +
+					'Volvé a intentar en un rato',
+				codigos: d.no_evaluables ?? [],
+				aviso: true
+			}
 		].filter((g) => g.codigos.length);
 	});
 
@@ -219,6 +259,16 @@
 		return nombre.toUpperCase().includes('INACTIVA');
 	}
 
+	/** Los elegibles de una lista: los únicos que se pueden marcar. */
+	function elegiblesDe(clientes: ClienteZona[]): ClienteZona[] {
+		return clientes.filter((c) => c.elegible);
+	}
+
+	/** Lo que se muestra de una zona según el switch, sin aplicar la búsqueda. */
+	function visiblesDeZona(entrada: ZonaConClientes): ClienteZona[] {
+		return verSinCarga ? entrada.clientes : elegiblesDe(entrada.clientes);
+	}
+
 	function filtrar(clientes: ClienteZona[], texto: string): ClienteZona[] {
 		const q = (texto ?? '').trim().toLowerCase();
 		if (!q) return clientes;
@@ -227,14 +277,45 @@
 		);
 	}
 
+	/**
+	 * Cuántos están marcados, contando SOLO los elegibles.
+	 *
+	 * Que cuente solo elegibles no es un detalle: si contara todos, el checkbox
+	 * de la zona quedaría permanentemente en "indeterminado", porque los no
+	 * elegibles no se pueden marcar y nunca llegarían al total.
+	 */
 	function marcados(clientes: ClienteZona[]): number {
-		return clientes.filter((c) => seleccion[c.cardCode]).length;
+		return elegiblesDe(clientes).filter((c) => seleccion[c.cardCode]).length;
 	}
 
-	/** Marca o desmarca la zona entera. */
+	/** Marca o desmarca la zona entera. Solo toca los elegibles. */
 	function alternarTodaLaZona(clientes: ClienteZona[]) {
-		const todos = marcados(clientes) === clientes.length;
-		for (const c of clientes) seleccion[c.cardCode] = !todos;
+		const elegibles = elegiblesDe(clientes);
+		const todos = elegibles.length > 0 && marcados(clientes) === elegibles.length;
+		for (const c of elegibles) seleccion[c.cardCode] = !todos;
+	}
+
+	/** El texto que explica por qué un cliente está en gris. */
+	function motivoLegible(c: ClienteZona): string {
+		if (c.motivo === 'otro_vendedor') {
+			return c.vendedorNombre
+				? `tiene deuda, pero rutea a ${c.vendedorNombre}`
+				: 'tiene deuda, pero rutea a otro vendedor';
+		}
+		return 'sin documentos abiertos';
+	}
+
+	const moneda = new Intl.NumberFormat('es-CR', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0
+	});
+
+	/** `3 docs · ₡1.240.500`, con los dólares aparte si los hay. */
+	function resumenCarga(c: ClienteZona): string {
+		const partes: string[] = [`${c.docs} ${c.docs === 1 ? 'doc' : 'docs'}`];
+		if (c.crc) partes.push(`₡${moneda.format(c.crc)}`);
+		if (c.usd) partes.push(`$${moneda.format(c.usd)}`);
+		return partes.join(' · ');
 	}
 
 	function limpiarSeleccion() {
@@ -479,17 +560,47 @@
 				{:else if cargandoArbol}
 					<p class="mt-4 text-sm text-muted-foreground">Cargando zonas desde SAP…</p>
 				{:else if arbol}
-					<p class="mt-5 mb-2 text-xs text-muted-foreground">
-						<span class="font-medium text-foreground">{arbol.zonas.length}</span> zonas ·
-						<span class="font-medium text-foreground">{totalClientes}</span> clientes
+					<div
+						class="mt-5 mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2"
+					>
+						<p class="text-xs text-muted-foreground">
+							<span class="font-medium text-foreground">{zonasVisibles}</span> zonas ·
+							<span class="font-medium text-foreground">{totalElegibles}</span> clientes con
+							pendientes
+							{#if totalSinCarga}
+								· <span class="text-muted-foreground">{totalSinCarga} sin carga</span>
+							{/if}
+						</p>
+
+						{#if totalSinCarga}
+							<label class="flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
+								<input
+									type="checkbox"
+									class="h-3.5 w-3.5 cursor-pointer"
+									style="accent-color: var(--brand-primary)"
+									bind:checked={verSinCarga}
+								/>
+								Ver clientes sin carga ({totalSinCarga})
+							</label>
+						{/if}
+					</div>
+
+					<p class="mb-3 text-[11px] leading-relaxed text-muted-foreground">
+						El árbol muestra solo los clientes que van a salir en el PDF de este agente, con los
+						documentos que le rutean a él. Los montos son aproximados; el PDF manda.
 					</p>
 
 					<div class="space-y-2">
 						{#each arbol.zonas as entrada (entrada.zona.codigo)}
+							{@const enZona = visiblesDeZona(entrada)}
 							{@const abierta = zonasAbiertas[entrada.zona.codigo] ?? false}
-							{@const visibles = filtrar(entrada.clientes, busquedaZona[entrada.zona.codigo])}
+							{@const visibles = filtrar(enZona, busquedaZona[entrada.zona.codigo])}
+							{@const nElegibles = entrada.totalElegibles}
 							{@const nMarcados = marcados(entrada.clientes)}
 
+							<!-- Con el switch apagado, una zona donde nada aporta no se muestra:
+							     ofrecerla sería volver al problema que este cambio corrige. -->
+							{#if enZona.length}
 							<div class="overflow-hidden rounded-lg border border-border">
 								<!-- Encabezado de zona -->
 								<div
@@ -500,8 +611,9 @@
 										type="checkbox"
 										class="h-4 w-4 shrink-0 cursor-pointer"
 										style="accent-color: var(--brand-primary)"
-										checked={nMarcados === entrada.clientes.length && nMarcados > 0}
-										indeterminate={nMarcados > 0 && nMarcados < entrada.clientes.length}
+										checked={nElegibles > 0 && nMarcados === nElegibles}
+										indeterminate={nMarcados > 0 && nMarcados < nElegibles}
+										disabled={nElegibles === 0}
 										onchange={() => alternarTodaLaZona(entrada.clientes)}
 										aria-label="Seleccionar toda la zona {entrada.zona.nombre}"
 									/>
@@ -535,7 +647,12 @@
 											>
 											/
 										{/if}
-										{entrada.clientes.length} clientes
+										{nElegibles} con pendientes
+										{#if verSinCarga && entrada.totalNoElegibles}
+											<span class="text-muted-foreground/70">
+												· {entrada.totalNoElegibles} sin carga</span
+											>
+										{/if}
 									</span>
 								</div>
 
@@ -562,20 +679,26 @@
 															<th class="py-1.5 pr-3 font-medium">Código</th>
 															<th class="py-1.5 pr-3 font-medium">Nombre</th>
 															<th class="py-1.5 pr-3 font-medium">Teléfono</th>
-															<th class="py-1.5 font-medium">Cuenta</th>
+															<th class="py-1.5 pr-3 font-medium">Cuenta</th>
+															<th class="py-1.5 font-medium">Pendiente</th>
 														</tr>
 													</thead>
 													<tbody>
 														{#each visibles as c (c.cardCode)}
 															<tr
-																class="border-b border-border/50 last:border-0 hover:bg-accent/50"
+																class="border-b border-border/50 last:border-0 {c.elegible
+																	? 'hover:bg-accent/50'
+																	: 'opacity-55'}"
 															>
 																<td class="py-1.5">
 																	<input
 																		type="checkbox"
-																		class="h-4 w-4 cursor-pointer"
+																		class="h-4 w-4 {c.elegible
+																			? 'cursor-pointer'
+																			: 'cursor-not-allowed'}"
 																		style="accent-color: var(--brand-primary)"
 																		bind:checked={seleccion[c.cardCode]}
+																		disabled={!c.elegible}
 																		aria-label="Seleccionar {c.cardCode}"
 																	/>
 																</td>
@@ -584,13 +707,22 @@
 																<td class="py-1.5 pr-3 text-muted-foreground">
 																	{c.telefono || '—'}
 																</td>
-																<td class="py-1.5 text-muted-foreground">
+																<td class="py-1.5 pr-3 text-muted-foreground">
 																	{#if c.fatherCard}
 																		<span class="whitespace-nowrap">
 																			Sucursal de <span class="font-mono">{c.fatherCard}</span>
 																		</span>
 																	{:else}
 																		—
+																	{/if}
+																</td>
+																<td class="py-1.5 whitespace-nowrap">
+																	{#if c.elegible}
+																		<span class="text-foreground">{resumenCarga(c)}</span>
+																	{:else}
+																		<span class="text-muted-foreground italic"
+																			>{motivoLegible(c)}</span
+																		>
 																	{/if}
 																</td>
 															</tr>
@@ -602,23 +734,30 @@
 									</div>
 								{/if}
 							</div>
+							{/if}
 						{/each}
 
-						<!-- En la práctica siempre vacío: los clientes de los agentes activos tienen zona. -->
+						<!-- Se midió contra producción y está vacío: todos los clientes con
+						     carga de los agentes activos tienen U_ZGIRA. Se deja el aviso por
+						     si algún día aparece uno, para que no desaparezca en silencio. -->
 						{#if arbol.sinZona.length}
 							<div class="rounded-lg border border-dashed border-border px-3 py-2.5">
 								<span class="text-sm font-medium text-foreground">Sin zona asignada</span>
 								<span class="ml-2 text-xs text-muted-foreground">
-									{arbol.sinZona.length} clientes
+									{arbol.sinZona.filter((c) => c.elegible).length} con pendientes
 								</span>
 							</div>
 						{/if}
 					</div>
 
 					<p class="mt-3 text-[11px] leading-relaxed text-muted-foreground">
-						El árbol muestra únicamente los clientes de agentes con correo asignado en SAP, igual
-						que la gira automática de los martes. Las sucursales aparecen aunque su saldo figure en
-						cero, porque se consolida en la cuenta padre.
+						Un cliente aparece acá si tiene documentos abiertos que le rutean a este agente, que
+						es el mismo criterio con el que se arma el PDF. Las sucursales entran aunque su saldo
+						figure en cero, porque se consolida en la cuenta padre.
+						{#if totalSinCarga}
+							Los {totalSinCarga} sin carga quedan ocultos; el switch de arriba los muestra en
+							gris con el motivo.
+						{/if}
 					</p>
 				{/if}
 			{/if}
@@ -712,7 +851,7 @@
 							</p>
 							{#each gruposOmitidos as grupo (grupo.titulo)}
 								<p class="mt-2 text-[11px] font-semibold opacity-90">
-									{grupo.titulo} ({grupo.codigos.length})
+									{grupo.aviso ? '⚠ ' : ''}{grupo.titulo} ({grupo.codigos.length})
 								</p>
 								<ul class="mt-0.5 space-y-0.5 text-xs opacity-95">
 									{#each grupo.codigos as codigo (codigo)}
@@ -796,7 +935,7 @@
 									</p>
 									{#each gruposOmitidos as grupo (grupo.titulo)}
 										<p class="mt-2 text-[11px] font-semibold opacity-90">
-											{grupo.titulo} ({grupo.codigos.length})
+											{grupo.aviso ? '⚠ ' : ''}{grupo.titulo} ({grupo.codigos.length})
 										</p>
 										<ul class="mt-0.5 space-y-0.5 text-xs opacity-95">
 											{#each grupo.codigos as codigo (codigo)}
@@ -808,7 +947,13 @@
 
 								{#if !detalle.procesados}
 									<p class="mt-2 text-xs leading-relaxed opacity-95">
-										No se generó ningún PDF: no hay nada que cobrar en esta selección.
+										{#if detalle.omitidos_detalle?.no_evaluables?.length}
+											No se generó ningún PDF porque SAP no respondió. Esto NO
+											significa que la selección no tenga deuda: significa que no se
+											pudo averiguar. Volvé a intentar en un rato.
+										{:else}
+											No se generó ningún PDF: no hay nada que cobrar en esta selección.
+										{/if}
 									</p>
 								{/if}
 							</div>
