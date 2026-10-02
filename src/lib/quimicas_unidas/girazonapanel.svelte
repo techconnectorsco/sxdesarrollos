@@ -750,7 +750,7 @@
 						{/if}
 					</div>
 
-					<p class="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+					<p class="mt-3 text-[12px] leading-relaxed text-muted-foreground">
 						Un cliente aparece acá si tiene documentos abiertos que le rutean a este agente, que
 						es el mismo criterio con el que se arma el PDF. Las sucursales entran aunque su saldo
 						figure en cero, porque se consolida en la cuenta padre.
@@ -919,9 +919,7 @@
 							</div>
 						{:else if fase === 'listo' && detalle}
 							{@const completa = detalle.procesados === detalle.solicitados}
-							<div
-								class="mt-3 rounded-lg px-4 py-3 text-sm {completa ? 'qz-exito' : 'qz-aviso'}"
-							>
+							<div class="mt-3 rounded-lg px-4 py-3 text-sm {completa ? 'qz-exito' : 'qz-aviso'}">
 								<p class="font-semibold">
 									{detalle.procesados} de {detalle.solicitados}
 									{detalle.solicitados === 1 ? 'cliente entró' : 'clientes entraron'} en la gira
