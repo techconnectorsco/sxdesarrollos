@@ -13,7 +13,11 @@ import type {
     RangosVencimiento,
     EstadoCuenta,
     AgenteSAP,
-    ListaAgentesResponse
+    ListaAgentesResponse,
+    ClienteZona,
+    ZonaConClientes,
+    ArbolAgenteZona,
+    ZonaSAP
 } from './types';
 
 // Mismas variables que la automatización Python.
@@ -428,6 +432,78 @@ export async function auditarCliente(cardCodeRaw: string): Promise<AuditoriaClie
                 usd: calcularRangos(usd),
                 crc: calcularRangos(crc)
             }
+        };
+    } finally {
+        await logout(cookie);
+    }
+}
+
+//lo agregue de nuevo aqui porque el vps se tarda mucho para que vercel espere la consulta y se caiga, entonces lo hago directo desde el service layer de sap para que sea mas rapido y ya la ejecucion por paramentros si se quedan en el vps que responda cuando termine 
+// ── Giras por Zona ────────────────────────────────────────────────────────
+
+export async function obtenerArbolAgente(codigoAgente: number): Promise<ArbolAgenteZona> {
+    const cookie = await login();
+    try {
+        // 1. Zonas (UDT @GIRAS)
+        const zonasRaw = await getPaginado(cookie, 'U_GIRAS', '$orderby=Code');
+        const mapaZonas = new Map<string, string>();
+        for (const z of zonasRaw) mapaZonas.set(String(z.Code), z.Name ?? `Zona ${z.Code}`);
+
+        // 2. Info del agente
+        const agRaw = await getPaginado(cookie, 'SalesPersons',
+            `$filter=SalesEmployeeCode eq ${codigoAgente}&$select=SalesEmployeeCode,SalesEmployeeName,Email`);
+        if (!agRaw.length) throw new Error(`Agente ${codigoAgente} no encontrado`);
+        const ag = agRaw[0];
+        const agente: AgenteSAP = { codigo: ag.SalesEmployeeCode, nombre: ag.SalesEmployeeName, correo: ag.Email };
+
+        // 3. Clientes con saldo de este agente
+        const bps = await getPaginado(cookie, 'BusinessPartners',
+    `$filter=CardType eq 'cCustomer' and SalesPersonCode eq ${codigoAgente}&$select=CardCode,CardName,U_ZGIRA,SalesPersonCode,Phone1,Phone2,Cellular,FatherCard,CurrentAccountBalance`);
+
+        // 4. Agrupar por zona
+        const porZona = new Map<string, ClienteZona[]>();
+        const sinZona: ClienteZona[] = [];
+
+        for (const c of bps) {
+            const zc = c.U_ZGIRA ? String(c.U_ZGIRA).trim() : '';
+            const balance = Number(c.CurrentAccountBalance ?? 0);
+            const cli: ClienteZona = {
+                cardCode: c.CardCode,
+                cardName: c.CardName ?? '',
+                telefono: c.Phone1 || c.Phone2 || c.Cellular || '',
+                zonaCode: zc,
+                zonaNombre: zc ? (mapaZonas.get(zc) ?? `Zona ${zc}`) : 'Sin zona asignada',
+                vendedorCode: c.SalesPersonCode,
+                fatherCard: c.FatherCard?.trim() || null,
+                elegible: balance > 0,
+    docs: balance > 0 ? 1 : 0,
+    crc: balance,
+    usd: 0,
+    motivo: balance <= 0 ? 'sin_documentos' : undefined
+};
+            if (!zc) { sinZona.push(cli); }
+            else {
+                if (!porZona.has(zc)) porZona.set(zc, []);
+                porZona.get(zc)!.push(cli);
+            }
+        }
+
+        const zonas: ZonaConClientes[] = Array.from(porZona.entries())
+            .map(([code, clis]) => ({
+                zona: { codigo: code, nombre: mapaZonas.get(code) ?? `Zona ${code}` },
+                clientes: clis.sort((a, b) => a.cardName.localeCompare(b.cardName)),
+                totalElegibles: clis.filter(c => c.elegible).length,
+totalNoElegibles: clis.filter(c => !c.elegible).length
+            }))
+            .sort((a, b) => b.totalElegibles - a.totalElegibles);
+
+        return {
+            agente,
+            zonas,
+            sinZona,
+            totalElegibles: bps.filter((c: any) => Number(c.CurrentAccountBalance ?? 0) > 0).length,
+totalNoElegibles: bps.filter((c: any) => Number(c.CurrentAccountBalance ?? 0) <= 0).length,
+            montosAproximados: true
         };
     } finally {
         await logout(cookie);

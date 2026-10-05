@@ -560,9 +560,7 @@
 				{:else if cargandoArbol}
 					<p class="mt-4 text-sm text-muted-foreground">Cargando zonas desde SAP…</p>
 				{:else if arbol}
-					<div
-						class="mt-5 mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2"
-					>
+					<div class="mt-5 mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
 						<p class="text-xs text-muted-foreground">
 							<span class="font-medium text-foreground">{zonasVisibles}</span> zonas ·
 							<span class="font-medium text-foreground">{totalElegibles}</span> clientes con
@@ -573,19 +571,28 @@
 						</p>
 
 						{#if totalSinCarga}
-							<label class="flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
-								<input
-									type="checkbox"
-									class="h-3.5 w-3.5 cursor-pointer"
-									style="accent-color: var(--brand-primary)"
-									bind:checked={verSinCarga}
-								/>
-								Ver clientes sin carga ({totalSinCarga})
-							</label>
+							<button
+								type="button"
+								onclick={() => (verSinCarga = !verSinCarga)}
+								class="flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition-all"
+								style={verSinCarga
+									? `border-color: var(--brand-primary); background-color: var(--brand-primary-light); color: var(--brand-primary-text);`
+									: 'border-color: var(--color-border); color: var(--color-muted-foreground);'}
+							>
+								<span
+									class="h-3 w-3 rounded-sm border {verSinCarga
+										? 'border-transparent'
+										: 'border-current'}"
+									style={verSinCarga ? `background-color: var(--brand-primary);` : ''}
+								></span>
+								{verSinCarga
+									? `Ocultar clientes sin pendientes (${totalSinCarga})`
+									: 'Mostrar todos los clientes'}
+							</button>
 						{/if}
 					</div>
 
-					<p class="mb-3 text-[11px] leading-relaxed text-muted-foreground">
+					<p class="mb-3 text-[13px] leading-relaxed text-muted-foreground">
 						El árbol muestra solo los clientes que van a salir en el PDF de este agente, con los
 						documentos que le rutean a él. Los montos son aproximados; el PDF manda.
 					</p>
@@ -601,139 +608,140 @@
 							<!-- Con el switch apagado, una zona donde nada aporta no se muestra:
 							     ofrecerla sería volver al problema que este cambio corrige. -->
 							{#if enZona.length}
-							<div class="overflow-hidden rounded-lg border border-border">
-								<!-- Encabezado de zona -->
-								<div
-									class="flex items-center gap-3 px-3 py-2.5"
-									style={nMarcados > 0 ? 'background-color: var(--brand-primary-light);' : ''}
-								>
-									<input
-										type="checkbox"
-										class="h-4 w-4 shrink-0 cursor-pointer"
-										style="accent-color: var(--brand-primary)"
-										checked={nElegibles > 0 && nMarcados === nElegibles}
-										indeterminate={nMarcados > 0 && nMarcados < nElegibles}
-										disabled={nElegibles === 0}
-										onchange={() => alternarTodaLaZona(entrada.clientes)}
-										aria-label="Seleccionar toda la zona {entrada.zona.nombre}"
-									/>
-									<button
-										type="button"
-										class="flex flex-1 items-center gap-2 text-left"
-										onclick={() => alternarZona(entrada.zona.codigo)}
-										aria-expanded={abierta}
+								<div class="overflow-hidden rounded-lg border border-border">
+									<!-- Encabezado de zona -->
+									<div
+										class="flex items-center gap-3 px-3 py-2.5"
+										style={nMarcados > 0 ? 'background-color: var(--brand-primary-light);' : ''}
 									>
-										{#if abierta}
-											<ChevronDownIcon class="h-4 w-4 shrink-0 text-muted-foreground" />
-										{:else}
-											<ChevronRightIcon class="h-4 w-4 shrink-0 text-muted-foreground" />
-										{/if}
-										<span class="text-sm font-medium text-foreground">{entrada.zona.nombre}</span>
-										<span class="font-mono text-[10px] text-muted-foreground"
-											>({entrada.zona.codigo})</span
-										>
-										{#if esInactiva(entrada.zona.nombre)}
-											<span
-												class="qz-badge-inactiva shrink-0 rounded-full border px-2 py-0.5 text-[11px] leading-normal font-semibold"
-											>
-												Zona inactiva
-											</span>
-										{/if}
-									</button>
-									<span class="shrink-0 text-xs text-muted-foreground">
-										{#if nMarcados > 0}
-											<span class="font-semibold" style="color: var(--brand-primary-text)"
-												>{nMarcados}</span
-											>
-											/
-										{/if}
-										{nElegibles} con pendientes
-										{#if verSinCarga && entrada.totalNoElegibles}
-											<span class="text-muted-foreground/70">
-												· {entrada.totalNoElegibles} sin carga</span
-											>
-										{/if}
-									</span>
-								</div>
-
-								<!-- Clientes de la zona -->
-								{#if abierta}
-									<div class="border-t border-border p-3">
 										<input
-											type="text"
-											placeholder="Buscar por código o nombre…"
-											bind:value={busquedaZona[entrada.zona.codigo]}
-											class="mb-3 w-full rounded-lg border border-border bg-background px-3 py-1.5 text-xs text-foreground outline-none transition-all sm:max-w-xs"
+											type="checkbox"
+											class="h-4 w-4 shrink-0 cursor-pointer"
+											style="accent-color: var(--brand-primary)"
+											checked={nElegibles > 0 && nMarcados === nElegibles}
+											indeterminate={nMarcados > 0 && nMarcados < nElegibles}
+											disabled={nElegibles === 0}
+											onchange={() => alternarTodaLaZona(entrada.clientes)}
+											aria-label="Seleccionar toda la zona {entrada.zona.nombre}"
 										/>
-
-										{#if !visibles.length}
-											<p class="py-2 text-xs text-muted-foreground">
-												Ningún cliente coincide con la búsqueda.
-											</p>
-										{:else}
-											<div class="overflow-x-auto">
-												<table class="w-full text-left text-xs">
-													<thead class="text-muted-foreground">
-														<tr class="border-b border-border">
-															<th class="w-8 py-1.5"></th>
-															<th class="py-1.5 pr-3 font-medium">Código</th>
-															<th class="py-1.5 pr-3 font-medium">Nombre</th>
-															<th class="py-1.5 pr-3 font-medium">Teléfono</th>
-															<th class="py-1.5 pr-3 font-medium">Cuenta</th>
-															<th class="py-1.5 font-medium">Pendiente</th>
-														</tr>
-													</thead>
-													<tbody>
-														{#each visibles as c (c.cardCode)}
-															<tr
-																class="border-b border-border/50 last:border-0 {c.elegible
-																	? 'hover:bg-accent/50'
-																	: 'opacity-55'}"
-															>
-																<td class="py-1.5">
-																	<input
-																		type="checkbox"
-																		class="h-4 w-4 {c.elegible
-																			? 'cursor-pointer'
-																			: 'cursor-not-allowed'}"
-																		style="accent-color: var(--brand-primary)"
-																		bind:checked={seleccion[c.cardCode]}
-																		disabled={!c.elegible}
-																		aria-label="Seleccionar {c.cardCode}"
-																	/>
-																</td>
-																<td class="py-1.5 pr-3 font-mono text-foreground">{c.cardCode}</td>
-																<td class="py-1.5 pr-3 text-foreground">{c.cardName}</td>
-																<td class="py-1.5 pr-3 text-muted-foreground">
-																	{c.telefono || '—'}
-																</td>
-																<td class="py-1.5 pr-3 text-muted-foreground">
-																	{#if c.fatherCard}
-																		<span class="whitespace-nowrap">
-																			Sucursal de <span class="font-mono">{c.fatherCard}</span>
-																		</span>
-																	{:else}
-																		—
-																	{/if}
-																</td>
-																<td class="py-1.5 whitespace-nowrap">
-																	{#if c.elegible}
-																		<span class="text-foreground">{resumenCarga(c)}</span>
-																	{:else}
-																		<span class="text-muted-foreground italic"
-																			>{motivoLegible(c)}</span
-																		>
-																	{/if}
-																</td>
-															</tr>
-														{/each}
-													</tbody>
-												</table>
-											</div>
-										{/if}
+										<button
+											type="button"
+											class="flex flex-1 items-center gap-2 text-left"
+											onclick={() => alternarZona(entrada.zona.codigo)}
+											aria-expanded={abierta}
+										>
+											{#if abierta}
+												<ChevronDownIcon class="h-4 w-4 shrink-0 text-muted-foreground" />
+											{:else}
+												<ChevronRightIcon class="h-4 w-4 shrink-0 text-muted-foreground" />
+											{/if}
+											<span class="text-sm font-medium text-foreground">{entrada.zona.nombre}</span>
+											<span class="font-mono text-[10px] text-muted-foreground"
+												>({entrada.zona.codigo})</span
+											>
+											{#if esInactiva(entrada.zona.nombre)}
+												<span
+													class="qz-badge-inactiva shrink-0 rounded-full border px-2 py-0.5 text-[11px] leading-normal font-semibold"
+												>
+													Zona inactiva
+												</span>
+											{/if}
+										</button>
+										<span class="shrink-0 text-xs text-muted-foreground">
+											{#if nMarcados > 0}
+												<span class="font-semibold" style="color: var(--brand-primary-text)"
+													>{nMarcados}</span
+												>
+												/
+											{/if}
+											{nElegibles} con pendientes
+											{#if verSinCarga && entrada.totalNoElegibles}
+												<span class="text-muted-foreground/70">
+													· {entrada.totalNoElegibles} sin carga</span
+												>
+											{/if}
+										</span>
 									</div>
-								{/if}
-							</div>
+
+									<!-- Clientes de la zona -->
+									{#if abierta}
+										<div class="border-t border-border p-3">
+											<input
+												type="text"
+												placeholder="Buscar por código o nombre…"
+												bind:value={busquedaZona[entrada.zona.codigo]}
+												class="mb-3 w-full rounded-lg border border-border bg-background px-3 py-1.5 text-xs text-foreground outline-none transition-all sm:max-w-xs"
+											/>
+
+											{#if !visibles.length}
+												<p class="py-2 text-xs text-muted-foreground">
+													Ningún cliente coincide con la búsqueda.
+												</p>
+											{:else}
+												<div class="overflow-x-auto">
+													<table class="w-full text-left text-xs">
+														<thead class="text-muted-foreground">
+															<tr class="border-b border-border">
+																<th class="w-8 py-1.5"></th>
+																<th class="py-1.5 pr-3 font-medium">Código</th>
+																<th class="py-1.5 pr-3 font-medium">Nombre</th>
+																<th class="py-1.5 pr-3 font-medium">Teléfono</th>
+																<th class="py-1.5 pr-3 font-medium">Cuenta</th>
+																<th class="py-1.5 font-medium">Pendiente</th>
+															</tr>
+														</thead>
+														<tbody>
+															{#each visibles as c (c.cardCode)}
+																<tr
+																	class="border-b border-border/50 last:border-0 {c.elegible
+																		? 'font-semibold hover:bg-accent/50'
+																		: 'opacity-85'}"
+																>
+																	<td class="py-1.5">
+																		<input
+																			type="checkbox"
+																			class="h-4 w-4 {c.elegible
+																				? 'cursor-pointer'
+																				: 'cursor-not-allowed'}"
+																			style="accent-color: var(--brand-primary)"
+																			bind:checked={seleccion[c.cardCode]}
+																			disabled={!c.elegible}
+																			aria-label="Seleccionar {c.cardCode}"
+																		/>
+																	</td>
+																	<td class="py-1.5 pr-3 font-mono text-foreground">{c.cardCode}</td
+																	>
+																	<td class="py-1.5 pr-3 text-foreground">{c.cardName}</td>
+																	<td class="py-1.5 pr-3 text-muted-foreground">
+																		{c.telefono || '—'}
+																	</td>
+																	<td class="py-1.5 pr-3 text-muted-foreground">
+																		{#if c.fatherCard}
+																			<span class="whitespace-nowrap">
+																				Sucursal de <span class="font-mono">{c.fatherCard}</span>
+																			</span>
+																		{:else}
+																			—
+																		{/if}
+																	</td>
+																	<td class="py-1.5 whitespace-nowrap">
+																		{#if c.elegible}
+																			<span class="text-foreground">{resumenCarga(c)}</span>
+																		{:else}
+																			<span class="text-muted-foreground italic"
+																				>{motivoLegible(c)}</span
+																			>
+																		{/if}
+																	</td>
+																</tr>
+															{/each}
+														</tbody>
+													</table>
+												</div>
+											{/if}
+										</div>
+									{/if}
+								</div>
 							{/if}
 						{/each}
 
@@ -751,12 +759,12 @@
 					</div>
 
 					<p class="mt-3 text-[12px] leading-relaxed text-muted-foreground">
-						Un cliente aparece acá si tiene documentos abiertos que le rutean a este agente, que
-						es el mismo criterio con el que se arma el PDF. Las sucursales entran aunque su saldo
+						Un cliente aparece acá si tiene documentos abiertos que le rutean a este agente, que es
+						el mismo criterio con el que se arma el PDF. Las sucursales entran aunque su saldo
 						figure en cero, porque se consolida en la cuenta padre.
 						{#if totalSinCarga}
-							Los {totalSinCarga} sin carga quedan ocultos; el switch de arriba los muestra en
-							gris con el motivo.
+							Los {totalSinCarga} sin carga quedan ocultos; el switch de arriba los muestra en gris con
+							el motivo.
 						{/if}
 					</p>
 				{/if}
@@ -946,9 +954,9 @@
 								{#if !detalle.procesados}
 									<p class="mt-2 text-xs leading-relaxed opacity-95">
 										{#if detalle.omitidos_detalle?.no_evaluables?.length}
-											No se generó ningún PDF porque SAP no respondió. Esto NO
-											significa que la selección no tenga deuda: significa que no se
-											pudo averiguar. Volvé a intentar en un rato.
+											No se generó ningún PDF porque SAP no respondió. Esto NO significa que la
+											selección no tenga deuda: significa que no se pudo averiguar. Volvé a intentar
+											en un rato.
 										{:else}
 											No se generó ningún PDF: no hay nada que cobrar en esta selección.
 										{/if}
