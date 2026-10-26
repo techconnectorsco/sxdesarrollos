@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"dev": "cross-env NODE_OPTIONS='--max-http-header-size=32768' vite dev",
-		"build": "vite build",
+		"build": "node -v && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
